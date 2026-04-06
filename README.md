@@ -41,9 +41,7 @@ antigravity-config/
 │   └── workflows/                   # Slash-commands (/vibe-*)
 │       ├── vibe-proposal.md         # /vibe-proposal — Planejamento
 │       ├── vibe-apply.md            # /vibe-apply — Implementação
-│       ├── vibe-archive.md          # /vibe-archive — Arquivamento
-│       ├── vibe-clone-mechanic.md   # /vibe-clone-mechanic — Clone LP Mecânica
-│       └── vibe-clone-petshop.md    # /vibe-clone-petshop — Clone LP Petshop
+│       └── vibe-archive.md          # /vibe-archive — Arquivamento
 ├── .antigravity/                    # Regras do Antigravity IDE
 │   └── rules.md                     # Regras de orquestração
 ├── templates/                       # Templates reutilizáveis
@@ -71,8 +69,6 @@ antigravity-config/
 | `/vibe-proposal` | Planejamento | Research (RPI-R), requisitos, BDD scenarios, design doc |
 | `/vibe-apply` | Implementação | Execução guiada + Quality Gate UX/UI 2026 |
 | `/vibe-archive` | Arquivamento | Move specs finalizadas para archive |
-| `/vibe-clone-mechanic` | Clonagem | Adapta LP de oficina mecânica para novo cliente |
-| `/vibe-clone-petshop` | Clonagem | Adapta LP de petshop/vet para novo cliente |
 
 ### Metodologias Integradas
 - **RPI** (Research → Plan → Implement) — em todos os workflows criativos
