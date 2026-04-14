@@ -1,8 +1,70 @@
-node_modules/
-.env
-.env.local
-.env.*.local
-dist/
-.DS_Store
-Thumbs.db
+# Build artifacts
+dist
+node_modules
+gen
+*.lock
+
+# Logs e arquivos temporários
 *.log
+*.txt
+*.pdf
+*.zip
+
+# Scripts de workspace (não pertencem ao antigravity-config)
+*.py
+*.js
+*.ps1
+!setup/*.ps1
+*.sh
+!setup/*.sh
+*.json
+!.mcprc
+!package.json
+
+# Arquivos de workspace de outros projetos
+gps-rh-13/
+jjseguros/
+painel-davicode/
+instaforge-web/
+metadash/
+transportes/
+tork-crm-*/
+baseconhecimento/
+antigravity_brain_*/
+antigravity-config-repo/
+exemplos/
+specs/
+skills/remotion/examples/
+
+# Arquivos de diagnóstico/infra (contexto de outros projetos)
+chatwoot_compose.yml
+oh_*.txt
+cw_*.txt
+routes.txt
+search*.txt
+dp.txt
+shared.txt
+default_auth.txt
+user_auth*.txt
+fix*.js
+fix*.py
+build_*.js
+ssh_admin.js
+find_vols.py
+inspect_vols.py
+create_*.py
+create_*.ps1
+check_docker.sh
+n8n_tool_snippet.json
+
+# Ambientes e segredos
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+
+# IDE
+.idea/
+.vscode/settings.json
+*.swp
