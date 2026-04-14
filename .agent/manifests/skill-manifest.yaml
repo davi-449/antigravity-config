@@ -1,0 +1,343 @@
+# skill-manifest.yaml
+# Catálogo central de skills do antigravity-config.
+# Mantido manualmente — não gerado automaticamente.
+# Atualizar sempre que uma skill for adicionada, removida ou modificada.
+# Upstream de referência: https://github.com/sickn33/antigravity-awesome-skills
+# Última sync revisada: 2026-04-14
+
+schema_version: "1.0"
+maintainer: "davi-449"
+
+skills:
+
+  # ────────────────────────────────────────────────
+  # TIER 1 — STITCH / UI VISUAL (originais do repo)
+  # ────────────────────────────────────────────────
+
+  - id: design-md
+    local_path: skills/design-md/SKILL.md
+    source: official (google-labs-code/stitch-skills)
+    category: frontend
+    tags: [stitch, design-system, documentation]
+    risk: safe
+    priority: high
+    activation_triggers:
+      - "gerar DESIGN.md"
+      - "documentar design system"
+      - "analisar projeto Stitch"
+    suppression_triggers:
+      - "tarefa de backend puro"
+      - "banco de dados"
+    notes: "Gera DESIGN.md semântico otimizado para o Stitch MCP."
+
+  - id: enhance-prompt
+    local_path: skills/enhance-prompt/SKILL.md
+    source: official (google-labs-code/stitch-skills)
+    category: frontend
+    tags: [stitch, prompt-engineering, ui]
+    risk: safe
+    priority: medium
+    activation_triggers:
+      - "melhorar prompt Stitch"
+      - "otimizar geração de tela"
+    suppression_triggers:
+      - "tarefa sem UI"
+    notes: "Transforma ideias vagas em prompts Stitch otimizados."
+
+  - id: react-components
+    local_path: skills/react-components/SKILL.md
+    source: official (google-labs-code/stitch-skills)
+    category: frontend
+    tags: [react, stitch, components, design-tokens]
+    risk: safe
+    priority: high
+    activation_triggers:
+      - "converter tela Stitch em React"
+      - "criar componentes React"
+      - "design tokens"
+    suppression_triggers:
+      - "backend only"
+    notes: "Converte screens Stitch em sistemas de componentes React."
+
+  - id: remotion
+    local_path: skills/remotion/SKILL.md
+    source: official (google-labs-code/stitch-skills)
+    category: frontend
+    tags: [video, remotion, stitch, walkthrough]
+    risk: safe
+    priority: low
+    activation_triggers:
+      - "gerar vídeo de walkthrough"
+      - "demonstrar app em vídeo"
+      - "Remotion"
+    suppression_triggers:
+      - "qualquer tarefa que não seja vídeo"
+    notes: "Cria vídeos de walkthrough a partir de screens Stitch."
+
+  - id: shadcn-ui
+    local_path: skills/shadcn-ui/SKILL.md
+    source: official (google-labs-code/stitch-skills)
+    category: frontend
+    tags: [shadcn, react, components, ui-library]
+    risk: safe
+    priority: high
+    activation_triggers:
+      - "instalar componente shadcn"
+      - "usar shadcn/ui"
+      - "customizar shadcn"
+    suppression_triggers:
+      - "backend only"
+      - "banco de dados"
+    notes: "Expert guidance para shadcn/ui com React."
+
+  - id: stitch-loop
+    local_path: skills/stitch-loop/SKILL.md
+    source: official (google-labs-code/stitch-skills)
+    category: frontend
+    tags: [stitch, multi-page, website, generation]
+    risk: safe
+    priority: medium
+    activation_triggers:
+      - "gerar site completo com Stitch"
+      - "criar múltiplas páginas"
+      - "prototipagem completa"
+    suppression_triggers:
+      - "ajuste pequeno"
+      - "backend"
+    notes: "Gera site multi-página a partir de um único prompt."
+
+  # ────────────────────────────────────────────────
+  # TIER 2 — PLANNING & ARCHITECTURE (importadas)
+  # ────────────────────────────────────────────────
+
+  - id: brainstorming
+    local_path: skills/brainstorming/SKILL.md
+    source: upstream (sickn33/antigravity-awesome-skills)
+    category: planning
+    tags: [planning, design, spec, requirements]
+    risk: safe
+    priority: critical
+    activation_triggers:
+      - "planejar feature"
+      - "antes de implementar"
+      - "pensar na solução"
+      - "design da solução"
+      - "/vibe-proposal"
+    suppression_triggers:
+      - "já aprovado pelo usuário"
+      - "tarefa trivial com 1-2 linhas"
+    notes: "SEMPRE usar antes de implementar features novas. Previne premature implementation."
+
+  - id: architecture-review
+    local_path: skills/architecture-review/SKILL.md
+    source: upstream (sickn33/antigravity-awesome-skills)
+    category: planning
+    tags: [architecture, design, tradeoffs, decisions]
+    risk: safe
+    priority: high
+    activation_triggers:
+      - "revisar arquitetura"
+      - "decisão de design"
+      - "trade-offs técnicos"
+      - "refatoração estrutural"
+    suppression_triggers:
+      - "bug fix simples"
+      - "tarefa de UI"
+    notes: "Para decisões arquiteturais importantes — documentar trade-offs."
+
+  - id: api-design-principles
+    local_path: skills/api-design-principles/SKILL.md
+    source: upstream (sickn33/antigravity-awesome-skills)
+    category: backend
+    tags: [api, rest, design, consistency]
+    risk: safe
+    priority: high
+    activation_triggers:
+      - "criar endpoint"
+      - "design de API"
+      - "estrutura de rota"
+      - "Edge Function nova"
+    suppression_triggers:
+      - "frontend only"
+      - "nenhuma API envolvida"
+    notes: "Garante APIs REST consistentes e bem modeladas."
+
+  # ────────────────────────────────────────────────
+  # TIER 3 — QUALITY & TESTING (importadas)
+  # ────────────────────────────────────────────────
+
+  - id: test-driven-development
+    local_path: skills/test-driven-development/SKILL.md
+    source: upstream (sickn33/antigravity-awesome-skills)
+    category: testing
+    tags: [tdd, testing, quality, red-green-refactor]
+    risk: safe
+    priority: high
+    activation_triggers:
+      - "escrever testes"
+      - "TDD"
+      - "cobertura de testes"
+      - "bug fix com teste"
+    suppression_triggers:
+      - "protótipo descartável"
+      - "arquivo de configuração"
+    notes: "Iron Law: sem código de produção sem teste falhando primeiro."
+
+  - id: lint-and-validate
+    local_path: skills/lint-and-validate/SKILL.md
+    source: upstream (sickn33/antigravity-awesome-skills)
+    category: quality
+    tags: [lint, validation, typescript, quality-gate]
+    risk: safe
+    priority: high
+    activation_triggers:
+      - "lint"
+      - "validar código"
+      - "antes de commitar"
+      - "qualidade do código"
+      - "/vibe-apply finalização"
+    suppression_triggers: []
+    notes: "Sempre usar ao final de um vibe-apply."
+
+  - id: code-review
+    local_path: skills/code-review/SKILL.md
+    source: upstream (sickn33/antigravity-awesome-skills)
+    category: quality
+    tags: [code-review, pr, quality, feedback]
+    risk: safe
+    priority: medium
+    activation_triggers:
+      - "revisar código"
+      - "feedback de PR"
+      - "code review"
+    suppression_triggers:
+      - "implementação nova sem review"
+    notes: "Revisão estruturada antes de fazer merge."
+
+  # ────────────────────────────────────────────────
+  # TIER 4 — DEBUGGING (importadas)
+  # ────────────────────────────────────────────────
+
+  - id: debugging-strategies
+    local_path: skills/debugging-strategies/SKILL.md
+    source: upstream (sickn33/antigravity-awesome-skills)
+    category: debugging
+    tags: [debugging, troubleshooting, systematic, logs]
+    risk: safe
+    priority: critical
+    activation_triggers:
+      - "debugar"
+      - "bug misterioso"
+      - "investigar problema"
+      - "erro em produção"
+      - "logs indicam problema"
+    suppression_triggers:
+      - "feature nova sem bugs"
+    notes: "Transforma debugging de tentativa-e-erro em processo sistemático."
+
+  # ────────────────────────────────────────────────
+  # TIER 5 — SECURITY (importadas)
+  # ────────────────────────────────────────────────
+
+  - id: security-auditor
+    local_path: skills/security-auditor/SKILL.md
+    source: upstream (sickn33/antigravity-awesome-skills)
+    category: security
+    tags: [security, audit, rls, api, vulnerability]
+    risk: safe
+    priority: high
+    activation_triggers:
+      - "auditoria de segurança"
+      - "revisar RLS"
+      - "verificar autenticação"
+      - "validar endpoint público"
+    suppression_triggers:
+      - "UI sem backend"
+    notes: "Auditoria focada no nosso stack: Supabase RLS + Edge Functions."
+
+  # ────────────────────────────────────────────────
+  # TIER 6 — FRONTEND/UI (importadas)
+  # ────────────────────────────────────────────────
+
+  - id: frontend-design
+    local_path: skills/frontend-design/SKILL.md
+    source: upstream (sickn33/antigravity-awesome-skills)
+    category: frontend
+    tags: [ui, ux, design, accessibility, interaction]
+    risk: safe
+    priority: medium
+    activation_triggers:
+      - "melhorar UI"
+      - "qualidade de UX"
+      - "acessibilidade"
+      - "design de interface"
+    suppression_triggers:
+      - "backend only"
+    notes: "Padrões de UI/UX de alta qualidade para o nosso stack React."
+
+  # ────────────────────────────────────────────────
+  # TIER 7 — GIT/RELEASE (importadas)
+  # ────────────────────────────────────────────────
+
+  - id: create-pr
+    local_path: skills/create-pr/SKILL.md
+    source: upstream (sickn33/antigravity-awesome-skills)
+    category: devops
+    tags: [git, pr, release, hygiene, conventional-commits]
+    risk: safe
+    priority: medium
+    activation_triggers:
+      - "criar PR"
+      - "abrir pull request"
+      - "preparar release"
+      - "/ship-pr"
+    suppression_triggers:
+      - "mid-implementation"
+    notes: "PR description structure + conventional commits."
+
+  # ────────────────────────────────────────────────
+  # TIER 8 — SUPABASE (original/custom)
+  # ────────────────────────────────────────────────
+
+  - id: supabase-best-practices
+    local_path: skills/supabase-best-practices/SKILL.md
+    source: upstream (sickn33/antigravity-awesome-skills) + custom
+    category: backend
+    tags: [supabase, postgres, rls, migrations, edge-functions]
+    risk: safe
+    priority: critical
+    activation_triggers:
+      - "criar tabela"
+      - "migration"
+      - "RLS policy"
+      - "Edge Function"
+      - "Supabase"
+    suppression_triggers:
+      - "frontend only sem banco"
+    notes: "Padrões Supabase específicos para nosso stack. SEMPRE usar com operações de banco."
+
+bundles:
+  - id: core
+    path: .agent/bundles/core.md
+    skills: [brainstorming, lint-and-validate, debugging-strategies]
+    description: "Skills essenciais para qualquer tarefa de desenvolvimento."
+
+  - id: planning-mode
+    path: .agent/bundles/planning-mode.md
+    skills: [brainstorming, architecture-review, api-design-principles]
+    description: "Antes de implementar qualquer feature estrutural."
+
+  - id: fullstack-dev
+    path: .agent/bundles/fullstack-dev.md
+    skills: [brainstorming, lint-and-validate, frontend-design, shadcn-ui, react-components, supabase-best-practices]
+    description: "Desenvolvimento full-stack completo."
+
+  - id: stitch-visual
+    path: .agent/bundles/stitch-visual.md
+    skills: [design-md, enhance-prompt, stitch-loop, react-components, remotion]
+    description: "Criação de UI visual pesada com Stitch MCP."
+
+  - id: ship-mode
+    path: .agent/bundles/ship-mode.md
+    skills: [create-pr, lint-and-validate, code-review]
+    description: "Antes de commitar e abrir PR."
