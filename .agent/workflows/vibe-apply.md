@@ -7,42 +7,46 @@ description: Implementar uma especificação aprovada orquestrando Stitch MCP, S
 **Guardrails**
 
 - Só inicie se houver um diretório `specs/<id>/` válido e aprovado.
-- Priorize delegar tarefas de geração de UI pesada para as ferramentas adequadas (Stitch/Lovable) em vez de escrever HTML/CSS do zero.
+- **NUNCA crie componente/tabela/hook novo sem antes pesquisar se já existe** (Regra Anti-Alucinação, ia.md seção 2).
+- Se algo der errado, conserte o que existe — NÃO crie workarounds com código novo.
 - Siga rigorosamente o checklist em `specs/<id>/tasks.md`.
 
 **Steps**
 
 1. Leia a master spec: `proposal.md`, `design.md` e `tasks.md` do diretório `specs/<id>/`.
-1.5. **Validação de Contexto (RPI-R) — Research Pré-Implementação:**
-   - Mapeie TODOS os arquivos existentes do projeto antes de escrever qualquer código.
-   - Verifique se as dependências (pacotes, APIs, DBs) declaradas na spec ainda são válidas.
-   - Cross-reference o `design.md` com a skill `ux-ui-architect-2026` para garantir conformidade 2026.
-   - Se o spec tem mais de 7 dias, pergunte ao usuário se houve mudanças de escopo.
-   - **Regra de Ouro:** Nunca saia escrevendo código em um único prompt gigante; quebre o trabalho em subplanos verificáveis.
-2. **Fase de Frontend (Stitch/Lovable):**
-   - Se o design envolve novas interfaces, utilize a skill `design-md` do Stitch para documentar o sistema de design a partir da spec.
-   - Use `stitch-loop` ou peça para o usuário gerar a base visual no Lovable.
-3. **Fase de Backend (Supabase):**
-   - Analise o `design.md` e crie as migrações SQL necessárias (`supabase migration new <nome>`).
-   - Implemente tabelas, restrições e políticas de RLS.
-   - Rode `supabase gen types typescript --local` para atualizar as tipagens da aplicação.
-4. **Fase de Integração (Antigravity):**
-   - Escreva o código-cola: conecte a UI gerada (Fase 2) com o backend tipado (Fase 3).
-   - Resolva lintings e garanta tratamento de erros elegante.
-5. Marque progressivamente os itens do `tasks.md` como `- [x]` conforme for concluindo as fases.
-5.5. **Quality Gate de Frontend (UX/UI 2026):**
-   - Invoque mentalmente a skill `ux-ui-architect-2026` e revise TODO o código HTML/CSS/Tailwind gerado.
-   - **Checklist obrigatório antes do commit:**
-     - [ ] Interface possui características de **Apple Liquid Glass** (profundidade orgânica, desfoque dinâmico, materiais translúcidos)
-     - [ ] Aplica **Maximalismo Tátil** em páginas de conversão (tipografia expressiva 4xl+, cores vibrantes dopamínicas, alto contraste)
-     - [ ] Cumpre **WCAG 2.2** (`:focus-visible` de alto contraste, alvos de clique mínimos 24x24px, sem overlays obstruindo foco)
-     - [ ] Contém **Microinterações e Motion Design** (hover effects, scroll triggers, transições suaves de entrada)
-     - [ ] Sombras multicamadas (não `shadow-lg` genérico), bordas reflexivas, cores curadas (HSL harmonizadas)
-6. Ao finalizar todas as tarefas, valide se o código está funcionando (build/testes) e notifique o usuário da conclusão.
+
+2. **Fase 0 — Inventário (OBRIGATÓRIA):**
+   - Rode `list_tables` (Supabase MCP) para confirmar o estado atual do banco.
+   - Rode `grep_search` para confirmar que componentes mencionados no spec realmente existem.
+   - Se algo do spec estiver desalinhado com a realidade, **pare e avise o usuário**.
+
+3. **Fase 1 — Frontend (Stitch MCP + Antigravity):**
+   - Se o design envolve telas NOVAS com >200 linhas JSX: use `generate_screen_from_text` (Stitch MCP).
+   - Se é ajuste/refatoração de tela existente: Antigravity edita diretamente.
+   - Se é integração (conectar UI a dados): Antigravity faz hooks/estado.
+
+4. **Fase 2 — Backend (Supabase MCP):**
+   - Crie migrações com `apply_migration`.
+   - Implemente RLS policies para tabelas novas.
+   - Atualize tipagens: `generate_typescript_types`.
+
+5. **Fase 3 — Integração (Antigravity):**
+   - Conecte UI gerada (Fase 1) com backend tipado (Fase 2).
+   - Crie hooks apenas se NÃO existir equivalente em `src/hooks/`.
+   - Resolva lint e garanta tratamento de erros.
+
+6. **Fase 4 — Verificação:**
+   - Rode `vite build` para confirmar que compila.
+   - Teste no browser com `/crm-test` workflow (login automático).
+   - Tire screenshots de evidência.
+
+7. Marque progressivamente os itens do `tasks.md` como `[x]`.
+8. Ao finalizar, notifique o usuário da conclusão.
 
 **Reference**
 
-- Não sobrescreva componentes do Stitch sem necessidade. Crie wrappers/hooks em volta deles.
-- Mantenha os Edge Functions do Supabase em `supabase/functions/` se necessário.
-- A skill `ux-ui-architect-2026` é o quality gate final de toda interface gerada.
+- Não sobrescreva componentes existentes sem necessidade. Crie wrappers/hooks em volta deles.
+- Mantenha Edge Functions do Supabase em `supabase/functions/`.
+- Quando reverter erros: simplifique, não adicione complexidade.
+
 <!-- OPENSPEC:END -->
