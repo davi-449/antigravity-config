@@ -1,22 +1,24 @@
 ---
-description: Arquivar especificações de código implementadas e limpar o diretório de trabalho.
+description: Conclui o fluxo da Spec, consolidando a memória, testando o build e enviando para produção.
 ---
 
-<!-- OPENSPEC:START -->
+<!-- VIBEARCHIVE:START -->
 
-**Guardrails**
+**Objetivo**
+Garantir que a I.A não sofra amnésia. Este workflow transforma o trabalho temporário em memória permanente e entrega o código seguro no Github.
 
-- Só rode este workflow se todas as tarefas em `specs/<id>/tasks.md` estiverem concluídas.
-- Não apague arquivos de código-fonte, apenas mova artefatos de documentação.
+**Skills a utilizar**
+- Invoque `obsidian` para persistir a memória.
 
 **Steps**
 
-1. Peça confirmação ao usuário sobre qual `<id>` de spec será arquivado caso não tenha sido explicitamente fornecido.
-2. Certifique-se de que a funcionalidade foi validada e implementada com sucesso.
-3. Mova o diretório inteiro de `specs/<id>/` para `specs/archive/<id>/`.
-4. Adicione uma nota em um arquivo `CHANGELOG.md` ou equivalente na raiz do projeto listando que a implementação `<id>` foi finalizada na data atual.
+1. **Consolidação de Memória**: Extraia tudo que você aprendeu com o usuário nesta spec (estilos preferidos, erros cometidos, padrões de DB adotados) e ATUALIZE o arquivo `.agent/memory.md` (ou via Obsidian).
+2. **Quality Gate (Build)**: Execute o comando de build (ex: `npm run build`) via terminal para assegurar que nada quebrou na master.
+3. **Commit Automático**: 
+   - Rode `git add .`
+   - Crie um commit semântico explicando a feature inteira (use as informações do `proposal.md`).
+4. **Push Automático**: Execute `git push origin` para enviar a branch.
+5. Mova a pasta `specs/<id>` para `specs/archive/<id>`.
+6. Avise o usuário que a Spec foi finalizada e arquivada, e que a Memória Global foi expandida.
 
-**Reference**
-
-- Isso mantém a raiz da pasta `specs/` limpa contendo apenas trabalhos em andamento ou futuros.
-<!-- OPENSPEC:END -->
+<!-- VIBEARCHIVE:END -->

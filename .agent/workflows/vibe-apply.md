@@ -1,52 +1,23 @@
 ---
-description: Implementar uma especificação aprovada orquestrando Stitch MCP, Supabase MCP e Antigravity.
+description: Executa a implementação técnica baseada nas tasks.md, utilizando as skills especialistas.
 ---
 
-<!-- OPENSPEC:START -->
+<!-- VIBEAPPLY:START -->
 
-**Guardrails**
+**Objetivo**
+Executar o checklist definido no `tasks.md` da spec atual com extrema precisão, usando o máximo das capacidades técnicas injetadas via ClawHub.
 
-- Só inicie se houver um diretório `specs/<id>/` válido e aprovado.
-- **NUNCA crie componente/tabela/hook novo sem antes pesquisar se já existe** (Regra Anti-Alucinação, ia.md seção 2).
-- Se algo der errado, conserte o que existe — NÃO crie workarounds com código novo.
-- Siga rigorosamente o checklist em `specs/<id>/tasks.md`.
+**Skills ativas obrigatórias**
+- **Frontend**: Invoque as skills `frontend-design-pro`, `frontend-design-3` e `afrexai-nextjs-production` para ditar o padrão de UI, qualidade do React, Tailwind e regras de arquitetura frontend.
+- **Backend**: Invoque as skills `backend` e `supabase` para gerenciar as rotas, Edge Functions, RPCs e Migrations com segurança (RLS obrigatório).
+- **Memória Em Tempo Real**: Mantenha no "scratchpad" (sua memória temporária) qualquer erro bizarro ou preferência do usuário dita no meio do percurso, para ser consolidada no `/vibe-archive`.
 
 **Steps**
 
-1. Leia a master spec: `proposal.md`, `design.md` e `tasks.md` do diretório `specs/<id>/`.
+1. Abra o arquivo `specs/<id>/tasks.md`.
+2. Para cada task, decida se é frontend ou backend e ative as skills correspondentes mentalmente e em suas ferramentas.
+3. Escreva o código seguindo ESTRITAMENTE as melhores práticas das skills do ClawHub e da memória do projeto lida anteriormente.
+4. Se houver mudanças nos requisitos durante o percurso, anote-as para não esquecer.
+5. Avise o usuário quando a spec terminar de ser implementada, instruindo-o a revisar e depois rodar `/vibe-archive <id>`.
 
-2. **Fase 0 — Inventário (OBRIGATÓRIA):**
-   - Rode `list_tables` (Supabase MCP) para confirmar o estado atual do banco.
-   - Rode `grep_search` para confirmar que componentes mencionados no spec realmente existem.
-   - Se algo do spec estiver desalinhado com a realidade, **pare e avise o usuário**.
-
-3. **Fase 1 — Frontend (Stitch MCP + Antigravity):**
-   - Se o design envolve telas NOVAS com >200 linhas JSX: use `generate_screen_from_text` (Stitch MCP).
-   - Se é ajuste/refatoração de tela existente: Antigravity edita diretamente.
-   - Se é integração (conectar UI a dados): Antigravity faz hooks/estado.
-
-4. **Fase 2 — Backend (Supabase MCP):**
-   - Crie migrações com `apply_migration`.
-   - Implemente RLS policies para tabelas novas.
-   - Atualize tipagens: `generate_typescript_types`.
-
-5. **Fase 3 — Integração (Antigravity):**
-   - Conecte UI gerada (Fase 1) com backend tipado (Fase 2).
-   - Crie hooks apenas se NÃO existir equivalente em `src/hooks/`.
-   - Resolva lint e garanta tratamento de erros.
-
-6. **Fase 4 — Verificação:**
-   - Rode `vite build` para confirmar que compila.
-   - Teste no browser com `/crm-test` workflow (login automático).
-   - Tire screenshots de evidência.
-
-7. Marque progressivamente os itens do `tasks.md` como `[x]`.
-8. Ao finalizar, notifique o usuário da conclusão.
-
-**Reference**
-
-- Não sobrescreva componentes existentes sem necessidade. Crie wrappers/hooks em volta deles.
-- Mantenha Edge Functions do Supabase em `supabase/functions/`.
-- Quando reverter erros: simplifique, não adicione complexidade.
-
-<!-- OPENSPEC:END -->
+<!-- VIBEAPPLY:END -->

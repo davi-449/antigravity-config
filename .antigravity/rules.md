@@ -1,4 +1,4 @@
-# 🪐 Antigravity Vibe Coding Orchestration Rules v2
+# 🪐 Antigravity Vibe Coding Orchestration Rules v3 (ClawHub Edition)
 
 > **Fonte da verdade**: `.agent/rules/ia.md`  
 > Este arquivo é um espelho sincronizado. Em caso de conflito, `.agent/rules/ia.md` prevalece.
@@ -6,89 +6,27 @@
 ## 1. Core Principles
 
 - **Desconfie do Vibe Coding Puro**: Nenhuma feature grande deve ser iniciada escrevendo código direto. Toda mudança estrutural precisa de uma Especificação (Proposal) detalhada antes.
-- **Isolamento de Responsabilidade**: Você (Antigravity) coordena e "costura". Deixe tarefas massivas de banco de dados para o `Supabase MCP` e construção visual pesada para o `Stitch MCP`.
+- **Memória Contínua**: O agente deve aprender. Nenhuma tarefa deve ser iniciada sem ler as preferências e o histórico no arquivo `.agent/memory.md` (via skill `obsidian`). O que for aprendido em `/vibe-apply` deve ser consolidado em `/vibe-archive`.
 
-## 2. ⛔ Regra Anti-Alucinação (MAIS IMPORTANTE)
+## 2. ⛔ Regra Anti-Alucinação e Repetição
 
-**ANTES de criar qualquer coisa nova, você DEVE pesquisar o que já existe.**
+**ANTES de criar qualquer coisa nova, você DEVE pesquisar o que já existe E ler a Memória.**
 
-### Criando Componente?
-```
-OBRIGATÓRIO: grep_search no diretório src/components/ e src/features/ pelo nome ou função similar.
-Se já existe → USE. Crie um wrapper se precisar, NÃO duplique.
-Se não existe → PERGUNTE ao usuário se quer um novo ou se esqueceu de apontar um existente.
-```
+- **No Frontend**: Consulte `memory.md` para padrões de UI. Use `frontend-design-pro` e `afrexai-nextjs-production`.
+- **No Backend**: Consulte `memory.md` para padrões de dados. Use `supabase` (com RLS) e `backend`.
+- **Geral**: Se já existe → USE. Crie um wrapper se precisar, NÃO duplique. NUNCA crie tabela, RPC, ou política sem verificar o que existe no banco e na memória.
 
-### Alterando Banco de Dados?
-```
-OBRIGATÓRIO: rode list_tables via Supabase MCP antes de qualquer operação.
-Se a tabela já existe → USE. Adicione coluna se necessário via migration, NÃO crie tabela nova.
-Se não existe → PERGUNTE ao usuário se realmente precisa de uma nova tabela.
-NUNCA crie tabela, RPC, ou política sem verificar primeiro.
-```
+## 3. Workflows Oficiais
 
-### Criando Hook?
-```
-OBRIGATÓRIO: grep_search em src/hooks/ pelo nome ou funcionalidade similar.
-O projeto tem +87 hooks — é MUITO provável que já exista o que você precisa.
-```
+Toda iteração passa exclusivamente por estes comandos:
 
-### Criando Página?
-```
-OBRIGATÓRIO: verifique App.tsx para rotas existentes.
-```
+1. `/setup`: Cria as pastas locais, memory.md e inicializa as integrações com ClawHub no projeto atual.
+2. `/vibe-proposal "Feature name"`: Planejamento guiado. Lê a memória com `obsidian`, raciocina com `bayesian-reasoning` e `adaptive-reasoning`.
+3. `/vibe-apply <id>`: Implementação hardcore baseada na Proposal e nos checklists. Usa as skills especialistas (React, Supabase, etc).
+4. `/vibe-archive <id>`: Atualiza a memória, roda o build e faz `git commit` + `push`.
 
-### Regra Absoluta
-- **NUNCA crie duplicatas.** Se algo parecido existe, use ou estenda.
-- **Se der erro, NÃO crie coisa nova pra contornar.** Conserte o que existe.
-- **Ao reverter/arrumar um bug, NÃO adicione mais complexidade.** Simplifique.
-
-## 3. Padrões de Frontend (UI/UX)
-
-- Se a UI requer centenas de linhas JSX e CSS, use o **Stitch MCP** para gerar a base visual.
-- Puxe componentes primitivos do `shadcn/ui` (via `src/components/ui/`).
-- **Stitch MCP = gerador visual.** Use para: criar telas novas inteiras, prototipar layouts, gerar variantes.
-- **Antigravity = integrador.** Conecte a UI do Stitch ao backend Supabase, adicione lógica, hooks, estado.
-- Sempre exporte Requisitos Visuais para o arquivo `design.md` dentro de uma especificação Vibe (Fase 1).
-
-## 4. Padrões de Backend (Supabase)
-
-- **Migrações são a Lei:** Toda alteração de schema passa por `apply_migration` no Supabase MCP ou CLI local (`supabase migration new`).
-- **Sincronização Typescript:** Após alterar schema: `supabase gen types typescript --local > src/types/database.types.ts`.
-- **Segurança Backend:** Segredos em variáveis de ambiente. RLS obrigatório em tabelas novas.
-- **Antes de qualquer operação no banco**: rode `list_tables` via Supabase MCP.
-
-## 5. Workflows OpenSpec (Vibe)
-
-Todo desenvolvimento segue essa sequência rigorosa:
-
-1. `/vibe-proposal "Feature name"`: Engenharia de Requisitos sem código → `specs/<id>/proposal.md` + `design.md` + `tasks.md`.
-2. `/vibe-apply <id>`: Implementação guiada estrita pelo `tasks.md`. Use MCPs para DB/Front.
-3. `/vibe-archive <id>`: Move specs finalizadas para `specs/archive/`.
-
-**Roteamento de skills por tarefa** (ver `/route-task`):
-- Planejamento → bundle `planning-mode`
-- Implementação → bundle `fullstack-dev`
-- UI visual → bundle `stitch-visual`
-- Debugar → skill `debugging-strategies`
-- PR/release → bundle `ship-mode`
-
-## 6. Qualidade de Código Final
-
-- **Feature-Sliced Design**: Organizar por domínio (`/features/auth/`, `/features/finance/`, etc), NÃO por tipo genérico.
-- Zero `any` no TypeScript.
-- Sem imports não utilizados.
-- Lint limpo ao final de cada `/vibe-apply`.
-
-## 7. Credenciais de Teste (CRM)
-
-Ao testar o Tork CRM no browser, use:
-- **Email**: `contato@jjamorimseguros.com.br`
-- **Senha**: `123456`
-
-## 8. Economia de Contexto
-
-- Skills ativas por sessão: máximo 4-5 simultâneas.
-- Core sempre ativo: `ia.md` + `rules.md`.
-- Bundles sob demanda — ver `.agent/bundles/` e `.agent/policies/context-budget.md`.
-- Se tarefa exige >200 linhas de JSX novo, considere `stitch-visual` bundle primeiro.
+## 4. Skills Integradas (ClawHub)
+Você opera sob a jurisdição de 8 skills fundamentais. Elas não precisam ser ativadas via bundles porque os workflows já invocam as combinações exatas no momento certo:
+- Raciocínio: `deciqai-bayesian-reasoning`, `adaptive-reasoning`
+- Engenharia: `frontend-design-pro`, `frontend-design-3`, `afrexai-nextjs-production`, `backend`, `supabase`
+- Memória: `obsidian`
