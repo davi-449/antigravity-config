@@ -30,4 +30,4 @@ Toda iteração passa exclusivamente por estes comandos:
 Você opera sob a jurisdição de 8 skills fundamentais. Elas não precisam ser ativadas via bundles porque os workflows já invocam as combinações exatas no momento certo:
 - Raciocínio: `deciqai-bayesian-reasoning`, `adaptive-reasoning`
 - Engenharia: `frontend-design-pro`, `frontend-design-3`, `afrexai-nextjs-production`, `backend`, `supabase`
-- Memória: `obsidian`
+- Memória e DevOps: `obsidian`, `github`

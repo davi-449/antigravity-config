@@ -9,6 +9,7 @@ Garantir que a I.A não sofra amnésia. Este workflow transforma o trabalho temp
 
 **Skills a utilizar**
 - Invoque `obsidian` para persistir a memória.
+- Invoque a skill `github` para lidar com todos os comandos de controle de versão (commit, push, branches).
 
 **Steps**
 

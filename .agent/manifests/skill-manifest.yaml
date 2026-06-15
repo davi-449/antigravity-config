@@ -43,4 +43,9 @@ skills:
     source: clawhub
     category: reasoning
 
+  - id: github
+    local_path: skills/github/SKILL.md
+    source: clawhub
+    category: devops
+
 bundles: []
