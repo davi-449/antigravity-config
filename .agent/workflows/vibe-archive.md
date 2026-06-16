@@ -14,7 +14,7 @@ Garantir que a I.A não sofra amnésia. Este workflow transforma o trabalho temp
 **Steps**
 
 1. **Consolidação de Memória**: Extraia tudo que você aprendeu com o usuário nesta spec (estilos preferidos, erros cometidos, padrões de DB adotados) e ATUALIZE o arquivo `.agent/memory.md` (ou via Obsidian).
-2. **Quality Gate (Build)**: Execute o comando de build (ex: `npm run build`) via terminal para assegurar que nada quebrou na master. Se o `npm` não for encontrado, busque pelo binário no sistema.
+2. **Quality Gate (Build)**: Execute o comando de build via cmd (`cmd.exe /c "npm run build"`) para evitar erros de Execution Policy e assegurar que nada quebrou na master.
 3. **Commit Automático**: 
    - Tente rodar `git add .`
    - Se o comando `git` falhar (não reconhecido), substitua `git` pelo caminho absoluto: `C:\Users\admin\.gemini\antigravity\scratch\mingit\cmd\git.exe add .`
