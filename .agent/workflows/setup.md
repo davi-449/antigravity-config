@@ -62,6 +62,7 @@ Durante o setup, detectar automaticamente se o projeto exige deploy, domínio, b
 3. Marcar providers ativos (ex: `frontend_provider=lovable`, `dns_provider=cloudflare`, `backend_provider=supabase_self_hosted`).
 4. Solicitar os itens abaixo caso não existam, enviando os links diretos para facilitar a vida do usuário:
    - Token da Cloudflare: [https://dash.cloudflare.com/profile/api-tokens](https://dash.cloudflare.com/profile/api-tokens)
+     - **AVISO OBRIGATÓRIO DA IA**: Você DEVE informar ao usuário exatamente quais permissões marcar na Cloudflare: "Zone -> Zone -> Read" e "Zone -> DNS -> Edit" para "All zones". Nunca jogue apenas o link.
    - Domínio base na Cloudflare, IP/host da VPS e usuário/senha SSH.
 
 ## Secret handling

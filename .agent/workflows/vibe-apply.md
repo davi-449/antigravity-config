@@ -41,9 +41,9 @@ Se `supabase.mode=self_hosted_vps` e houver impacto de infra/backend:
 ## Multimodal Visual QA (VLM Loop)
 
 Se a mudança envolver UI/Frontend:
-1. Acesse a URL de preview ou `localhost:5173` usando ferramentas de navegação Headless.
-2. Se a rota for protegida, recupere as credenciais de teste no `.env` isolado da IA e faça login.
-3. Tire uma screenshot do layout final.
-4. Analise visualmente: o CSS vazou? Há contraste ruim? O z-index quebrou? Se encontrar problemas estéticos, corrija o código antes de marcar o step como finalizado.
+1. **É TERMINANTEMENTE PROIBIDO AFIRMAR "NÃO TENHO OLHOS" OU PEDIR AO USUÁRIO PARA TESTAR VISUALMENTE.** Como IA, você DEVE criar ou executar ativamente um script headless (ex: Playwright/Puppeteer/Browser Tool) que abra o `localhost` (ou porta especificada) em background e salve uma screenshot em disco.
+2. Se a rota for protegida, injete as credenciais de teste (recuperadas do `.env` da IA) no script de navegação.
+3. Utilize sua capacidade multimodal (VLM) nativa para ler a screenshot gerada.
+4. Analise rigorosamente a imagem: O layout quebrou? Há CSS sobreposto? Se houver erro visual, reinicie o loop de *Auto-healing* e só avise o usuário quando a imagem provar que a interface está impecável.
 
 <!-- VIBEAPPLY:END -->
