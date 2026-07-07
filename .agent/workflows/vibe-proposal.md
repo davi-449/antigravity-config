@@ -13,9 +13,10 @@ description: Transformação de requisitos em uma Especificação Guiada por Cen
 **Steps (Pipeline SDD Estrito - IA Sênior)**
 
 **Phase 1: Deep Research & Global Initialization**
-1. **Varredura Paralela & Context Budgeting:** Use ferramentas simultâneas (`grep_search` + `list_dir`) para auditar a codebase. **ALERTA DE CONTEXTO:** Para arquivos muito grandes, evite ler o código fonte completo. Comporte-se como um gerador de *AST Skeletons*: concentre-se nas assinaturas de funções, `types/interfaces` e `docstrings`, extraindo apenas a "casca" da lógica para economizar tokens e evitar confusão.
-2. Invoque `sdd-global-init` para criar/validar `spec/global/` (`overview.md`, `architecture.md`, `features.md`, `constraints.md`).
-3. **Reuso Absoluto:** Mapeie o que já existe em `features.md` ou na codebase. Bloqueie duplicações.
+1. **Varredura Paralela & Context Budgeting:** Use ferramentas simultâneas (`grep_search` + `list_dir`) para auditar a codebase. Comporte-se como um gerador de *AST Skeletons* ao investigar a arquitetura global para economizar tokens. **EXCEÇÃO DE FRONTEND:** Se a alteração envolver componentes visuais (UI), você DEVE ler o código-fonte completo do arquivo alvo. Isso é obrigatório para que a IA não perca a referência das classes Tailwind e da componentização existente antes de aplicar as Skills de Design.
+2. **Captação Visual de Referências (Clonagem de Vibe):** Se o usuário fornecer URLs externas de inspiração visual (sites, concorrentes), utilize o comando `npx playwright screenshot <url> reference.png` para capturar a tela. Em seguida, use seu VLM para extrair o design pattern (paleta, tipografia, espaçamento) e injetar as regras diretas na Spec para as Skills de Design copiarem.
+3. Invoque `sdd-global-init` para criar/validar `spec/global/` (`overview.md`, `architecture.md`, `features.md`, `constraints.md`).
+4. **Reuso Absoluto:** Mapeie o que já existe em `features.md` ou na codebase. Bloqueie duplicações.
 
 **Phase 2: The Deterministic Pipeline (`sdd-dev-workflow`)**
 4. **Constitution Review:** Valide o pedido contra `spec/global/constraints.md` e as regras globais (`.agent/rules/ia.md`).

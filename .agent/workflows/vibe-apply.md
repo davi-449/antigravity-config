@@ -8,7 +8,7 @@ description: Executa a implementação técnica baseada nas tasks.md, utilizando
 Executar o checklist definido no `tasks.md` da spec atual com extrema precisão, usando o máximo das capacidades técnicas injetadas via ClawHub.
 
 **Skills ativas obrigatórias**
-- **Frontend**: Invoque as skills `frontend-design-pro`, `frontend-design-3` e `afrexai-nextjs-production` para ditar o padrão de UI, qualidade do React, Tailwind e regras de arquitetura frontend.
+- **Frontend/Design**: Invoque estritamente as skills `@ivangdavila/design` e `@antonia-sz/frontend-design-pro` do ClawHub. Use os metadados validados destas skills para ditar a qualidade do React, Tailwind, componentização (separação de responsabilidades) e tipografia. Não invente requisitos faltantes, baseie-se no metadata oficial.
 - **Backend**: Invoque as skills `backend` e `supabase` para gerenciar as rotas, Edge Functions, RPCs e Migrations com segurança (RLS obrigatório).
 - **Memória Em Tempo Real**: Mantenha no "scratchpad" (sua memória temporária) qualquer erro bizarro ou preferência do usuário dita no meio do percurso, para ser consolidada no `/vibe-archive`.
 
@@ -17,6 +17,7 @@ Executar o checklist definido no `tasks.md` da spec atual com extrema precisão,
 1. Abra o arquivo `specs/<id>/tasks.md`.
 2. Para cada task, decida se é frontend ou backend e ative as skills correspondentes mentalmente e em suas ferramentas.
 3. Escreva o código seguindo ESTRITAMENTE as melhores práticas das skills do ClawHub e da memória do projeto lida anteriormente.
+   - **Mandato de UI/UX:** Ao editar ou criar componentes de interface, não presuma lógicas de design simplistas. Siga as diretrizes das skills de design injetadas. Se for adicionar novos KPIs, a skill de design ditará que eles devem ser componentes bem espaçados e individuais, e não textos agrupados preguiçosamente.
 4. Se houver mudanças nos requisitos durante o percurso, anote-as para não esquecer.
 5. Avise o usuário quando a spec terminar de ser implementada, instruindo-o a revisar e depois rodar `/vibe-archive <id>`.
 
@@ -41,9 +42,9 @@ Se `supabase.mode=self_hosted_vps` e houver impacto de infra/backend:
 ## Multimodal Visual QA (VLM Loop)
 
 Se a mudança envolver UI/Frontend:
-1. **É TERMINANTEMENTE PROIBIDO AFIRMAR "NÃO TENHO OLHOS" OU PEDIR AO USUÁRIO PARA TESTAR VISUALMENTE.** Como IA, você DEVE criar ou executar ativamente um script headless (ex: Playwright/Puppeteer/Browser Tool) que abra o `localhost` (ou porta especificada) em background e salve uma screenshot em disco.
-2. Se a rota for protegida, injete as credenciais de teste (recuperadas do `.env` da IA) no script de navegação.
-3. Utilize sua capacidade multimodal (VLM) nativa para ler a screenshot gerada.
-4. Analise rigorosamente a imagem: O layout quebrou? Há CSS sobreposto? Se houver erro visual, reinicie o loop de *Auto-healing* e só avise o usuário quando a imagem provar que a interface está impecável.
+1. **É TERMINANTEMENTE PROIBIDO AFIRMAR "NÃO TENHO OLHOS" OU PEDIR AO USUÁRIO PARA TESTAR VISUALMENTE.** Como IA, você DEVE executar `npx playwright screenshot http://localhost:<porta> tela.png` (ou a URL adequada) diretamente no terminal para salvar uma foto do layout atual em disco.
+2. Se a rota for protegida, use flags ou scripts complementares para injetar credenciais ou contornar o login.
+3. Utilize sua capacidade multimodal (VLM) nativa para ler o arquivo `tela.png` gerado.
+4. Analise rigorosamente a imagem: O layout quebrou? Há CSS sobreposto? As diretrizes da skill de design foram seguidas? Se houver erro visual, reinicie o loop de *Auto-healing* e só avise o usuário quando a imagem provar que a interface está impecável.
 
 <!-- VIBEAPPLY:END -->
