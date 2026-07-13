@@ -38,6 +38,11 @@ description: Configuração inicial do ambiente headless para garantir que a IA 
 4. **Scaffolding do Antigravity:**
    - Crie a pasta `.agent` na raiz do projeto se não existir.
    - Crie `.agent/memory.md` com "Preferências de Arquitetura", "Erros Passados" e "Persona do Usuário".
+   - Instale e inicialize o motor determinístico anti-alucinação executando no terminal:
+     `uv tool install graphifyy`
+     `graphify antigravity install`
+     `/graphify .`
+   - Certifique-se de que a pasta `graphify-out/` e os relatórios (como `graph.json`) foram gerados corretamente.
 
 5. **Confirmação Silenciosa:**
    - Execute um teste rápido (ex: `gh auth status` ou `supabase projects list`) para garantir que o login via token funcionou perfeitamente.
