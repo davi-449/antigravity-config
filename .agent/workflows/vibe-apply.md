@@ -1,5 +1,5 @@
 ---
-description: Executa a implementação técnica baseada nos arquivos de spec gerados no /vibe-proposal, usando skills especialistas por tipo de task, VLM visual QA e auto-healing com rollback.
+description: Executa a implementação técnica baseada nos 3 arquivos de spec gerados no /vibe-proposal — com leitura obrigatória da spec, skills por tipo de task, save-state contínuo, auto-healing com rollback e VLM Visual QA.
 ---
 
 <!-- VIBEAPPLY:START -->
@@ -7,82 +7,92 @@ description: Executa a implementação técnica baseada nos arquivos de spec ger
 > ⛔ **OVERRIDE SUPREMO:** Se o usuário mencionar `/teamwork-preview`, delegar para equipe ou pedir análise conjunta, PARE IMEDIATAMENTE. Acione os subagentes via `invoke_subagent`. NUNCA ignore um pedido de delegação.
 
 **Objetivo**
-Executar o checklist definido em `specs/<id>/spec-plan.md` com extrema precisão, usando o máximo das capacidades técnicas das skills especialistas. A spec é a lei — não improvise, não extrapole.
+Executar o checklist de `specs/<id>/spec-plan.md` com extrema precisão. A spec é a lei — não improvise, não extrapole além do que está nos arquivos de spec.
 
 ---
 
-**Step 0 — Leitura Obrigatória Antes de Qualquer Ação**
+## Step 0 — Leitura Obrigatória dos 3 Arquivos de Spec (NUNCA PULE)
 
-1. Abra e leia `specs/<id>/spec-plan.md` — este é o seu mapa. Nenhuma ação começa sem ele.
-2. Leia a memória modular relevante em `.agent/memory/` (ex: `memory/supabase.md`, `memory/ui.md`).
-3. Se envolver módulos existentes, execute `graphify explain "<Modulo>"` para entender dependências antes de editar.
-4. Carregue silenciosamente as credenciais do `.env`:
-   - `$env:SUPABASE_ACCESS_TOKEN = "<token do .env>"`
-   - `$env:GH_TOKEN = "<token do .env>"`
-   - **É EXTREMAMENTE PROIBIDO pedir para o usuário fazer login ou rodar comandos de autenticação.**
+Antes de escrever qualquer linha de código, leia os 3 arquivos na seguinte ordem:
 
----
+1. **`specs/<id>/proposal.md`** — Entenda o problema, os contratos de dados e o risco principal
+2. **`specs/<id>/design.md`** — Entenda a arquitetura exata, os tipos TypeScript e os cenários de verificação
+3. **`specs/<id>/spec-plan.md`** — Este é o seu mapa de execução. Identifique qual task está `[ ] Pending` e comece por ela
 
-**Step 1 — Execução por Tipo de Task**
-
-Para cada item do `spec-plan.md`, identifique o tipo e ative as skills correspondentes:
-
-**Frontend (UI/React/Tailwind):**
-- Invoque `frontend-design-pro`, `frontend-design-3` e `afrexai-nextjs-production`
-- Respeite SEMPRE as restrições visuais: Dark UI sólido (Zinc-950, `#050711`), sem glassmorphism
-- Componentes novos devem ser isolados — verifique `spec/global/features.md` para não duplicar
-- Nunca renomeie props ou quebre API pública sem necessidade explícita na spec
-
-**Backend (Supabase, Edge Functions, RPCs, Migrations):**
-- Invoque skills `backend` e `supabase`
-- RLS obrigatório em toda tabela nova
-- Nunca crie tabela, RPC ou policy sem verificar o que já existe no banco
-- Use sempre `SUPABASE_SERVICE_ROLE_KEY` para webhooks e operações privilegiadas
-
-**Infra/Deploy:**
-- Leia `.antigravity/state.json` para entender o impacto (UI only, app+backend, infra only)
-- Se `supabase.mode=self_hosted_vps`: acesso via SSH remoto, nunca container local
-- Configure DNS Cloudflare via API se necessário
+Adicionalmente:
+- Leia a memória modular relevante (ex: `memory/supabase.md`, `memory/ui.md`, `memory/ofx.md`)
+- Se envolver módulos existentes: `graphify explain "<Modulo>"` antes de editar qualquer arquivo
+- Carregue silenciosamente as credenciais do `.env` **sem pedir nada ao usuário**:
+  ```
+  $env:SUPABASE_ACCESS_TOKEN = "<valor do .env>"
+  $env:GH_TOKEN = "<valor do .env>"
+  ```
+  **É EXTREMAMENTE PROIBIDO pedir para o usuário fazer login, rodar supabase login ou qualquer comando de autenticação interativo.**
 
 ---
 
-**Step 2 — Atualização do Save-State**
+## Step 1 — Execução Task por Task (Skills Ativas por Tipo)
 
-À medida que executa cada item do `spec-plan.md`:
-- Marque `- [/] In Progress` ao iniciar
-- Marque `- [x] Completed` ao concluir
-- Se o contexto resetar no meio da execução, a IA relê o arquivo e retoma pelo primeiro `[/]` ou `[ ]`
+Para cada `- [ ] Pending` no `spec-plan.md`, marque como `- [/] In Progress`, execute e só então marque `- [x] Completed`.
+
+**Se a task é [FRONTEND] — UI/React/Tailwind:**
+- Invoque e siga as skills `frontend-design-pro`, `frontend-design-3` e `afrexai-nextjs-production`
+- Respeite SEMPRE: Dark UI sólido (Zinc-950, `#050711`), sem glassmorphism, tipografia Inter/Outfit
+- Consulte `spec/global/features.md` antes de criar qualquer componente novo — não duplique
+- Nunca quebre a API pública de componentes existentes (props, eventos, exports) sem isso estar na spec
+
+**Se a task é [BACKEND] — Supabase/RPCs/Migrations:**
+- Invoque e siga as skills `backend` e `supabase`
+- RLS obrigatório em toda tabela nova — nunca crie sem policy
+- Nunca crie tabela, RPC, enum ou policy sem antes verificar que não existe equivalente
+- Use `SUPABASE_SERVICE_ROLE_KEY` para webhooks e operações que precisam bypassar RLS
+
+**Se a task é [INFRA] — Deploy/VPS/DNS:**
+- Leia `.antigravity/state.json` para entender o impacto real (UI only, app+backend, infra only)
+- Se `supabase.mode=self_hosted_vps`: acesso exclusivamente via SSH remoto — NUNCA container local
+- Configure DNS Cloudflare via API (POST) se necessário — nunca via dashboard manual
+
+**Se a task é [TEST] — Verificação de Cenários:**
+- Execute os cenários definidos em `specs/<id>/design.md` (seção SCAN → INFER → VERIFY → FIX)
+- Para cada cenário: descreva o estado inicial, execute a ação, verifique o resultado esperado
+- Se o resultado divergir do esperado → acione o auto-healing (Step 2)
 
 ---
 
-**Step 3 — Auto-healing & Proteção**
+## Step 2 — Auto-Healing & Rollback Estrito
 
-Se ocorrerem erros de build, testes falhando ou falhas de lógica:
-- **Limite Categórico:** Exatamente **3 tentativas** de correção
-- **Rollback:** Se a 3ª tentativa falhar, execute `git reset --hard` imediatamente
-- Notifique o usuário da falha estrutural e solicite reavaliação — **NÃO tente uma 4ª vez**
-- Anote o erro no `spec-plan.md` para análise posterior
+Se ocorrerem erros de build, testes falhando, ou resultado diferente do especificado no `design.md`:
+
+- **Tentativa 1:** Analise o erro. Corrija na causa raiz, não no sintoma.
+- **Tentativa 2:** Releia o `design.md` e o `proposal.md`. O erro é de implementação ou de spec?
+- **Tentativa 3 (última):** Tente uma abordagem alternativa documentada na spec.
+- **Se a 3ª falhar:** Execute `git reset --hard` imediatamente. Notifique o usuário com o diagnóstico exato. Anote o erro no `spec-plan.md`. **NÃO tente uma 4ª vez.**
 
 ---
 
-**Step 4 — VLM Visual QA (Se mudou UI/Frontend)**
+## Step 3 — VLM Visual QA (Obrigatório se [FRONTEND])
 
-É **PROIBIDO** dizer "não tenho olhos" se a mudança impactou visualmente.
+É **PROIBIDO** dizer "não tenho olhos" ou "não consigo verificar visualmente" se a task tocou em UI.
 
-1. Acesse a URL de preview ou `localhost:5173` com Playwright:
-   `npx playwright screenshot <url> tela.png`
-2. Se a rota for protegida, recupere as credenciais de teste do `.env` isolado e faça login
-3. Leia a imagem gerada e analise:
-   - O CSS vazou? Há contraste ruim?
-   - Z-index quebrou algum componente?
+```bash
+npx playwright screenshot <url-de-preview-ou-localhost> tela.png
+```
+
+1. Se a rota for protegida por login: recupere as credenciais do `.env` isolado e autentique primeiro
+2. Leia a imagem gerada e verifique contra os critérios do `design.md`:
+   - CSS vazou para outros componentes?
+   - Contraste e legibilidade estão corretos?
+   - Z-index quebrou algum overlay?
    - A paleta Zinc-950 foi respeitada?
-4. Se encontrar problemas estéticos, corrija antes de marcar o step como finalizado
+   - O layout está alinhado como especificado?
+3. Se encontrar quebra visual → corrija o código e repita antes de marcar a task como `[x]`
 
 ---
 
-**Conclusão**
+## Conclusão
 
-Quando todos os itens do `spec-plan.md` estiverem `[x] Completed`, avise o usuário e instrua:
-*"Implementação concluída. Rode `/vibe-archive <id>` para finalizar."*
+Quando **todos** os itens do `spec-plan.md` estiverem `[x] Completed`, avise o usuário:
+
+*"Implementação concluída. Rode `/vibe-archive <id>` para atualizar a memória, o grafo e fazer o commit."*
 
 <!-- VIBEAPPLY:END -->
