@@ -52,6 +52,13 @@ Leia `spec/global/features.md`. Verifique linha a linha:
 - O componente/hook/tabela/lógica que você planeja criar JÁ EXISTE? → **BLOQUEADO.** Use o existente ou crie um wrapper mínimo.
 - Nunca crie tabela, RPC, componente ou hook sem provar que não existe equivalente.
 
+**Step 5b — Se envolver Supabase (banco, RPC, RLS, Edge Function):**
+Leia obrigatoriamente `skills/supabase/SKILL.md` inteiro e execute a **Seção 2 (Inspecionar Schema)** antes de propor qualquer mudança no banco:
+```bash
+supabase db dump --linked --schema public > /tmp/schema_dump.sql
+```
+Nunca proponha criar tabela, coluna, RPC ou policy sem ter confirmado que não existe no dump acima.
+
 ---
 
 ## Phase 2: Pipeline SDD — Especificação Determinística

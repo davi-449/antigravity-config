@@ -42,10 +42,14 @@ Para cada `- [ ] Pending` no `spec-plan.md`, marque como `- [/] In Progress`, ex
 - Nunca quebre a API pública de componentes existentes (props, eventos, exports) sem isso estar na spec
 
 **Se a task é [BACKEND] — Supabase/RPCs/Migrations:**
-- Invoque e siga as skills `backend` e `supabase`
-- RLS obrigatório em toda tabela nova — nunca crie sem policy
-- Nunca crie tabela, RPC, enum ou policy sem antes verificar que não existe equivalente
-- Use `SUPABASE_SERVICE_ROLE_KEY` para webhooks e operações que precisam bypassar RLS
+- **LEIA PRIMEIRO:** Abra e leia `skills/supabase/SKILL.md` completo antes de qualquer operação no banco
+- Execute o **Checklist da Seção 9** da skill antes de começar
+- Carregue `SUPABASE_ACCESS_TOKEN` e `SUPABASE_PROJECT_ID` do `.env` silenciosamente
+- Inspecione o schema atual antes de criar qualquer coisa: `supabase db execute --project-ref $SUPABASE_PROJECT_ID --sql "SELECT table_name, column_name FROM information_schema.columns WHERE table_schema = 'public' ORDER BY table_name;"`
+- Invoque e siga as instruções da skill `supabase` (arquivo: `skills/supabase/SKILL.md`)
+- RLS obrigatório em toda tabela nova — nunca crie sem policy (ver Seção 4 da skill)
+- Nunca crie tabela, RPC ou policy sem verificar que não existe equivalente no schema atual
+- Use `SUPABASE_SERVICE_ROLE_KEY` para webhooks e operações que precisam bypassar RLS (ver Seção 5)
 
 **Se a task é [INFRA] — Deploy/VPS/DNS:**
 - Leia `.antigravity/state.json` para entender o impacto real (UI only, app+backend, infra only)
