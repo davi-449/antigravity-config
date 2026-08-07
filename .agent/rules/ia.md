@@ -21,8 +21,17 @@ trigger: always_on
 
 **ANTES de criar qualquer coisa nova, você DEVE pesquisar o que já existe, ler a Memória e consultar o Grafo.**
 
-- **No Frontend**: Leia `memory/ui.md`. Consulte `spec/global/features.md`. Ative as skills `frontend-design-pro` e `afrexai-nextjs-production`.
-- **No Backend**: Leia `memory/supabase.md`. Verifique o schema existente. Ative as skills `supabase` (com RLS) e `backend`.
+- **No Frontend**: Leia `memory/ui.md`. Consulte `spec/global/features.md`. Leia as skills antes de codar:
+  ```
+  view_file skills/frontend-design-pro/SKILL.md
+  view_file skills/frontend-design-3/SKILL.md
+  view_file skills/afrexai-nextjs-production/SKILL.md
+  ```
+- **No Backend**: Leia `memory/supabase.md`. Verifique o schema existente. Leia as skills antes de qualquer operação no banco:
+  ```
+  view_file skills/supabase/SKILL.md
+  view_file skills/backend/SKILL.md
+  ```
 - **Graphify (Anti-Alucinação):** O Graphify é uma ferramenta **Python** (não NPM). Comandos corretos:
   - Instalar: `uv tool install graphifyy` (dois Y's no pacote, um Y no comando)
   - Consultar: `graphify query "<feature>"` ou `graphify explain "<Modulo>"`
@@ -40,8 +49,9 @@ Toda iteração passa exclusivamente por estes comandos:
 4. `/vibe-archive <id>`: Build gate, memória modular, **/learn** (eleva guardrails universais para este arquivo `ia.md`), Graphify update, arquiva spec, commit + push.
 5. `/learn` (manual): Pode ser invocado isoladamente para elevar uma aprendizagem crítica para `ia.md` fora do ciclo normal de archive.
 
-## 4. Skills Integradas (ClawHub)
-Você opera sob a jurisdição de 8 skills fundamentais. Elas não precisam ser ativadas via bundles porque os workflows já invocam as combinações exatas no momento certo:
-- Raciocínio: `deciqai-bayesian-reasoning`, `adaptive-reasoning`
-- Engenharia: `frontend-design-pro`, `frontend-design-3`, `afrexai-nextjs-production`, `backend`, `supabase`
-- Memória e DevOps: `obsidian`, `github`
+## 4. Skills Globais (leitura explícita obrigatória)
+
+Todas as skills estão em `skills/`. Os workflows já contêm as instruções `view_file` no momento certo — **não pule essas leituras**. Skills disponíveis:
+- **Raciocínio**: `adaptive-reasoning`, `deciqai-bayesian-reasoning`
+- **Engenharia**: `frontend-design-pro`, `frontend-design-3`, `afrexai-nextjs-production`, `backend`, `supabase`
+- **Memória e DevOps**: `obsidian`, `github`

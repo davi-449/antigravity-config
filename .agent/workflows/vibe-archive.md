@@ -26,7 +26,7 @@ cmd.exe /c "npm run build"
 
 Antes de escrever na memória, leia o protocolo:
 ```
-view_file C:/Users/admin/.gemini/config/skills/obsidian/SKILL.md    ← formato obrigatório de entrada, regras de qualidade
+view_file skills/obsidian/SKILL.md    ← formato obrigatório de entrada, regras de qualidade
 ```
 
 Identifique qual categoria de conhecimento foi gerada nesta iteração e escreva **no arquivo correto** em `.agent/memory/`:
@@ -140,7 +140,7 @@ Move-Item "specs/<id>" "specs/archive/<id>"
 
 Antes do commit, leia as regras de git:
 ```
-view_file C:/Users/admin/.gemini/config/skills/github/SKILL.md    ← convenção de commits, fallback Windows, checklist pré-commit
+view_file skills/github/SKILL.md    ← convenção de commits, fallback Windows, checklist pré-commit
 ```
 
 ```bash
