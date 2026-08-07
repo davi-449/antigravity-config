@@ -17,8 +17,15 @@ description: Transformação de requisitos em uma Especificação física comple
 
 ## Phase 1: Deep Research & Leitura de Estado Global
 
-**Step 1 — Ler Memória Modular:**
-Leia os arquivos relevantes em `.agent/memory/` para o contexto da task:
+**Step 1 — Ler Skills de Raciocínio + Memória Modular:**
+
+Leia obrigatoriamente antes de qualquer ação:
+```
+view_file skills/adaptive-reasoning/SKILL.md       ← protocolo de raciocínio e anti-loops
+view_file skills/obsidian/SKILL.md                  ← protocolo de leitura/escrita de memória
+```
+
+Depois leia os arquivos de memória relevantes em `.agent/memory/` para o contexto da task:
 - `memory/supabase.md` → regras de DB, RLS, schemas
 - `memory/ui.md` → padrões de design, componentes consolidados
 - `memory/ofx.md`, `memory/auth.md`, etc. → módulos específicos do projeto
@@ -153,10 +160,22 @@ Formato obrigatório:
 ```
 
 **Step 11 — Analyze (Dry-Run Mental):**
-Invoque `deciqai-bayesian-reasoning` e `adaptive-reasoning` para simular mentalmente a execução:
-- Se rodar o spec-plan do Step 1 ao último, algo quebra?
+
+Leia os frameworks de raciocínio antes de simular:
+```
+view_file skills/deciqai-bayesian-reasoning/SKILL.md   ← avaliação de risco e probabilidade
+view_file skills/adaptive-reasoning/SKILL.md            ← checklist de coerência final
+```
+
+Usando os frameworks lidos, simule mentalmente a execução do spec-plan:
+- Se rodar do Step 1 ao último, algo quebra? Qual a P(falha) de cada task?
 - Há dependências entre tasks que exigem ordem específica?
 - O risco principal do `proposal.md` foi mitigado no plano?
+- Preencha o campo `## Risco Principal` do `proposal.md` usando o template da skill bayesian:
+  - Probabilidade: baixa/média/alta
+  - Impacto: reversível/parcialmente reversível/irreversível
+  - Mitigação: o que fazemos se acontecer
+
 Ajuste o `spec-plan.md` se necessário.
 
 ---

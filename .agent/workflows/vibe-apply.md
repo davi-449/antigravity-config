@@ -13,7 +13,12 @@ Executar o checklist de `specs/<id>/spec-plan.md` com extrema precisão. A spec 
 
 ## Step 0 — Leitura Obrigatória dos 3 Arquivos de Spec (NUNCA PULE)
 
-Antes de escrever qualquer linha de código, leia os 3 arquivos na seguinte ordem:
+Antes de escrever qualquer linha de código, leia os arquivos na seguinte ordem:
+
+**Skills base (ler SEMPRE, independente do tipo de task):**
+```
+view_file skills/adaptive-reasoning/SKILL.md     ← protocolo de raciocínio, rollback e anti-loops
+```
 
 1. **`specs/<id>/proposal.md`** — Entenda o problema, os contratos de dados e o risco principal
 2. **`specs/<id>/design.md`** — Entenda a arquitetura exata, os tipos TypeScript e os cenários de verificação
@@ -36,18 +41,34 @@ Adicionalmente:
 Para cada `- [ ] Pending` no `spec-plan.md`, marque como `- [/] In Progress`, execute e só então marque `- [x] Completed`.
 
 **Se a task é [FRONTEND] — UI/React/Tailwind:**
-- Invoque e siga as skills `frontend-design-pro`, `frontend-design-3` e `afrexai-nextjs-production`
+
+Leia as skills antes de codar qualquer componente:
+```
+view_file skills/frontend-design-pro/SKILL.md    ← paleta, componentes, estados obrigatórios
+view_file skills/frontend-design-3/SKILL.md      ← formulários, tabelas, upload, UX financeiro
+view_file skills/afrexai-nextjs-production/SKILL.md  ← App Router, Server vs Client, env vars
+```
+
 - Respeite SEMPRE: Dark UI sólido (Zinc-950, `#050711`), sem glassmorphism, tipografia Inter/Outfit
 - Consulte `spec/global/features.md` antes de criar qualquer componente novo — não duplique
 - Nunca quebre a API pública de componentes existentes (props, eventos, exports) sem isso estar na spec
 
 **Se a task é [BACKEND] — Supabase/RPCs/Migrations:**
-- **LEIA PRIMEIRO:** Abra e leia `skills/supabase/SKILL.md` completo antes de qualquer operação no banco
-- Execute o **Checklist da Seção 9** da skill antes de começar
+
+Leia as skills antes de qualquer operação:
+```
+view_file skills/supabase/SKILL.md    ← auth headless, schema dump, RLS, RPCs, checklist
+view_file skills/backend/SKILL.md     ← Server Actions, Edge Functions, segurança, anti-patterns
+```
+
+- Execute o **Checklist da Seção 9** do `supabase/SKILL.md` antes de começar
 - Carregue `SUPABASE_ACCESS_TOKEN` e `SUPABASE_PROJECT_ID` do `.env` silenciosamente
-- Inspecione o schema atual antes de criar qualquer coisa: `supabase db execute --project-ref $SUPABASE_PROJECT_ID --sql "SELECT table_name, column_name FROM information_schema.columns WHERE table_schema = 'public' ORDER BY table_name;"`
-- Invoque e siga as instruções da skill `supabase` (arquivo: `skills/supabase/SKILL.md`)
-- RLS obrigatório em toda tabela nova — nunca crie sem policy (ver Seção 4 da skill)
+- Inspecione o schema atual antes de criar qualquer coisa:
+  ```sql
+  supabase db execute --project-ref $SUPABASE_PROJECT_ID \
+    --sql "SELECT table_name, column_name FROM information_schema.columns WHERE table_schema = 'public' ORDER BY table_name;"
+  ```
+- RLS obrigatório em toda tabela nova — nunca crie sem policy (ver Seção 4 da skill supabase)
 - Nunca crie tabela, RPC ou policy sem verificar que não existe equivalente no schema atual
 - Use `SUPABASE_SERVICE_ROLE_KEY` para webhooks e operações que precisam bypassar RLS (ver Seção 5)
 
@@ -57,6 +78,12 @@ Para cada `- [ ] Pending` no `spec-plan.md`, marque como `- [/] In Progress`, ex
 - Configure DNS Cloudflare via API (POST) se necessário — nunca via dashboard manual
 
 **Se a task é [TEST] — Verificação de Cenários:**
+
+Releia o framework antes de testar:
+```
+view_file skills/adaptive-reasoning/SKILL.md    ← Step 4: Checklist de Coerência Final
+```
+
 - Execute os cenários definidos em `specs/<id>/design.md` (seção SCAN → INFER → VERIFY → FIX)
 - Para cada cenário: descreva o estado inicial, execute a ação, verifique o resultado esperado
 - Se o resultado divergir do esperado → acione o auto-healing (Step 2)
@@ -64,6 +91,11 @@ Para cada `- [ ] Pending` no `spec-plan.md`, marque como `- [/] In Progress`, ex
 ---
 
 ## Step 2 — Auto-Healing & Rollback Estrito
+
+Se ocorrerem erros, releia o protocolo:
+```
+view_file skills/adaptive-reasoning/SKILL.md    ← Step 3: Resultado Divergente = Nova Hipótese
+```
 
 Se ocorrerem erros de build, testes falhando, ou resultado diferente do especificado no `design.md`:
 

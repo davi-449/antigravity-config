@@ -24,6 +24,11 @@ cmd.exe /c "npm run build"
 
 ## Step 2 — Atualização da Memória Modular (OBRIGATÓRIO — nunca pule)
 
+Antes de escrever na memória, leia o protocolo:
+```
+view_file skills/obsidian/SKILL.md    ← formato obrigatório de entrada, regras de qualidade
+```
+
 Identifique qual categoria de conhecimento foi gerada nesta iteração e escreva **no arquivo correto** em `.agent/memory/`:
 
 | Tipo de Conhecimento | Arquivo |
@@ -132,6 +137,11 @@ Move-Item "specs/<id>" "specs/archive/<id>"
 ---
 
 ## Step 7 — Commit & Push Controlado
+
+Antes do commit, leia as regras de git:
+```
+view_file skills/github/SKILL.md    ← convenção de commits, fallback Windows, checklist pré-commit
+```
 
 ```bash
 git add .
