@@ -1,0 +1,27 @@
+# 🧭 Universal SaaS Builder Skills Index (Dispatcher)
+
+Este índice é o ponto de entrada central para o agente. Identifique a intenção da tarefa e carregue **APENAS** as skills correspondentes (respeitando o limite de no máximo 2-3 skills por tarefa / ≤15k tokens).
+
+---
+
+## 🎯 Mapa de Despacho Rápido por Intenção
+
+| Intenção da Tarefa | Skills a Carregar | Referências Específicas (On-Demand) |
+|---|---|---|
+| **Criar projeto SaaS do zero** | `saas-scaffold/SKILL.md` + `database/SKILL.md` | `saas-scaffold/references/01-project-setup.md`, `03-lovable-compat.md` |
+| **Construir Telas / UI / Componentes** | `ui-components/SKILL.md` | `ui-components/references/dashboard-layout.md`, `forms.md`, `data-table.md`, `landing-page.md` |
+| **Adicionar Animações / Efeitos Visuais** | `ui-motion/SKILL.md` | `ui-motion/SKILL.md` (Magic UI & Tailwind animations) |
+| **Autenticação & Proteção de Rotas** | `auth/SKILL.md` | `auth/references/auth-patterns.md` |
+| **Banco de Dados / Schema / Migrations / RLS** | `database/SKILL.md` | `database/references/rls-patterns.md`, `schema-patterns.md` |
+| **Server Actions / APIs / Edge Functions** | `backend-patterns/SKILL.md` | `backend-patterns/references/server-action-templates.md` |
+| **Deploy / SEO / Performance / Prod Readiness** | `deploy-production/SKILL.md` | `deploy-production/references/checklist-launch.md` |
+| **Git Headless / Branches / PRs / CI-CD** | `github-ops/SKILL.md` | `github-ops/SKILL.md` |
+| **Raciocínio Adaptativo / Prevenção de Loops** | `adaptive-reasoning/SKILL.md` | Sempre disponível para validações críticas |
+
+---
+
+## 🛑 Regras Rígidas de Context Budget
+
+1. **Nunca leia todas as skills de uma vez**: Leia apenas o `SKILL.md` da intenção atual.
+2. **Carregamento Lazy de Referências**: Carregue arquivos em `references/` somente quando precisar copiar um template estrutural.
+3. **Limite por Tarefa**: No máximo 2 skills simultâneas + 1 arquivo de referência.
