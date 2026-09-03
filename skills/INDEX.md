@@ -9,7 +9,8 @@ Este índice é o ponto de entrada central para o agente. Identifique a intenç�
 | Intenção da Tarefa | Skills a Carregar | Referências Específicas (On-Demand) |
 |---|---|---|
 | **Criar projeto SaaS do zero** | `saas-scaffold/SKILL.md` + `database/SKILL.md` | `saas-scaffold/references/01-project-setup.md`, `03-lovable-compat.md` |
-| **Construir Telas / UI / Componentes** | `ui-components/SKILL.md` | `ui-components/references/dashboard-layout.md`, `forms.md`, `data-table.md`, `landing-page.md` |
+| **Construir Telas / UI / Componentes** | `ui-components/SKILL.md` | `ui-components/references/dashboard-layout.md`, `forms.md`, `data-table.md`, `landing-page.md`, `cinematic-landing-page.md` |
+| **Landing Pages Cinematográficas (Luxo/Awwwards)** | `ui-components/SKILL.md` + `ui-motion/SKILL.md` | `ui-components/references/cinematic-landing-page.md` (4 presets estéticos, micro-UIs, ruído SVG) |
 | **Adicionar Animações / Efeitos Visuais** | `ui-motion/SKILL.md` | `ui-motion/SKILL.md` (Magic UI & Tailwind animations) |
 | **Autenticação & Proteção de Rotas** | `auth/SKILL.md` | `auth/references/auth-patterns.md` |
 | **Banco de Dados / Schema / Migrations / RLS** | `database/SKILL.md` | `database/references/rls-patterns.md`, `schema-patterns.md` |

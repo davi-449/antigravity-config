@@ -31,6 +31,8 @@ trigger: always_on
 - **Headless CLI Enforcement**: JAMAIS use comandos interativos que exijam browser ou input no terminal. Para autenticação no Github ou Supabase, carregue silenciosamente do `.env` usando SOMENTE variáveis de ambiente (`GH_TOKEN` e `SUPABASE_ACCESS_TOKEN`).
 - **CLI Fallback Obrigatório**: Se o comando `git` não for encontrado no `PATH`, use o caminho absoluto do MinGit: `C:\Users\admin\.gemini\antigravity\scratch\mingit\cmd\git.exe`.
 - **Regras Estritas de PowerShell**: NUNCA utilize o operador `&` para encadear comandos no PowerShell. Use `;` ou execute um por vez. Se houver erro de Execution Policy com scripts `.ps1`, envolva em CMD: `cmd.exe /c "seu comando aqui"`.
+- **Princípio DOE — Self-Annealing Loop (Auto-Endurecimento)**: Erros de execução e falhas de runtime são fontes obrigatórias de aprendizado. Sempre que um bug for corrigido no `/vibe-debug` ou `/vibe-apply`, o agente DEVE atualizar a memória Obsidian correspondente (`.agent/memory/<modulo>.md`) com a causa e a regra de prevenção. O sistema deve ficar permanentemente mais resistente a cada falha resolvida.
+- **Entregáveis vs. Intermediários Voláteis (`.tmp/`)**: Arquivos de processamento transitório (dumps temporários de banco SQL, scrapes, capturas de logs) devem residir em `.tmp/` e JAMAIS ser commitados no Git. Entregáveis permanentes residem estritamente em `src/`, `supabase/` e `specs/`.
 - **Git Identity Override**: Caso ocorra "Author identity unknown", configure antes do commit: `git config user.email "ai@clawhub.com"` e `git config user.name "ClawHub Agent"`.
 
 ## 2. ⛔ Regra Anti-Alucinação — Obsidian + Grafo ANTES de qualquer ação

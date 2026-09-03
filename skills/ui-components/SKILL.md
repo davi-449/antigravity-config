@@ -64,7 +64,8 @@ Read the dedicated reference file for the required UI domain:
 | **App Shell & Navigation** | `references/dashboard-layout.md` | Collapsible sidebar, mobile drawer Sheet, sticky header, dynamic breadcrumbs, Command Menu (`Cmd+K`), user profile dropdown |
 | **Data Tables & Lists** | `references/data-table.md` | TanStack Data Table, search debounce, faceted multi-select filters, column toggle, sortable headers, pagination, batch actions, status badges |
 | **Forms & User Inputs** | `references/forms.md` | 2-Column responsive settings cards, multi-step wizard with Zod validation, accessible Radix inputs, file dropzone with preview, Sonner toast feedback |
-| **Marketing & Landing Pages** | `references/landing-page.md` | Hero with glowing mockup, Bento feature grid, billing toggle pricing cards, FAQ accordion, responsive footer |
+| **SaaS Landing Pages (Padrão)** | `references/landing-page.md` | Hero with glowing mockup, Bento feature grid, billing toggle pricing cards, FAQ accordion, responsive footer |
+| **Cinematic Landing Pages (Luxo & Awwwards)** | `references/cinematic-landing-page.md` | 4 Presets Estéticos (Organic Tech, Midnight Luxe, Brutalist, Vapor Clinic), ruído SVG feTurbulence, Micro-UIs funcionais (Shuffler, Typewriter, Scheduler), manifesto parallax, sticky stacking |
 
 ---
 
