@@ -40,7 +40,7 @@ Crie os 3 arquivos essenciais em `specs/<id>/`:
    - **Arquitetura de Fluxo:** Caminho ponta a ponta dos dados.
    - **Interfaces TypeScript Reais:** Interfaces exatas sem `any`.
    - **Lista de Módulos:** Arquivos a modificar ou criar.
-   - **2 Cenários de Teste:** [SCAN -> INFER -> VERIFY -> FIX].
+   - **2 Cenários de Teste:** [SCAN -> INFER -> VERIFY -> FIX] aplicando as regras de bom senso de `references/inference-rules.md` (Empty States obrigatórios, feedback visual, skeletons de loading e confirmação de exclusão).
 
 3. `specs/<id>/spec-plan.md`:
    - Lista enxuta de tasks atômicas marcadas estritamente como `- [ ] Pending` (ex: `[DB]`, `[BACKEND]`, `[FRONTEND]`, `[TEST]`).
