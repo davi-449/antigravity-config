@@ -26,8 +26,8 @@ Este índice é o ponto de entrada central para o agente. Identifique a intenç�
 | Fase do Ciclo | Skill Canônica | Ativação Semântica (2.0) | Slash Command Legado |
 |---|---|---|---|
 | **Setup & Bootstrap** | `sdd-setup/SKILL.md` | "configurar ambiente", "setup" | `/setup` |
-| **Planejamento & Spec** | `sdd-proposal/SKILL.md` | "planejar feature", "criar spec" | `/vibe-proposal` (team) ou `/vibe-proposal-solo` (solo) |
-| **Implementação & QA** | `sdd-apply/SKILL.md` | "implementar spec", "executar spec" | `/vibe-apply` (team) ou `/vibe-apply-solo` (solo) |
+| **Planejamento & Spec** | `sdd-proposal/SKILL.md` | "planejar feature", "criar spec" | `/vibe-proposal` |
+| **Implementação & QA** | `sdd-apply/SKILL.md` | "implementar spec", "executar spec" | `/vibe-apply` |
 | **Auditoria & Commit** | `sdd-archive/SKILL.md` | "arquivar spec", "finalizar feature" | `/vibe-archive` |
 | **Diagnóstico Forense** | `sdd-debug/SKILL.md` | "corrigir bug", "investigar erro" | `/vibe-debug` |
 
