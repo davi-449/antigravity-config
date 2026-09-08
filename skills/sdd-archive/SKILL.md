@@ -14,8 +14,10 @@ Conclui o fluxo da Spec garantindo que a entrega não quebrou o build, registran
 <guardrails>
 - <rule type="mandatory">Build obrigatório. Se o build falhar, é proibido commitar ou arquivar.</rule>
 - <rule type="mandatory">Escrita de memória obrigatória. NUNCA pule o registro de lições na memória modular.</rule>
+- <rule type="prohibition">TERMINANTEMENTE PROIBIDO usar 'git add .' ou staging indiscriminado.</rule>
 - <rule type="prohibition">JAMAIS use git push --force.</rule>
-- <rule type="safety">Arquivos voláteis em .tmp/ nunca devem ser incluídos no commit.</rule>
+- <rule type="safety">Bloqueio ativo de segredos e voláteis: PROIBIDO incluir no staging .env*, *.pem, *.key, *.dump, backups SQL e diretórios .tmp/.</rule>
+- <rule type="staging_allowlist">Staging estritamente seletivo: apenas arquivos pertencentes à allowlist do escopo (specs/archive/, .agent/memory/, graphify-out/ e caminhos específicos de código validados).</rule>
 </guardrails>
 
 <steps>
@@ -75,13 +77,28 @@ Move-Item "specs/<id>" "specs/archive/<id>"
 ```
 </step>
 
-<step number="7" name="Commit & Push Controlado">
-```bash
-git add .
-git commit -m "feat(<id>): <resumo do que foi implementado>"
-git push origin main
-```
-Inclua no commit: código modificado, `graphify-out/`, `specs/archive/`, `.agent/memory/` e `.agent/rules/ia.md`.
+<step number="7" name="Staging Seletivo & Commit Controlado">
+1. **Inspeção Pré-Staging Obrigatória:**
+   ```bash
+   git status --short
+   ```
+2. **Filtro Anti-Vazamento:**
+   - Verifique que NENHUM arquivo `.env*`, `*.pem`, `*.key`, `*.dump` ou `.tmp/` está na lista.
+   - Se houver resíduos transitórios em `.tmp/`, limpe com segurança antes de prosseguir.
+3. **Staging Seletivo por Allowlist (PROIBIDO git add .):**
+   ```bash
+   git add "specs/archive/<id>"
+   git add ".agent/memory/"
+   git add "graphify-out/"
+   # Adicione pontualmente apenas os arquivos de código implementados nesta spec:
+   git add "src/<caminho_específico>" "supabase/migrations/<caminho_específico>"
+   ```
+4. **Relatório de Staging & Commit:**
+   ```bash
+   git status --short
+   git commit -m "feat(<id>): <resumo do que foi implementado>"
+   git push origin main
+   ```
 </step>
 </steps>
 

@@ -15,11 +15,15 @@ gen
 *.js
 *.ps1
 !setup/*.ps1
+!scripts/*.ps1
+!tests/**/*.ps1
 *.sh
 !setup/*.sh
 *.json
 !.mcprc
 !package.json
+!tests/**/*.json
+!tests/**/*.md
 
 # Arquivos de workspace de outros projetos
 gps-rh-13/

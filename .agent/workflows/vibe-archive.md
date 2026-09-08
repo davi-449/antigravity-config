@@ -135,25 +135,34 @@ Move-Item "specs/<id>" "specs/archive/<id>"
 
 ---
 
-## Step 7 — Commit & Push Controlado
+## Step 7 — Staging Seletivo & Commit Controlado
 
 Leia as regras de git:
 ```
 view_file skills/github-ops/SKILL.md    ← convenção de commits, checklist pré-commit
 ```
 
-```bash
-git add .
-git commit -m "feat(<id>): <resumo do que foi implementado>"
-git push origin main
-```
+> ⚠️ **PROIBIDO `git add .`:** O staging indiscriminado é terminantemente vetado para prevenir vazamento acidental de tokens (`.env*`), dumps ou arquivos temporários (`.tmp/`).
 
-Inclua no `git add .`:
-- Arquivos de código modificados
-- `graphify-out/` (grafo atualizado)
-- `specs/archive/` (spec arquivada)
-- `.agent/memory/` (memória Obsidian atualizada)
-- `.agent/rules/ia.md` (se o /learn gerou nova regra)
+1. **Inspeção de Status:**
+   ```bash
+   git status --short
+   ```
+2. **Checagem de Segredos e Voláteis:** Garanta que `.env*`, `*.pem`, `*.key`, `*.dump` ou `.tmp/` **não** estejam no staging.
+3. **Staging Seletivo por Allowlist:**
+   ```bash
+   git add "specs/archive/<id>"
+   git add ".agent/memory/"
+   git add "graphify-out/"
+   # Adicione pontualmente apenas os arquivos modificados da feature:
+   git add "src/<caminho_específico>" "supabase/migrations/<caminho_específico>"
+   ```
+4. **Commit e Push:**
+   ```bash
+   git status --short
+   git commit -m "feat(<id>): <resumo do que foi implementado>"
+   git push origin main
+   ```
 
 - **Fallback Windows:** `C:\Users\admin\.gemini\antigravity\scratch\mingit\cmd\git.exe`
 - **JAMAIS use `push --force`**

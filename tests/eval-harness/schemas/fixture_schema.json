@@ -1,0 +1,96 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "AntigravityEvalFixture",
+  "description": "Formal schema for Antigravity deterministic evaluation harness fixtures",
+  "type": "object",
+  "required": [
+    "id",
+    "name",
+    "phase",
+    "description",
+    "input_prompt",
+    "expected_behavior",
+    "assertions",
+    "forbidden_patterns"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9_-]+$"
+    },
+    "name": {
+      "type": "string"
+    },
+    "phase": {
+      "type": "string",
+      "enum": ["proposal", "apply", "archive", "general"]
+    },
+    "description": {
+      "type": "string"
+    },
+    "input_prompt": {
+      "type": "string"
+    },
+    "expected_behavior": {
+      "type": "object",
+      "required": [
+        "execution_mode",
+        "circuit_breaker_expected",
+        "hard_stop_expected"
+      ],
+      "properties": {
+        "execution_mode": {
+          "type": "string",
+          "enum": ["single-agent", "multi-agent-explicit"]
+        },
+        "required_elements": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "circuit_breaker_expected": {
+          "type": "boolean"
+        },
+        "hard_stop_expected": {
+          "type": "boolean"
+        },
+        "visual_qa_behavior": {
+          "type": "string"
+        }
+      }
+    },
+    "assertions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "check_type", "target", "operator", "expected_value"],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "check_type": {
+            "type": "string",
+            "enum": ["rule_presence", "schema_validation", "budget_limit", "state_transition", "file_boundary"]
+          },
+          "target": {
+            "type": "string"
+          },
+          "operator": {
+            "type": "string",
+            "enum": ["contains", "matches", "equals", "less_than_or_equal", "not_contains"]
+          },
+          "expected_value": {
+            "type": ["string", "number", "boolean", "array"]
+          }
+        }
+      }
+    },
+    "forbidden_patterns": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

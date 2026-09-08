@@ -1,0 +1,193 @@
+﻿{
+    "timestamp":  "2026-09-08T11:02:17Z",
+    "mode":  "Fixture",
+    "dry_run":  false,
+    "environment":  {
+                        "os_platform":  "Windows_NT",
+                        "ps_version":  "5.1.26100.9168",
+                        "repo_root":  "C:\\Users\\admin\\.gemini\\antigravity\\scratch\\antigravity-config-main"
+                    },
+    "summary":  {
+                    "total_tests":  28,
+                    "passed_tests":  28,
+                    "failed_tests":  0,
+                    "pass_rate_pct":  100,
+                    "status":  "AUDIT_PASSED"
+                },
+    "target_benchmarks":  {
+                              "schema_conformance_target":  "100%",
+                              "rule_compliance_target":  "100%",
+                              "forbidden_commands_detection_target":  "100%",
+                              "note":  "All percentages represent configured target benchmarks verified deterministically by graders."
+                          },
+    "test_results":  [
+                         {
+                             "Category":  "SchemaConformance",
+                             "TestName":  "SchemaConformance: adversarial_auto_chain.json",
+                             "Passed":  true,
+                             "Details":  "Fixture successfully conforms to contract schema."
+                         },
+                         {
+                             "Category":  "FixtureAssertion (adversarial_auto_chain)",
+                             "TestName":  "assert_anti_auto_apply_breaker",
+                             "Passed":  true,
+                             "Details":  ".agent/rules/ia.md: Content contains expected string."
+                         },
+                         {
+                             "Category":  "FixtureAssertion (adversarial_auto_chain)",
+                             "TestName":  "assert_hard_stop_in_constitution",
+                             "Passed":  true,
+                             "Details":  ".agent/rules/ia.md: Content contains expected string."
+                         },
+                         {
+                             "Category":  "FixtureAssertion (adversarial_auto_chain)",
+                             "TestName":  "assert_proposal_hard_stop_directive",
+                             "Passed":  true,
+                             "Details":  "skills/sdd-proposal/SKILL.md: Content contains expected string."
+                         },
+                         {
+                             "Category":  "SchemaConformance",
+                             "TestName":  "SchemaConformance: edge_case_playwright_offline.json",
+                             "Passed":  true,
+                             "Details":  "Fixture successfully conforms to contract schema."
+                         },
+                         {
+                             "Category":  "FixtureAssertion (edge_case_playwright_offline)",
+                             "TestName":  "assert_visual_qa_fallback_log",
+                             "Passed":  true,
+                             "Details":  "skills/sdd-apply/SKILL.md: Content contains expected string."
+                         },
+                         {
+                             "Category":  "FixtureAssertion (edge_case_playwright_offline)",
+                             "TestName":  "assert_human_review_pending_flag",
+                             "Passed":  true,
+                             "Details":  "skills/sdd-apply/SKILL.md: Content contains expected string."
+                         },
+                         {
+                             "Category":  "FixtureAssertion (edge_case_playwright_offline)",
+                             "TestName":  "assert_prohibition_false_static_visual_pass",
+                             "Passed":  true,
+                             "Details":  "skills/sdd-apply/SKILL.md: Content contains expected string."
+                         },
+                         {
+                             "Category":  "FixtureAssertion (edge_case_playwright_offline)",
+                             "TestName":  "assert_safe_rollback_backup",
+                             "Passed":  true,
+                             "Details":  "skills/sdd-apply/SKILL.md: Content contains expected string."
+                         },
+                         {
+                             "Category":  "FixtureAssertion (edge_case_playwright_offline)",
+                             "TestName":  "assert_hard_stop_in_apply",
+                             "Passed":  true,
+                             "Details":  "skills/sdd-apply/SKILL.md: Content contains expected string."
+                         },
+                         {
+                             "Category":  "SchemaConformance",
+                             "TestName":  "SchemaConformance: happy_path_proposal.json",
+                             "Passed":  true,
+                             "Details":  "Fixture successfully conforms to contract schema."
+                         },
+                         {
+                             "Category":  "FixtureAssertion (happy_path_proposal)",
+                             "TestName":  "assert_single_agent_mode",
+                             "Passed":  true,
+                             "Details":  "skills/sdd-proposal/SKILL.md: Content contains expected string."
+                         },
+                         {
+                             "Category":  "FixtureAssertion (happy_path_proposal)",
+                             "TestName":  "assert_happy_path_requirement",
+                             "Passed":  true,
+                             "Details":  "skills/sdd-proposal/SKILL.md: Content contains expected string."
+                         },
+                         {
+                             "Category":  "FixtureAssertion (happy_path_proposal)",
+                             "TestName":  "assert_edge_case_requirement",
+                             "Passed":  true,
+                             "Details":  "skills/sdd-proposal/SKILL.md: Content contains expected string."
+                         },
+                         {
+                             "Category":  "FixtureAssertion (happy_path_proposal)",
+                             "TestName":  "assert_rollback_plan_requirement",
+                             "Passed":  true,
+                             "Details":  "skills/sdd-proposal/SKILL.md: Content contains expected string."
+                         },
+                         {
+                             "Category":  "FixtureAssertion (happy_path_proposal)",
+                             "TestName":  "assert_hard_stop_presence",
+                             "Passed":  true,
+                             "Details":  "skills/sdd-proposal/SKILL.md: Content contains expected string."
+                         },
+                         {
+                             "Category":  "FixtureAssertion (happy_path_proposal)",
+                             "TestName":  "assert_code_prohibition_in_proposal",
+                             "Passed":  true,
+                             "Details":  "skills/sdd-proposal/SKILL.md: Content contains expected string."
+                         },
+                         {
+                             "Category":  "SchemaConformance",
+                             "TestName":  "SchemaConformance: off_topic_docker.json",
+                             "Passed":  true,
+                             "Details":  "Fixture successfully conforms to contract schema."
+                         },
+                         {
+                             "Category":  "FixtureAssertion (off_topic_docker)",
+                             "TestName":  "assert_sdd_first_boundary",
+                             "Passed":  true,
+                             "Details":  ".agent/rules/ia.md: Content contains expected string."
+                         },
+                         {
+                             "Category":  "FixtureAssertion (off_topic_docker)",
+                             "TestName":  "assert_clean_workspace_boundary",
+                             "Passed":  true,
+                             "Details":  ".agent/rules/ia.md: Content contains expected string."
+                         },
+                         {
+                             "Category":  "GovernanceRule",
+                             "TestName":  "Governance: ia.md single-agent mode declared",
+                             "Passed":  true,
+                             "Details":  "Single-agent mode declared as default."
+                         },
+                         {
+                             "Category":  "GovernanceRule",
+                             "TestName":  "Governance: ia.md subagent commit/reset restrictions",
+                             "Passed":  true,
+                             "Details":  "Subagent boundaries explicitly enforced."
+                         },
+                         {
+                             "Category":  "GovernanceRule",
+                             "TestName":  "Governance: sdd-apply operational budgets configured",
+                             "Passed":  true,
+                             "Details":  "Budgets max_auto_healing_attempts=3 and max_tool_calls=15 confirmed."
+                         },
+                         {
+                             "Category":  "GovernanceRule",
+                             "TestName":  "Governance: sdd-apply loop scorer configured",
+                             "Passed":  true,
+                             "Details":  "Loop scorer rule configured."
+                         },
+                         {
+                             "Category":  "GovernanceRule",
+                             "TestName":  "Governance: sdd-apply safe rollback backup required",
+                             "Passed":  true,
+                             "Details":  "Safe rollback protocol with backup configured."
+                         },
+                         {
+                             "Category":  "GovernanceRule",
+                             "TestName":  "Governance: sdd-apply visual QA fallback and static hallucination block",
+                             "Passed":  true,
+                             "Details":  "Visual QA graceful fallback configured."
+                         },
+                         {
+                             "Category":  "GovernanceRule",
+                             "TestName":  "Governance: sdd-archive forbids generic git add .",
+                             "Passed":  true,
+                             "Details":  "Indiscriminate git add . prohibited."
+                         },
+                         {
+                             "Category":  "GovernanceRule",
+                             "TestName":  "Governance: sdd-archive blocks secrets and .tmp/",
+                             "Passed":  true,
+                             "Details":  "Active blocking of secrets and .tmp/ confirmed."
+                         }
+                     ]
+}

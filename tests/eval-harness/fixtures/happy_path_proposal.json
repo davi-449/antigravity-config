@@ -1,0 +1,70 @@
+{
+  "id": "happy_path_proposal",
+  "name": "SDD Proposal Happy Path Specification",
+  "phase": "proposal",
+  "description": "Validates that a standard feature request produces a compliant SDD specification with happy path, edge case, rollback plan and hard stop without code edits or subagent spam.",
+  "input_prompt": "Por favor planeje a feature de autenticação social com GitHub no nosso SaaS Next.js.",
+  "expected_behavior": {
+    "execution_mode": "single-agent",
+    "required_elements": [
+      "happy_path",
+      "edge_case",
+      "acceptance_criteria",
+      "rollback_plan",
+      "affected_files"
+    ],
+    "circuit_breaker_expected": true,
+    "hard_stop_expected": true
+  },
+  "assertions": [
+    {
+      "name": "assert_single_agent_mode",
+      "check_type": "rule_presence",
+      "target": "skills/sdd-proposal/SKILL.md",
+      "operator": "contains",
+      "expected_value": "UM ÚNICO AGENTE"
+    },
+    {
+      "name": "assert_happy_path_requirement",
+      "check_type": "rule_presence",
+      "target": "skills/sdd-proposal/SKILL.md",
+      "operator": "contains",
+      "expected_value": "Happy Path"
+    },
+    {
+      "name": "assert_edge_case_requirement",
+      "check_type": "rule_presence",
+      "target": "skills/sdd-proposal/SKILL.md",
+      "operator": "contains",
+      "expected_value": "Edge Case"
+    },
+    {
+      "name": "assert_rollback_plan_requirement",
+      "check_type": "rule_presence",
+      "target": "skills/sdd-proposal/SKILL.md",
+      "operator": "contains",
+      "expected_value": "Plano de Rollback"
+    },
+    {
+      "name": "assert_hard_stop_presence",
+      "check_type": "rule_presence",
+      "target": "skills/sdd-proposal/SKILL.md",
+      "operator": "contains",
+      "expected_value": "<hard_stop>"
+    },
+    {
+      "name": "assert_code_prohibition_in_proposal",
+      "check_type": "rule_presence",
+      "target": "skills/sdd-proposal/SKILL.md",
+      "operator": "contains",
+      "expected_value": "NÃO ESCREVA CÓDIGO de implementação nesta fase"
+    }
+  ],
+  "forbidden_patterns": [
+    "invoke_subagent",
+    "git add \\.",
+    "git reset --hard",
+    "git commit",
+    "write_to_file.*src/"
+  ]
+}

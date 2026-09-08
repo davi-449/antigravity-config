@@ -7,7 +7,8 @@ trigger: always_on
 <constitution version="5.0" platform="Antigravity 2.0">
 
 <override_supremo priority="critical">
-Se o usuário mencionar `/teamwork-preview`, pedir análise conjunta ou delegar para equipe de IA: **PARE TUDO IMEDIATAMENTE**. Não conclua o step atual, não tente resolver sozinho. Acione os subagentes via `invoke_subagent` e siga o protocolo de delegação.
+O modo padrão do Antigravity é **SINGLE-AGENT DIRETO**. A delegação para subagentes via `invoke_subagent` é opcional e restrita exclusivamente a análise, pesquisa ou revisão paralela quando o usuário solicitar explicitamente (ex.: `/teamwork-preview` ou `/council`).
+**LIMITES INVIOLÁVEIS PARA SUBAGENTES:** Subagentes jamais podem executar commit, push, rollback destrutivo (`git reset`), editar arquivos de código de forma autônoma fora do plano aprovado ou realizar auto-chaining entre fases (proposal -> apply -> archive).
 </override_supremo>
 
 <circuit_breakers>
