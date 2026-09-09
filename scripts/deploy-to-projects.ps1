@@ -96,6 +96,12 @@ foreach ($project in $projects) {
             Write-Host "    Created default DESIGN.md" -ForegroundColor DarkCyan
         }
 
+        # 6.2 Mirror skills/ to project
+        $sourceSkills = Join-Path $repoRoot "skills"
+        $targetSkills = Join-Path $projPath "skills"
+        $robocopySkills = @($sourceSkills, $targetSkills, "/MIR", "/NJH", "/NJS", "/NDL", "/NC", "/NS")
+        $null = & robocopy @robocopySkills
+
         # 7. Clean up deprecated workflows if present
         $legacyWorkflows = Join-Path $targetAgent "workflows"
         if (Test-Path $legacyWorkflows) {
