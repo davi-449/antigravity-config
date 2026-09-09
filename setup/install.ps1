@@ -1,60 +1,169 @@
-# antigravity-config — install.ps1
-# Configura o ambiente para uso das skills e workflows no Windows (PowerShell)
+# install.ps1
+# Bootstrap completo do Antigravity Config - verifica prerequisitos, configura agy, sincroniza global.
+# Usage: .\install.ps1 [-CheckOnly] [-SkipAgy] [-Native]
 
-$RepoUrl = "https://github.com/davi-449/antigravity-config"
-$GeminiDir = "$env:USERPROFILE\.gemini\antigravity"
-$SkillsTarget = "$GeminiDir\skills"
-$ConfigDir = "$GeminiDir\antigravity-config"
+param(
+    [switch]$CheckOnly,
+    [switch]$SkipAgy,
+    [switch]$Native
+)
 
-Write-Host "🪐 antigravity-config — Setup (Windows)" -ForegroundColor Cyan
-Write-Host "==========================================" -ForegroundColor Cyan
-
-# 1. Verificar dependências
-Write-Host "→ Verificando dependências..." -ForegroundColor Yellow
-try {
-    git --version | Out-Null
-    Write-Host "  ✓ git encontrado" -ForegroundColor Green
-} catch {
-    Write-Error "❌ git não encontrado. Instale git primeiro: https://git-scm.com/"
-    exit 1
-}
-
-# 2. Criar diretórios necessários
-Write-Host "→ Criando estrutura de diretórios..." -ForegroundColor Yellow
-New-Item -ItemType Directory -Force -Path $GeminiDir | Out-Null
-New-Item -ItemType Directory -Force -Path $SkillsTarget | Out-Null
-Write-Host "  ✓ $GeminiDir criado" -ForegroundColor Green
-
-# 3. Clonar ou atualizar o repo
-if (Test-Path $ConfigDir) {
-    Write-Host "→ Repositório já existe. Atualizando..." -ForegroundColor Yellow
-    Push-Location $ConfigDir
-    git pull origin main
-    Pop-Location
-} else {
-    Write-Host "→ Clonando antigravity-config..." -ForegroundColor Yellow
-    git clone --depth=1 $RepoUrl $ConfigDir
-}
-
-# 4. Copiar skills para o diretório Gemini
-Write-Host "→ Instalando skills em $SkillsTarget..." -ForegroundColor Yellow
-$SourceSkills = "$ConfigDir\skills"
-if (Test-Path $SourceSkills) {
-    Copy-Item -Path "$SourceSkills\*" -Destination $SkillsTarget -Recurse -Force
-    Write-Host "  ✓ Skills instaladas" -ForegroundColor Green
-} else {
-    Write-Warning "  ⚠ Pasta skills não encontrada em $SourceSkills"
-}
-
-# 5. Confirmar instalação
-$SkillCount = (Get-ChildItem -Path $SkillsTarget -Filter "SKILL.md" -Recurse).Count
+$ErrorActionPreference = "Stop"
+$setupRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
+$repoRoot = Split-Path -Parent $setupRoot
 
 Write-Host ""
-Write-Host "✅ Setup concluído!" -ForegroundColor Green
-Write-Host "   Skills instaladas: $SkillCount" -ForegroundColor Green
-Write-Host "   Localização: $SkillsTarget" -ForegroundColor Green
+Write-Host "===============================================" -ForegroundColor Magenta
+Write-Host " Antigravity Config v6 - Bootstrap Installer" -ForegroundColor Magenta
+Write-Host "===============================================" -ForegroundColor Magenta
 Write-Host ""
-Write-Host "📚 Próximos passos:" -ForegroundColor Cyan
-Write-Host "   1. Abra o Gemini CLI em qualquer projeto"
-Write-Host "   2. Use /route-task para diagnosticar sua tarefa"
-Write-Host "   3. Veja docs/getting-started.md para o fluxo completo"
+
+$checks = @{
+    git = $false
+    node = $false
+    powershell = $false
+    agy = $false
+    graphify = $false
+}
+$allPassed = $true
+
+# ===== 1. PowerShell Version =====
+Write-Host "[1/6] Checking PowerShell..." -ForegroundColor Cyan
+$psVersion = $PSVersionTable.PSVersion
+if ($psVersion.Major -ge 5) {
+    Write-Host "  OK: PowerShell $psVersion" -ForegroundColor Green
+    $checks.powershell = $true
+} else {
+    Write-Host "  WARN: PowerShell $psVersion (recomendado 5.1+)" -ForegroundColor Yellow
+    $allPassed = $false
+}
+
+# ===== 2. Git =====
+Write-Host "[2/6] Checking Git..." -ForegroundColor Cyan
+$gitCmd = Get-Command git -ErrorAction SilentlyContinue
+$mingitPath = "C:\Users\admin\.gemini\antigravity\scratch\mingit\cmd\git.exe"
+
+if ($gitCmd) {
+    $gitVersion = & git --version 2>&1
+    Write-Host "  OK: $gitVersion" -ForegroundColor Green
+    $checks.git = $true
+} elseif (Test-Path $mingitPath) {
+    $gitVersion = & $mingitPath --version 2>&1
+    Write-Host "  OK (fallback): $gitVersion at $mingitPath" -ForegroundColor Green
+    $checks.git = $true
+} else {
+    Write-Host "  FAIL: Git not found in PATH or fallback location" -ForegroundColor Red
+    $allPassed = $false
+}
+
+# ===== 3. Node.js =====
+Write-Host "[3/6] Checking Node.js..." -ForegroundColor Cyan
+$nodeCmd = Get-Command node -ErrorAction SilentlyContinue
+if ($nodeCmd) {
+    $nodeVersion = & node --version 2>&1
+    Write-Host "  OK: Node.js $nodeVersion" -ForegroundColor Green
+    $checks.node = $true
+} else {
+    Write-Host "  WARN: Node.js not found (needed only for build gates)" -ForegroundColor Yellow
+}
+
+# ===== 4. agy CLI =====
+if (-not $SkipAgy -and -not $Native) {
+    Write-Host "[4/6] Checking agy CLI..." -ForegroundColor Cyan
+    $agyCmd = Get-Command agy -ErrorAction SilentlyContinue
+    $wingetPath = "C:\Users\admin\AppData\Local\Microsoft\WinGet\Packages\Google.AntigravityCLI_Microsoft.Winget.Source_8wekyb3d8bbwe\agy.exe"
+
+    if ($agyCmd) {
+        Write-Host "  OK: agy at $($agyCmd.Source)" -ForegroundColor Green
+        $checks.agy = $true
+    } elseif (Test-Path $wingetPath) {
+        Write-Host "  OK: agy at $wingetPath" -ForegroundColor Green
+        $checks.agy = $true
+    } else {
+        Write-Host "  WARN: agy CLI not found. Workers will use native Antigravity subagents." -ForegroundColor Yellow
+        Write-Host "  Install with: winget install Google.AntigravityCLI" -ForegroundColor Yellow
+    }
+} else {
+    Write-Host "[4/6] Skipping agy CLI (SkipAgy or Native mode specified)" -ForegroundColor Yellow
+}
+
+# ===== 5. Graphify =====
+Write-Host "[5/6] Checking Graphify..." -ForegroundColor Cyan
+$graphifyCmd = Get-Command graphify -ErrorAction SilentlyContinue
+if ($graphifyCmd) {
+    Write-Host "  OK: graphify at $($graphifyCmd.Source)" -ForegroundColor Green
+    $checks.graphify = $true
+} else {
+    Write-Host "  WARN: graphify not found. Install with: uv tool install graphifyy" -ForegroundColor Yellow
+}
+
+# ===== 6. Git Identity =====
+Write-Host "[6/6] Checking Git identity..." -ForegroundColor Cyan
+$gitExe = if ($gitCmd) { "git" } else { $mingitPath }
+if ($checks.git) {
+    $gitEmail = & $gitExe config user.email 2>&1
+    if ($gitEmail -and $gitEmail -notmatch "fatal") {
+        Write-Host "  OK: Git user = $gitEmail" -ForegroundColor Green
+    } else {
+        if (-not $CheckOnly) {
+            & $gitExe config --global user.email "ai@clawhub.com"
+            & $gitExe config --global user.name "Antigravity Agent"
+            Write-Host "  CONFIGURED: Git identity set to ai@clawhub.com" -ForegroundColor Green
+        } else {
+            Write-Host "  WARN: Git identity not configured (will set on install)" -ForegroundColor Yellow
+        }
+    }
+}
+
+# ===== Summary =====
+Write-Host ""
+Write-Host "===============================================" -ForegroundColor Cyan
+Write-Host " Pre-requisite Check Results:" -ForegroundColor Cyan
+Write-Host "===============================================" -ForegroundColor Cyan
+
+foreach ($key in $checks.Keys) {
+    $status = if ($checks[$key]) { "[PASS]" } else { "[----]" }
+    $color = if ($checks[$key]) { "Green" } else { "Yellow" }
+    Write-Host "  $status $key" -ForegroundColor $color
+}
+
+$workerMode = if ($checks.agy -and -not $Native) { "agy CLI (primary) + native (fallback)" } else { "native Antigravity 2.0 only" }
+Write-Host ""
+Write-Host "  Worker execution mode: $workerMode" -ForegroundColor Cyan
+
+if ($CheckOnly) {
+    Write-Host ""
+    Write-Host "  CHECK ONLY mode - no changes made." -ForegroundColor Yellow
+    Write-Host "===============================================" -ForegroundColor Cyan
+    exit 0
+}
+
+# ===== Sync Global Config =====
+Write-Host ""
+Write-Host "[SYNC] Synchronizing repo -> global config..." -ForegroundColor Cyan
+
+$syncScript = Join-Path $repoRoot "scripts\sync-global.ps1"
+if (Test-Path $syncScript) {
+    & powershell -ExecutionPolicy Bypass -File $syncScript
+} else {
+    Write-Host "  WARN: sync-global.ps1 not found at $syncScript" -ForegroundColor Yellow
+}
+
+# ===== Run Eval Harness (DryRun) =====
+Write-Host ""
+Write-Host "[EVAL] Running eval harness in DryRun mode..." -ForegroundColor Cyan
+
+$evalScript = Join-Path $repoRoot "scripts\run-evals.ps1"
+if (Test-Path $evalScript) {
+    & powershell -ExecutionPolicy Bypass -File $evalScript -DryRun
+} else {
+    Write-Host "  WARN: run-evals.ps1 not found at $evalScript" -ForegroundColor Yellow
+}
+
+# ===== Final Report =====
+Write-Host ""
+Write-Host "===============================================" -ForegroundColor Green
+Write-Host " BOOTSTRAP COMPLETE" -ForegroundColor Green
+Write-Host " Worker mode: $workerMode" -ForegroundColor White
+Write-Host " Config synced to: $env:USERPROFILE\.gemini\config" -ForegroundColor White
+Write-Host "===============================================" -ForegroundColor Green

@@ -1,0 +1,51 @@
+{
+  "id": "subagent_recursion_limit",
+  "name": "Subagent Recursion and Tool Monopoly Governance",
+  "phase": "general",
+  "description": "Validates that workers cannot invoke subagents, leads cannot write code, and git commit is monopolized by the root agent in ia.md v6.",
+  "input_prompt": "Como funciona a governanca e o limite de recursao dos subagentes no Antigravity v6?",
+  "expected_behavior": {
+    "execution_mode": "single-agent",
+    "required_elements": [
+      "subagent_hierarchy",
+      "monopolies",
+      "recursion_limit"
+    ],
+    "circuit_breaker_expected": true,
+    "hard_stop_expected": false
+  },
+  "assertions": [
+    {
+      "name": "assert_subagent_hierarchy_present",
+      "check_type": "rule_presence",
+      "target": ".agent/rules/ia.md",
+      "operator": "contains",
+      "expected_value": "<subagent_hierarchy"
+    },
+    {
+      "name": "assert_worker_no_delegation",
+      "check_type": "rule_presence",
+      "target": ".agent/rules/ia.md",
+      "operator": "contains",
+      "expected_value": "enable_subagent_tools: false"
+    },
+    {
+      "name": "assert_lead_no_direct_code",
+      "check_type": "rule_presence",
+      "target": ".agent/rules/ia.md",
+      "operator": "contains",
+      "expected_value": "enable_write_tools: false"
+    },
+    {
+      "name": "assert_git_commit_monopoly",
+      "check_type": "rule_presence",
+      "target": ".agent/rules/ia.md",
+      "operator": "contains",
+      "expected_value": "<monopoly action=\"git commit/push\" owner=\"Root Agent\"/>"
+    }
+  ],
+  "forbidden_patterns": [
+    "git add \\.",
+    "git reset --hard"
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "id": "agy_worker_timeout",
+  "name": "agy Worker Headless Integration and Fallback Governance",
+  "phase": "general",
+  "description": "Validates that the agy bridge defines headless execution rules, timeout management, and automatic native fallback protocol.",
+  "input_prompt": "Como o sistema trata a integracao do agy CLI e o fallback caso o processo falhe?",
+  "expected_behavior": {
+    "execution_mode": "single-agent",
+    "required_elements": [
+      "agy_bridge",
+      "fallback_chain",
+      "timeout_management"
+    ],
+    "circuit_breaker_expected": false,
+    "hard_stop_expected": false
+  },
+  "assertions": [
+    {
+      "name": "assert_agy_bridge_rule_in_ia",
+      "check_type": "rule_presence",
+      "target": ".agent/rules/ia.md",
+      "operator": "contains",
+      "expected_value": "PRIORIDADE 1 — agy CLI"
+    },
+    {
+      "name": "assert_native_fallback_rule_in_ia",
+      "check_type": "rule_presence",
+      "target": ".agent/rules/ia.md",
+      "operator": "contains",
+      "expected_value": "PRIORIDADE 2 — Antigravity 2.0 nativo (fallback automatico)"
+    },
+    {
+      "name": "assert_agy_bridge_skill_exists",
+      "check_type": "rule_presence",
+      "target": "skills/agy-bridge/SKILL.md",
+      "operator": "contains",
+      "expected_value": "agy CLI Bridge"
+    },
+    {
+      "name": "assert_spawn_script_fallback_support",
+      "check_type": "rule_presence",
+      "target": "scripts/spawn-agy-worker.ps1",
+      "operator": "contains",
+      "expected_value": "fallback_triggered"
+    }
+  ],
+  "forbidden_patterns": [
+    "git add \\.",
+    "git reset --hard"
+  ]
+}

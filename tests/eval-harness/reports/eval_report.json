@@ -1,5 +1,5 @@
 ﻿{
-    "timestamp":  "2026-09-08T11:19:33Z",
+    "timestamp":  "2026-09-09T12:09:40Z",
     "mode":  "Fixture",
     "dry_run":  false,
     "environment":  {
@@ -8,8 +8,8 @@
                         "repo_root":  "C:\\Users\\admin\\.gemini\\antigravity\\scratch\\antigravity-config-main"
                     },
     "summary":  {
-                    "total_tests":  28,
-                    "passed_tests":  28,
+                    "total_tests":  38,
+                    "passed_tests":  38,
                     "failed_tests":  0,
                     "pass_rate_pct":  100,
                     "status":  "AUDIT_PASSED"
@@ -44,6 +44,36 @@
                              "TestName":  "assert_proposal_hard_stop_directive",
                              "Passed":  true,
                              "Details":  "skills/sdd-proposal/SKILL.md: Content contains expected string."
+                         },
+                         {
+                             "Category":  "SchemaConformance",
+                             "TestName":  "SchemaConformance: agy_worker_timeout.json",
+                             "Passed":  true,
+                             "Details":  "Fixture successfully conforms to contract schema."
+                         },
+                         {
+                             "Category":  "FixtureAssertion (agy_worker_timeout)",
+                             "TestName":  "assert_agy_bridge_rule_in_ia",
+                             "Passed":  true,
+                             "Details":  ".agent/rules/ia.md: Content contains expected string."
+                         },
+                         {
+                             "Category":  "FixtureAssertion (agy_worker_timeout)",
+                             "TestName":  "assert_native_fallback_rule_in_ia",
+                             "Passed":  true,
+                             "Details":  ".agent/rules/ia.md: Content contains expected string."
+                         },
+                         {
+                             "Category":  "FixtureAssertion (agy_worker_timeout)",
+                             "TestName":  "assert_agy_bridge_skill_exists",
+                             "Passed":  true,
+                             "Details":  "skills/agy-bridge/SKILL.md: Content contains expected string."
+                         },
+                         {
+                             "Category":  "FixtureAssertion (agy_worker_timeout)",
+                             "TestName":  "assert_spawn_script_fallback_support",
+                             "Passed":  true,
+                             "Details":  "scripts/spawn-agy-worker.ps1: Content contains expected string."
                          },
                          {
                              "Category":  "SchemaConformance",
@@ -138,6 +168,36 @@
                          {
                              "Category":  "FixtureAssertion (off_topic_docker)",
                              "TestName":  "assert_clean_workspace_boundary",
+                             "Passed":  true,
+                             "Details":  ".agent/rules/ia.md: Content contains expected string."
+                         },
+                         {
+                             "Category":  "SchemaConformance",
+                             "TestName":  "SchemaConformance: subagent_recursion_limit.json",
+                             "Passed":  true,
+                             "Details":  "Fixture successfully conforms to contract schema."
+                         },
+                         {
+                             "Category":  "FixtureAssertion (subagent_recursion_limit)",
+                             "TestName":  "assert_subagent_hierarchy_present",
+                             "Passed":  true,
+                             "Details":  ".agent/rules/ia.md: Content contains expected string."
+                         },
+                         {
+                             "Category":  "FixtureAssertion (subagent_recursion_limit)",
+                             "TestName":  "assert_worker_no_delegation",
+                             "Passed":  true,
+                             "Details":  ".agent/rules/ia.md: Content contains expected string."
+                         },
+                         {
+                             "Category":  "FixtureAssertion (subagent_recursion_limit)",
+                             "TestName":  "assert_lead_no_direct_code",
+                             "Passed":  true,
+                             "Details":  ".agent/rules/ia.md: Content contains expected string."
+                         },
+                         {
+                             "Category":  "FixtureAssertion (subagent_recursion_limit)",
+                             "TestName":  "assert_git_commit_monopoly",
                              "Passed":  true,
                              "Details":  ".agent/rules/ia.md: Content contains expected string."
                          },

@@ -18,6 +18,22 @@ Este índice é o ponto de entrada central para o agente. Identifique a intenç�
 | **Deploy / SEO / Performance / Prod Readiness** | `deploy-production/SKILL.md` | `deploy-production/references/checklist-launch.md` |
 | **Git Headless / Branches / PRs / CI-CD** | `github-ops/SKILL.md` | `github-ops/SKILL.md` |
 | **Raciocínio Adaptativo / Prevenção de Loops** | `adaptive-reasoning/SKILL.md` | Sempre disponível para validações críticas |
+| **Integração agy CLI / Workers Headless** | `agy-bridge/SKILL.md` | `scripts/spawn-agy-worker.ps1`, `schemas/` |
+
+---
+
+## 🤖 Mapa Skill → Worker Agent (Hierarquia Leads/Workers)
+
+| Skill | Worker Vinculado | Lead Responsável | Modo Execução Primário |
+|---|---|---|---|
+| `ui-components` + `ui-motion` | `frontend-worker` | `implementation-lead` | agy CLI (`gemini-3.1-pro-high`) |
+| `backend-patterns` + `auth` | `backend-worker` | `implementation-lead` | agy CLI (`gemini-3.1-pro-high`) |
+| `database` + `supabase` | `database-worker` | `implementation-lead` | agy CLI (`gemini-3.1-pro-high`) |
+| `obsidian` + `adaptive-reasoning` | `codebase-researcher` | `research-lead` | agy CLI / Nativo (read-only) |
+| `graphify-windows` | `graph-analyzer` | `research-lead` | agy CLI / Nativo (read-only) |
+| `deploy-production` | `auditor-worker` | `quality-lead` | agy CLI / Nativo (read-only) |
+| `sdd-proposal` | `validator-worker` | `quality-lead` | agy CLI / Nativo (read-only) |
+| `sdd-debug` + `bayesian` | `bug-investigator` | `quality-lead` | agy CLI (`gemini-3.1-pro-high`) |
 
 ---
 
@@ -38,3 +54,4 @@ Este índice é o ponto de entrada central para o agente. Identifique a intenç�
 1. **Nunca leia todas as skills de uma vez**: Leia apenas o `SKILL.md` da intenção atual.
 2. **Carregamento Lazy de Referências**: Carregue arquivos em `references/` somente quando precisar copiar um template estrutural.
 3. **Limite por Tarefa**: No máximo 2 skills simultâneas + 1 arquivo de referência.
+

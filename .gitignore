@@ -22,6 +22,8 @@ gen
 *.json
 !.mcprc
 !package.json
+!schemas/**/*.json
+!schemas/*.json
 !tests/**/*.json
 !tests/**/*.md
 

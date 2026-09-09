@@ -90,3 +90,37 @@ tests/eval-harness/
 - **Forbidden Commands Detection:** 100% de detecção e bloqueio de `git add .`, `git reset --hard` desassistido e comandos destrutivos.
 - **Circuit Breaker Enforcement:** 100% de presença de hard stops em propostas e implementações.
 - **Budget Compliance:** Respeito aos tetos configurados (`max_tool_calls`, `max_auto_healing_attempts`).
+
+---
+
+## 5. Subagentes Hierárquicos (Leads & Workers)
+
+O Antigravity Config v6 adota uma estrutura em 2 níveis para delegação controlada:
+- **Leads (`.agent/agents/leads/`):** Coordenadores de alto nível (`research-lead`, `implementation-lead`, `quality-lead`). Possuem permissão para invocar workers (`enable_subagent_tools: true`), mas não escrevem código diretamente.
+- **Workers (`.agent/agents/workers/`):** Especialistas operacionais com vínculo direto a Skills (`frontend-worker`, `backend-worker`, `database-worker`, `auditor-worker`, etc.). Não podem delegar (`enable_subagent_tools: false`) e possuem orçamento de no máximo 10 tool calls.
+
+---
+
+## 6. Integração agy CLI e Fallback Nativo
+
+Para paralelização real sem bloqueio de sessão:
+1. O Lead despacha a tarefa através de `scripts/spawn-agy-worker.ps1` usando o `agy.exe`.
+2. O modelo padrão é `gemini-3.1-pro-high` em modo headless (`--print --output-format json`).
+3. Em caso de falha de processo, timeout (5 min) ou ausência do executável, o sistema aciona de forma transparente o **Fallback Nativo** via `invoke_subagent` no Antigravity 2.0.
+
+---
+
+## 7. Bootstrap Rápido e Universal (`setup/install.ps1`)
+
+Para configurar o ambiente do zero ou em uma nova máquina:
+```powershell
+# Executa validação de pré-requisitos, sincronização global e testes de baseline:
+powershell -ExecutionPolicy Bypass -File setup/install.ps1
+
+# Apenas verificar os pré-requisitos:
+powershell -ExecutionPolicy Bypass -File setup/install.ps1 -CheckOnly
+
+# Forçar uso exclusivo de subagentes nativos:
+powershell -ExecutionPolicy Bypass -File setup/install.ps1 -Native
+```
+
