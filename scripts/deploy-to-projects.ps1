@@ -88,6 +88,14 @@ foreach ($project in $projects) {
         # 6. Copy spawn-agy-worker helper
         Copy-Item -Path $sourceSpawn -Destination (Join-Path $targetScripts "spawn-agy-worker.ps1") -Force
 
+        # 6.1 Ensure DESIGN.md exists in project root (do not overwrite existing)
+        $targetDesign = Join-Path $projPath "DESIGN.md"
+        $sourceDesign = Join-Path $repoRoot "DESIGN.md"
+        if ((Test-Path $sourceDesign) -and (-not (Test-Path $targetDesign))) {
+            Copy-Item -Path $sourceDesign -Destination $targetDesign -Force
+            Write-Host "    Created default DESIGN.md" -ForegroundColor DarkCyan
+        }
+
         # 7. Clean up deprecated workflows if present
         $legacyWorkflows = Join-Path $targetAgent "workflows"
         if (Test-Path $legacyWorkflows) {

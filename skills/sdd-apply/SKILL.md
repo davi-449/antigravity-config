@@ -79,6 +79,7 @@ Se ocorrer erro de compilação ou teste durante a task:
 1. **Verificação de UI (Visual QA Graceful Fallback):**
    - Se tocou em UI: verifique se o servidor local / Playwright está acessível.
    - **Cenário Nominal:** Se acessível, execute `npx playwright screenshot <url-local> screenshot.png` e valide contraste, alinhamento e ausência de overflow.
+   - **Anti-Slop Linter (Impeccable):** Se tocou em frontend, execute `npx impeccable detect <caminho-dos-arquivos-editados>` ou audite manualmente contra `skills/frontend-design-pro/references/ai-slop-catalog.md` para garantir zero AI slop.
    - **Fallback Graceful (Servidor/Playwright Offline):**
      - Emita log explícito: `[VISUAL_QA_OFFLINE]: Playwright ou servidor local inacessível. Executando Quality Gate estático e sinalizando pendência de revisão visual humana.`
      - **PROIBIDO:** Declarar falsamente que o Visual QA passou lendo apenas arquivos HTML/CSS estáticos.

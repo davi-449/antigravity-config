@@ -9,9 +9,11 @@ Este índice é o ponto de entrada central para o agente. Identifique a intenç�
 | Intenção da Tarefa | Skills a Carregar | Referências Específicas (On-Demand) |
 |---|---|---|
 | **Criar projeto SaaS do zero** | `saas-scaffold/SKILL.md` + `database/SKILL.md` | `saas-scaffold/references/01-project-setup.md`, `03-lovable-compat.md` |
-| **Construir Telas / UI / Componentes** | `ui-components/SKILL.md` | `ui-components/references/dashboard-layout.md`, `forms.md`, `data-table.md`, `landing-page.md`, `cinematic-landing-page.md` |
+| **Construir Telas / UI / Componentes** | `frontend-design-pro/SKILL.md` + `ui-components/SKILL.md` | `frontend-design-pro/references/ai-slop-catalog.md`, `interface-guidelines.md`, `dark-ui-depth.md`, `ui-components/references/` |
+| **Refinar UI / Eliminar AI Slop (/audit, /polish)** | `frontend-design-pro/SKILL.md` | `frontend-design-pro/references/audit-polish-flow.md`, `ai-slop-catalog.md` |
+| **Formulários & Tabelas Densas (OFX, Financeiro)** | `frontend-design-3/SKILL.md` | `skills/frontend-design-3/SKILL.md` (regras Rauno de inputs e dados) |
 | **Landing Pages Cinematográficas (Luxo/Awwwards)** | `ui-components/SKILL.md` + `ui-motion/SKILL.md` | `ui-components/references/cinematic-landing-page.md` (4 presets estéticos, micro-UIs, ruído SVG) |
-| **Adicionar Animações / Efeitos Visuais** | `ui-motion/SKILL.md` | `ui-motion/SKILL.md` (Magic UI & Tailwind animations) |
+| **Adicionar Animações / Micro-Interações (≤200ms)** | `ui-motion/SKILL.md` | `ui-motion/SKILL.md` (guardrails Rauno, ShimmerButton, NumberTicker) |
 | **Autenticação & Proteção de Rotas** | `auth/SKILL.md` | `auth/references/auth-patterns.md` |
 | **Banco de Dados / Schema / Migrations / RLS** | `database/SKILL.md` | `database/references/rls-patterns.md`, `schema-patterns.md` |
 | **Server Actions / APIs / Edge Functions** | `backend-patterns/SKILL.md` | `backend-patterns/references/server-action-templates.md` |
