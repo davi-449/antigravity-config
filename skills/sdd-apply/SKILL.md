@@ -89,6 +89,22 @@ Se ocorrer erro de compilação ou teste durante a task:
    cmd.exe /c "npm run build"
    ```
    Garanta zero erros de TypeScript e zero falhas de bundling.
+
+3. **Security Gate (Pre-Commit Secrets Blocker & Cadência de Auditoria):**
+   - **Bloqueador Rígido de Segredos:** Inspecione os arquivos modificados. Se encontrar chaves reais (OpenAI `sk-`, Stripe `sk_live_`, Supabase `service_role`, AWS keys), **BLOQUEIE IMEDIATAMENTE**:
+     `[SECURITY_BLOCKER]: Segredo detectado em <arquivo>. Remova credenciais e use variáveis de ambiente antes de continuar.`
+   - **Cadência Preventiva (a cada 5 a 10 applies):**
+     Emita no resumo final o alerta:
+     ```text
+     ================================================================================
+      🛡️ [SECURITY HEALTH CHECK REMINDER]
+      Múltiplas implementações foram concluídas neste repositório.
+      Recomendado rodar uma auditoria preventiva de segurança:
+        👉 /secrets-audit     -> Verificar se nenhuma chave vazou
+        👉 /dependency-audit  -> Checar CVEs em dependências
+        👉 /security-review   -> Auditar IDOR e autorização (AuthZ)
+     ================================================================================
+     ```
 </step>
 
 <step number="4" name="Conclusão e Hard Stop Obrigatório">

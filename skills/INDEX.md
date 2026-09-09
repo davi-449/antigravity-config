@@ -18,6 +18,7 @@ Este índice é o ponto de entrada central para o agente. Identifique a intenç�
 | **Banco de Dados / Schema / Migrations / RLS** | `database/SKILL.md` | `database/references/rls-patterns.md`, `schema-patterns.md` |
 | **Server Actions / APIs / Edge Functions** | `backend-patterns/SKILL.md` | `backend-patterns/references/server-action-templates.md` |
 | **Deploy / SEO / Performance / Prod Readiness** | `deploy-production/SKILL.md` | `deploy-production/references/checklist-launch.md` |
+| **Cybersecurity & AppSec (/security-review, /security-audit, /owasp-audit, /secrets-audit, /dependency-audit)** | `security/SKILL.md` | `security/references/sentry-taint-analysis.md`, `cloudflare-adversarial.md`, `owasp-top-10.md`, `secrets-patterns.md`, `dependency-scanner.md` |
 | **Git Headless / Branches / PRs / CI-CD** | `github-ops/SKILL.md` | `github-ops/SKILL.md` |
 | **Raciocínio Adaptativo / Prevenção de Loops** | `adaptive-reasoning/SKILL.md` | Sempre disponível para validações críticas |
 | **Integração agy CLI / Workers Headless** | `agy-bridge/SKILL.md` | `scripts/spawn-agy-worker.ps1`, `schemas/` |
@@ -31,6 +32,7 @@ Este índice é o ponto de entrada central para o agente. Identifique a intenç�
 | `ui-components` + `ui-motion` | `frontend-worker` | `implementation-lead` | agy CLI (`gemini-3.1-pro-high`) |
 | `backend-patterns` + `auth` | `backend-worker` | `implementation-lead` | agy CLI (`gemini-3.1-pro-high`) |
 | `database` + `supabase` | `database-worker` | `implementation-lead` | agy CLI (`gemini-3.1-pro-high`) |
+| `security` | `security-worker` | `quality-lead` | agy CLI (`gemini-3.1-pro-high`) / Nativo |
 | `obsidian` + `adaptive-reasoning` | `codebase-researcher` | `research-lead` | agy CLI / Nativo (read-only) |
 | `graphify-windows` | `graph-analyzer` | `research-lead` | agy CLI / Nativo (read-only) |
 | `deploy-production` | `auditor-worker` | `quality-lead` | agy CLI / Nativo (read-only) |
