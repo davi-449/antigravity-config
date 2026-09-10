@@ -1,0 +1,82 @@
+{
+  "dimension": "reasoning_quality",
+  "description": "Tasks de código com complexidade crescente para medir qualidade de raciocínio, precisão e eficiência do agente.",
+  "version": "1.0",
+  "tests": [
+    {
+      "id": "RQ-001",
+      "name": "Fix Simples: Erro de tipagem TypeScript",
+      "difficulty": 1,
+      "prompt": "O seguinte código TypeScript tem um erro de tipo. Corrija-o:\n\n```typescript\ninterface User {\n  id: number;\n  name: string;\n  email: string;\n}\n\nfunction getUser(id: string): User {\n  return {\n    id: id,\n    name: 'Test',\n    email: 'test@test.com'\n  };\n}\n```",
+      "expected_solution": {
+        "must_contain": ["id: number", "parseInt", "Number("],
+        "must_contain_any": true,
+        "reasoning": "O parâmetro id é string mas o retorno espera number. Deve converter ou mudar a assinatura."
+      },
+      "efficiency_targets": {
+        "max_tool_calls": 3,
+        "max_iterations": 1
+      }
+    },
+    {
+      "id": "RQ-002",
+      "name": "Bug Logic: Validação Zod incorreta",
+      "difficulty": 2,
+      "prompt": "O seguinte schema Zod deveria validar emails corporativos (apenas @company.com) e senhas com mínimo 8 chars com pelo menos 1 número. Mas está permitindo qualquer email. Encontre e corrija o bug:\n\n```typescript\nimport { z } from 'zod';\n\nconst loginSchema = z.object({\n  email: z.string().email(),\n  password: z.string().min(8).regex(/[0-9]/),\n});\n```",
+      "expected_solution": {
+        "must_contain": ["refine", "endsWith", "@company.com"],
+        "must_contain_any": true,
+        "reasoning": "Falta validação de domínio no email. Precisa adicionar .refine() ou .regex() para @company.com."
+      },
+      "efficiency_targets": {
+        "max_tool_calls": 5,
+        "max_iterations": 1
+      }
+    },
+    {
+      "id": "RQ-003",
+      "name": "Refator: Extrair Server Action tipada",
+      "difficulty": 3,
+      "prompt": "Refatore o seguinte código inline de um formulário React para uma Server Action tipada seguindo o padrão ActionResult<T>. O código atual faz fetch direto no componente:\n\n```tsx\n'use client';\nimport { useState } from 'react';\n\nexport function CreateProjectForm() {\n  const [error, setError] = useState('');\n  \n  async function handleSubmit(e: React.FormEvent) {\n    e.preventDefault();\n    const form = new FormData(e.target as HTMLFormElement);\n    const res = await fetch('/api/projects', {\n      method: 'POST',\n      body: JSON.stringify({\n        name: form.get('name'),\n        description: form.get('description'),\n      }),\n    });\n    if (!res.ok) setError('Failed');\n  }\n\n  return <form onSubmit={handleSubmit}>...</form>;\n}\n```",
+      "expected_solution": {
+        "must_contain": ["'use server'", "ActionResult", "FormData", "revalidatePath"],
+        "must_contain_any": false,
+        "reasoning": "Deve criar arquivo separado com Server Action tipada, usar Zod para validação, retornar ActionResult<T> e usar useActionState ou useFormState no client."
+      },
+      "efficiency_targets": {
+        "max_tool_calls": 8,
+        "max_iterations": 2
+      }
+    },
+    {
+      "id": "RQ-004",
+      "name": "Debug Multi-File: RLS Policy quebrada",
+      "difficulty": 4,
+      "prompt": "Um usuário reportou que consegue ver projetos de outros tenants. O sistema usa multi-tenancy com tenant_id. Analise os 3 arquivos abaixo e identifique o bug:\n\n```sql\n-- migration: create_projects.sql\nCREATE TABLE projects (\n  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,\n  tenant_id UUID NOT NULL REFERENCES tenants(id),\n  name TEXT NOT NULL,\n  created_at TIMESTAMPTZ DEFAULT now()\n);\n\nALTER TABLE projects ENABLE ROW LEVEL SECURITY;\n\nCREATE POLICY select_projects ON projects\n  FOR SELECT\n  USING (true);\n```\n\n```typescript\n// lib/queries.ts\nexport async function getProjects(supabase: SupabaseClient) {\n  const { data } = await supabase.from('projects').select('*');\n  return data;\n}\n```\n\n```typescript\n// middleware.ts\nexport async function middleware(request: NextRequest) {\n  const supabase = createMiddlewareClient({ req: request });\n  const { data: { session } } = await supabase.auth.getSession();\n  if (!session) return NextResponse.redirect('/login');\n  return NextResponse.next();\n}\n```",
+      "expected_solution": {
+        "must_contain": ["USING (tenant_id", "auth.uid()", "auth.jwt()"],
+        "must_contain_any": true,
+        "reasoning": "A RLS policy usa USING (true) que permite acesso a todos os registros. Deve filtrar por tenant_id baseado no JWT do usuário autenticado."
+      },
+      "efficiency_targets": {
+        "max_tool_calls": 10,
+        "max_iterations": 2
+      }
+    },
+    {
+      "id": "RQ-005",
+      "name": "Arquitetura: Design de migration com rollback",
+      "difficulty": 5,
+      "prompt": "Projete uma migration SQL para adicionar um sistema de permissões RBAC (Role-Based Access Control) ao schema existente que tem tabelas: users, tenants, projects. Requisitos:\n1. Tabela roles com roles hierárquicas (owner > admin > member > viewer)\n2. Tabela user_roles ligando users a roles por tenant\n3. RLS policies que usam as roles para controlar acesso a projects\n4. Rollback seguro (DOWN migration)\n5. Índices para performance\n\nA migration deve ser idempotente e não quebrar dados existentes.",
+      "expected_solution": {
+        "must_contain": ["CREATE TABLE", "POLICY", "INDEX", "DROP TABLE", "IF NOT EXISTS"],
+        "must_contain_any": false,
+        "reasoning": "Deve criar schema RBAC completo com foreign keys, RLS policies baseadas em roles, índices compostos e DOWN migration que reverte tudo."
+      },
+      "efficiency_targets": {
+        "max_tool_calls": 12,
+        "max_iterations": 3
+      }
+    }
+  ]
+}

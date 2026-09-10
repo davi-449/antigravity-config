@@ -1,0 +1,121 @@
+{
+  "dimension": "instruction_adherence",
+  "description": "IFEval-style deterministic checks: verifica se o agente segue instruções explícitas de formato, keywords e estrutura sob carga de system prompt.",
+  "version": "1.0",
+  "tests": [
+    {
+      "id": "IA-001",
+      "name": "Format: JSON output obrigatório",
+      "prompt": "Liste 3 benefícios de usar TypeScript em formato JSON. A resposta DEVE ser um array JSON válido com exatamente 3 objetos, cada um com campos 'id' (number) e 'benefit' (string).",
+      "constraints": [
+        { "type": "contains", "value": "[", "description": "Deve conter array JSON" },
+        { "type": "matches", "value": "\"id\"\\s*:\\s*\\d+", "description": "Deve ter campo id numérico" },
+        { "type": "matches", "value": "\"benefit\"\\s*:", "description": "Deve ter campo benefit" }
+      ],
+      "severity": "critical"
+    },
+    {
+      "id": "IA-002",
+      "name": "Keyword: Inclusão obrigatória de termos",
+      "prompt": "Explique o conceito de Row-Level Security (RLS) no PostgreSQL. A resposta DEVE incluir as palavras 'policy', 'USING' e 'WITH CHECK' pelo menos uma vez cada.",
+      "constraints": [
+        { "type": "contains_ci", "value": "policy", "description": "Deve mencionar policy" },
+        { "type": "contains", "value": "USING", "description": "Deve mencionar USING clause" },
+        { "type": "contains", "value": "WITH CHECK", "description": "Deve mencionar WITH CHECK" }
+      ],
+      "severity": "critical"
+    },
+    {
+      "id": "IA-003",
+      "name": "Length: Resposta com limite de parágrafos",
+      "prompt": "Descreva o que é o padrão Server Actions do Next.js em EXATAMENTE 3 parágrafos. Cada parágrafo deve ter pelo menos 2 frases.",
+      "constraints": [
+        { "type": "paragraph_count", "value": 3, "description": "Exatamente 3 parágrafos" },
+        { "type": "min_sentences_per_paragraph", "value": 2, "description": "Mínimo 2 frases por parágrafo" }
+      ],
+      "severity": "medium"
+    },
+    {
+      "id": "IA-004",
+      "name": "Negation: Proibição de termos",
+      "prompt": "Explique como usar Zod para validação de formulários no React. NÃO use a palavra 'schema' em nenhum momento da resposta.",
+      "constraints": [
+        { "type": "not_contains_ci", "value": "schema", "description": "Não deve usar a palavra schema" },
+        { "type": "contains_ci", "value": "zod", "description": "Deve mencionar Zod" },
+        { "type": "contains_ci", "value": "validat", "description": "Deve mencionar validação" }
+      ],
+      "severity": "medium"
+    },
+    {
+      "id": "IA-005",
+      "name": "Structure: Markdown headers obrigatórios",
+      "prompt": "Crie uma documentação técnica sobre autenticação JWT com Supabase. A resposta DEVE usar headers markdown (## e ###) e incluir seções chamadas exatamente: '## Visão Geral', '## Implementação' e '## Segurança'.",
+      "constraints": [
+        { "type": "contains", "value": "## Visão Geral", "description": "Deve ter header Visão Geral" },
+        { "type": "contains", "value": "## Implementação", "description": "Deve ter header Implementação" },
+        { "type": "contains", "value": "## Segurança", "description": "Deve ter header Segurança" }
+      ],
+      "severity": "critical"
+    },
+    {
+      "id": "IA-006",
+      "name": "Language: Resposta em idioma específico",
+      "prompt": "Explain the concept of multi-tenancy in SaaS applications. Respond ENTIRELY in Portuguese (Brazilian). Do NOT use any English words except technical terms.",
+      "constraints": [
+        { "type": "contains_ci", "value": "multi-tenancy", "description": "Deve manter termo técnico" },
+        { "type": "not_contains_ci", "value": "the application", "description": "Não deve ter frases em inglês" },
+        { "type": "not_contains_ci", "value": "this means", "description": "Não deve ter frases em inglês" }
+      ],
+      "severity": "medium"
+    },
+    {
+      "id": "IA-007",
+      "name": "Code: Bloco de código com linguagem especificada",
+      "prompt": "Mostre como criar uma Server Action tipada no Next.js que recebe um FormData e retorna ActionResult<User>. A resposta DEVE conter exatamente 1 bloco de código TypeScript (```typescript) e usar 'use server' como primeira linha do código.",
+      "constraints": [
+        { "type": "matches", "value": "```typescript", "description": "Deve ter bloco typescript" },
+        { "type": "contains", "value": "'use server'", "description": "Deve ter use server directive" },
+        { "type": "contains", "value": "ActionResult", "description": "Deve usar ActionResult type" }
+      ],
+      "severity": "critical"
+    },
+    {
+      "id": "IA-008",
+      "name": "List: Numbered list com quantidade exata",
+      "prompt": "Liste EXATAMENTE 5 vulnerabilidades do OWASP Top 10 (2021) como lista numerada (1., 2., etc.). Cada item deve ter o código oficial (ex: A01:2021) e uma descrição de 1 frase.",
+      "constraints": [
+        { "type": "matches", "value": "1\\.", "description": "Deve começar com 1." },
+        { "type": "matches", "value": "5\\.", "description": "Deve ter item 5." },
+        { "type": "not_contains", "value": "6.", "description": "Não deve ter item 6 (exatamente 5)" },
+        { "type": "matches", "value": "A\\d{2}:2021", "description": "Deve ter códigos OWASP" }
+      ],
+      "severity": "medium"
+    },
+    {
+      "id": "IA-009",
+      "name": "Table: Markdown table obrigatória",
+      "prompt": "Compare React Server Components vs Client Components. A resposta DEVE conter uma tabela markdown com colunas: 'Aspecto', 'Server Component', 'Client Component'. A tabela deve ter pelo menos 4 linhas de dados.",
+      "constraints": [
+        { "type": "contains", "value": "| Aspecto", "description": "Deve ter coluna Aspecto" },
+        { "type": "contains", "value": "Server Component", "description": "Deve ter coluna Server Component" },
+        { "type": "contains", "value": "Client Component", "description": "Deve ter coluna Client Component" },
+        { "type": "matches", "value": "\\|.*\\|.*\\|.*\\|", "description": "Deve ter formato de tabela markdown" }
+      ],
+      "severity": "critical"
+    },
+    {
+      "id": "IA-010",
+      "name": "Multi-constraint: Combinação complexa",
+      "prompt": "Crie uma especificação técnica para um componente Button usando shadcn/ui. Requisitos: (1) Use formato markdown com header ## Button, (2) Inclua uma tabela de Props com colunas Prop|Type|Default, (3) Inclua exatamente 2 blocos de código TypeScript, (4) A palavra 'className' deve aparecer pelo menos 3 vezes, (5) NÃO mencione 'Material UI' ou 'MUI'.",
+      "constraints": [
+        { "type": "contains", "value": "## Button", "description": "Deve ter header Button" },
+        { "type": "contains", "value": "| Prop", "description": "Deve ter tabela de Props" },
+        { "type": "matches", "value": "```typescript", "description": "Deve ter blocos typescript" },
+        { "type": "min_count", "value": "className", "count": 3, "description": "className >= 3 vezes" },
+        { "type": "not_contains_ci", "value": "material ui", "description": "Não deve mencionar Material UI" },
+        { "type": "not_contains_ci", "value": "mui", "description": "Não deve mencionar MUI" }
+      ],
+      "severity": "critical"
+    }
+  ]
+}

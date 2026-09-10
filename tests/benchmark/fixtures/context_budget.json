@@ -1,0 +1,89 @@
+{
+  "dimension": "context_budget",
+  "description": "Medição determinística do overhead de tokens consumido pelo sistema antes do agente começar a trabalhar. Verifica compliance com a regra 5-10% da indústria.",
+  "version": "1.0",
+  "profiles": {
+    "current": {
+      "description": "Sistema atual com ia.md triplicado e skills não-otimizados",
+      "measurements": {
+        "ia_md_copies": 3,
+        "ia_md_chars_per_copy": 9386,
+        "ia_md_total_chars": 28158,
+        "ia_md_total_tokens_est": 7038,
+        "skill_files_count": 25,
+        "skill_files_total_chars": 122709,
+        "skill_files_total_tokens_est": 30677,
+        "reference_files_total_chars": 420000,
+        "reference_files_total_tokens_est": 105000,
+        "platform_overhead_tokens_est": 8000,
+        "skill_catalog_summary_tokens_est": 2500,
+        "total_fixed_overhead_tokens_est": 22538,
+        "context_window_size": 200000,
+        "fixed_overhead_pct": 11.27,
+        "typical_scenario_tokens_est": 28000,
+        "typical_scenario_pct": 14.0,
+        "heavy_scenario_tokens_est": 45000,
+        "heavy_scenario_pct": 22.5
+      }
+    },
+    "optimized": {
+      "description": "Sistema otimizado: ia.md deduplicated, skills compactados, refs lazy-loaded",
+      "measurements": {
+        "ia_md_copies": 1,
+        "ia_md_chars_per_copy": 9386,
+        "ia_md_total_chars": 9386,
+        "ia_md_total_tokens_est": 2346,
+        "skill_files_count": 25,
+        "skill_files_total_chars": 85000,
+        "skill_files_total_tokens_est": 21250,
+        "reference_files_total_chars": 420000,
+        "reference_files_total_tokens_est": 105000,
+        "platform_overhead_tokens_est": 8000,
+        "skill_catalog_summary_tokens_est": 2500,
+        "total_fixed_overhead_tokens_est": 12846,
+        "context_window_size": 200000,
+        "fixed_overhead_pct": 6.42,
+        "typical_scenario_tokens_est": 18000,
+        "typical_scenario_pct": 9.0,
+        "heavy_scenario_tokens_est": 30000,
+        "heavy_scenario_pct": 15.0
+      }
+    }
+  },
+  "thresholds": {
+    "optimal_pct": 5,
+    "acceptable_pct": 10,
+    "warning_pct": 15,
+    "critical_pct": 20
+  },
+  "assertions": [
+    {
+      "name": "ia.md deve ter exatamente 1 cópia ativa",
+      "check_type": "value_equals",
+      "field": "ia_md_copies",
+      "expected_value": 1,
+      "severity": "critical"
+    },
+    {
+      "name": "Overhead fixo deve ser < 10% da context window",
+      "check_type": "value_lt",
+      "field": "fixed_overhead_pct",
+      "expected_value": 10,
+      "severity": "critical"
+    },
+    {
+      "name": "Cenário típico deve ser < 15% da context window",
+      "check_type": "value_lt",
+      "field": "typical_scenario_pct",
+      "expected_value": 15,
+      "severity": "warning"
+    },
+    {
+      "name": "Cenário pesado deve ser < 25% da context window",
+      "check_type": "value_lt",
+      "field": "heavy_scenario_pct",
+      "expected_value": 25,
+      "severity": "warning"
+    }
+  ]
+}

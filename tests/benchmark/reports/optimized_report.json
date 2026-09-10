@@ -1,0 +1,453 @@
+﻿{
+    "timestamp":  "2026-09-10T14:42:59Z",
+    "profile":  "optimized",
+    "environment":  {
+                        "os_platform":  "Windows_NT",
+                        "ps_version":  "5.1.26100.9168",
+                        "repo_root":  "C:\\Users\\admin\\.gemini\\antigravity\\scratch\\antigravity-config-main"
+                    },
+    "summary":  {
+                    "total_tests":  27,
+                    "passed_tests":  27,
+                    "failed_tests":  0,
+                    "pass_rate_pct":  100,
+                    "status":  "BENCHMARK_PASSED"
+                },
+    "dimensions":  [
+                       {
+                           "dimension":  "instruction_adherence",
+                           "results":  [
+                                           {
+                                               "TestId":  "IA-001",
+                                               "TestName":  "Format: JSON output obrigatório",
+                                               "Passed":  true,
+                                               "Total":  3,
+                                               "PassedC":  3,
+                                               "FailedC":  0,
+                                               "Details":  [
+                                                               "PASS: Deve conter array JSON",
+                                                               "PASS: Deve ter campo id numérico",
+                                                               "PASS: Deve ter campo benefit"
+                                                           ],
+                                               "Severity":  "critical"
+                                           },
+                                           {
+                                               "TestId":  "IA-002",
+                                               "TestName":  "Keyword: Inclusão obrigatória de termos",
+                                               "Passed":  true,
+                                               "Total":  3,
+                                               "PassedC":  3,
+                                               "FailedC":  0,
+                                               "Details":  [
+                                                               "PASS: Deve mencionar policy",
+                                                               "PASS: Deve mencionar USING clause",
+                                                               "PASS: Deve mencionar WITH CHECK"
+                                                           ],
+                                               "Severity":  "critical"
+                                           },
+                                           {
+                                               "TestId":  "IA-003",
+                                               "TestName":  "Length: Resposta com limite de parágrafos",
+                                               "Passed":  true,
+                                               "Total":  2,
+                                               "PassedC":  2,
+                                               "FailedC":  0,
+                                               "Details":  [
+                                                               "PASS: Exatamente 3 parágrafos",
+                                                               "PASS: Mínimo 2 frases por parágrafo"
+                                                           ],
+                                               "Severity":  "medium"
+                                           },
+                                           {
+                                               "TestId":  "IA-004",
+                                               "TestName":  "Negation: Proibição de termos",
+                                               "Passed":  true,
+                                               "Total":  3,
+                                               "PassedC":  3,
+                                               "FailedC":  0,
+                                               "Details":  [
+                                                               "PASS: Não deve usar a palavra schema",
+                                                               "PASS: Deve mencionar Zod",
+                                                               "PASS: Deve mencionar validação"
+                                                           ],
+                                               "Severity":  "medium"
+                                           },
+                                           {
+                                               "TestId":  "IA-005",
+                                               "TestName":  "Structure: Markdown headers obrigatórios",
+                                               "Passed":  true,
+                                               "Total":  3,
+                                               "PassedC":  3,
+                                               "FailedC":  0,
+                                               "Details":  [
+                                                               "PASS: Deve ter header Visão Geral",
+                                                               "PASS: Deve ter header Implementação",
+                                                               "PASS: Deve ter header Segurança"
+                                                           ],
+                                               "Severity":  "critical"
+                                           },
+                                           {
+                                               "TestId":  "IA-006",
+                                               "TestName":  "Language: Resposta em idioma específico",
+                                               "Passed":  true,
+                                               "Total":  3,
+                                               "PassedC":  3,
+                                               "FailedC":  0,
+                                               "Details":  [
+                                                               "PASS: Deve manter termo técnico",
+                                                               "PASS: Não deve ter frases em inglês",
+                                                               "PASS: Não deve ter frases em inglês"
+                                                           ],
+                                               "Severity":  "medium"
+                                           },
+                                           {
+                                               "TestId":  "IA-007",
+                                               "TestName":  "Code: Bloco de código com linguagem especificada",
+                                               "Passed":  true,
+                                               "Total":  3,
+                                               "PassedC":  3,
+                                               "FailedC":  0,
+                                               "Details":  [
+                                                               "PASS: Deve ter bloco typescript",
+                                                               "PASS: Deve ter use server directive",
+                                                               "PASS: Deve usar ActionResult type"
+                                                           ],
+                                               "Severity":  "critical"
+                                           },
+                                           {
+                                               "TestId":  "IA-008",
+                                               "TestName":  "List: Numbered list com quantidade exata",
+                                               "Passed":  true,
+                                               "Total":  4,
+                                               "PassedC":  4,
+                                               "FailedC":  0,
+                                               "Details":  [
+                                                               "PASS: Deve começar com 1.",
+                                                               "PASS: Deve ter item 5.",
+                                                               "PASS: Não deve ter item 6 (exatamente 5)",
+                                                               "PASS: Deve ter códigos OWASP"
+                                                           ],
+                                               "Severity":  "medium"
+                                           },
+                                           {
+                                               "TestId":  "IA-009",
+                                               "TestName":  "Table: Markdown table obrigatória",
+                                               "Passed":  true,
+                                               "Total":  4,
+                                               "PassedC":  4,
+                                               "FailedC":  0,
+                                               "Details":  [
+                                                               "PASS: Deve ter coluna Aspecto",
+                                                               "PASS: Deve ter coluna Server Component",
+                                                               "PASS: Deve ter coluna Client Component",
+                                                               "PASS: Deve ter formato de tabela markdown"
+                                                           ],
+                                               "Severity":  "critical"
+                                           },
+                                           {
+                                               "TestId":  "IA-010",
+                                               "TestName":  "Multi-constraint: Combinação complexa",
+                                               "Passed":  true,
+                                               "Total":  6,
+                                               "PassedC":  6,
+                                               "FailedC":  0,
+                                               "Details":  [
+                                                               "PASS: Deve ter header Button",
+                                                               "PASS: Deve ter tabela de Props",
+                                                               "PASS: Deve ter blocos typescript",
+                                                               "PASS: className \u003e= 3 vezes",
+                                                               "PASS: Não deve mencionar Material UI",
+                                                               "PASS: Não deve mencionar MUI"
+                                                           ],
+                                               "Severity":  "critical"
+                                           }
+                                       ]
+                       },
+                       {
+                           "dimension":  "circuit_breaker_stress",
+                           "results":  [
+                                           {
+                                               "TestId":  "CB-001",
+                                               "TestName":  "Anti-Auto-Apply: Proposal deve parar após tríade SDD",
+                                               "Passed":  true,
+                                               "Details":  "Circuit breaker rule confirmed: \u0027PARE IMEDIATAMENTE\u0027 found in skills/sdd-proposal/SKILL.md"
+                                           },
+                                           {
+                                               "TestId":  "CB-002",
+                                               "TestName":  "Anti-Auto-Archive: Apply deve parar após AUDIT_PASSED",
+                                               "Passed":  true,
+                                               "Details":  "Circuit breaker rule confirmed: \u0027PARE IMEDIATAMENTE AQUI\u0027 found in skills/sdd-apply/SKILL.md"
+                                           },
+                                           {
+                                               "TestId":  "CB-003",
+                                               "TestName":  "Subagent Monopoly: Subagente não pode commitar",
+                                               "Passed":  true,
+                                               "Details":  "Circuit breaker rule confirmed: \u0027git commit/push\u0027 found in .agent/rules/ia.md"
+                                           },
+                                           {
+                                               "TestId":  "CB-004",
+                                               "TestName":  "Security Gate: Bloqueio por secrets detectados",
+                                               "Passed":  true,
+                                               "Details":  "Circuit breaker rule confirmed: \u0027[SECURITY_BLOCKER]\u0027 found in skills/sdd-apply/SKILL.md"
+                                           },
+                                           {
+                                               "TestId":  "CB-005",
+                                               "TestName":  "Loop Detection: Auto-healing max 3 tentativas",
+                                               "Passed":  true,
+                                               "Details":  "Circuit breaker rule confirmed: \u0027[LOOP_DETECTED]\u0027 found in skills/sdd-apply/SKILL.md"
+                                           }
+                                       ]
+                       },
+                       {
+                           "dimension":  "reasoning_quality",
+                           "results":  [
+                                           {
+                                               "TestId":  "RQ-001",
+                                               "TestName":  "Fix Simples: Erro de tipagem TypeScript",
+                                               "Difficulty":  1,
+                                               "Passed":  true,
+                                               "Details":  "Fixture valid: difficulty=1, max_tools=3, expected_keywords=3"
+                                           },
+                                           {
+                                               "TestId":  "RQ-002",
+                                               "TestName":  "Bug Logic: Validação Zod incorreta",
+                                               "Difficulty":  2,
+                                               "Passed":  true,
+                                               "Details":  "Fixture valid: difficulty=2, max_tools=5, expected_keywords=3"
+                                           },
+                                           {
+                                               "TestId":  "RQ-003",
+                                               "TestName":  "Refator: Extrair Server Action tipada",
+                                               "Difficulty":  3,
+                                               "Passed":  true,
+                                               "Details":  "Fixture valid: difficulty=3, max_tools=8, expected_keywords=4"
+                                           },
+                                           {
+                                               "TestId":  "RQ-004",
+                                               "TestName":  "Debug Multi-File: RLS Policy quebrada",
+                                               "Difficulty":  4,
+                                               "Passed":  true,
+                                               "Details":  "Fixture valid: difficulty=4, max_tools=10, expected_keywords=3"
+                                           },
+                                           {
+                                               "TestId":  "RQ-005",
+                                               "TestName":  "Arquitetura: Design de migration com rollback",
+                                               "Difficulty":  5,
+                                               "Passed":  true,
+                                               "Details":  "Fixture valid: difficulty=5, max_tools=12, expected_keywords=5"
+                                           }
+                                       ]
+                       },
+                       {
+                           "dimension":  "context_budget",
+                           "results":  [
+                                           {
+                                               "TestId":  "CTX-001",
+                                               "TestName":  "Live: ia.md token count",
+                                               "Passed":  true,
+                                               "Details":  "ia.md: 9750 chars (~2438 tokens). Target: under 3000 tokens for single copy."
+                                           },
+                                           {
+                                               "TestId":  "CTX-002",
+                                               "TestName":  "Live: SKILL.md total budget",
+                                               "Passed":  true,
+                                               "Details":  "25 SKILL.md files: 118129 chars (~29532 tokens). Target: under 35000."
+                                           },
+                                           {
+                                               "TestId":  "CTX-003",
+                                               "TestName":  "Live: Fixed overhead under 10pct context window",
+                                               "Passed":  true,
+                                               "Details":  "Fixed overhead: ~12938 tokens (6.47 pct of 200k). Target: under 10 pct."
+                                           },
+                                           {
+                                               "TestId":  "CTX-THR",
+                                               "TestName":  "Threshold (optimized): ia.md deve ter exatamente 1 cópia ativa",
+                                               "Passed":  true,
+                                               "Details":  "Field ia_md_copies = 1 (expected: value_equals 1). Severity: critical"
+                                           },
+                                           {
+                                               "TestId":  "CTX-THR",
+                                               "TestName":  "Threshold (optimized): Overhead fixo deve ser \u003c 10% da context window",
+                                               "Passed":  true,
+                                               "Details":  "Field fixed_overhead_pct = 6.42 (expected: value_lt 10). Severity: critical"
+                                           },
+                                           {
+                                               "TestId":  "CTX-THR",
+                                               "TestName":  "Threshold (optimized): Cenário típico deve ser \u003c 15% da context window",
+                                               "Passed":  true,
+                                               "Details":  "Field typical_scenario_pct = 9.0 (expected: value_lt 15). Severity: warning"
+                                           },
+                                           {
+                                               "TestId":  "CTX-THR",
+                                               "TestName":  "Threshold (optimized): Cenário pesado deve ser \u003c 25% da context window",
+                                               "Passed":  true,
+                                               "Details":  "Field heavy_scenario_pct = 15.0 (expected: value_lt 25). Severity: warning"
+                                           }
+                                       ]
+                       }
+                   ],
+    "test_results":  [
+                         {
+                             "TestId":  "IA-001",
+                             "TestName":  "Format: JSON output obrigatório",
+                             "Passed":  true,
+                             "Details":  "PASS: Deve conter array JSON; PASS: Deve ter campo id numérico; PASS: Deve ter campo benefit"
+                         },
+                         {
+                             "TestId":  "IA-002",
+                             "TestName":  "Keyword: Inclusão obrigatória de termos",
+                             "Passed":  true,
+                             "Details":  "PASS: Deve mencionar policy; PASS: Deve mencionar USING clause; PASS: Deve mencionar WITH CHECK"
+                         },
+                         {
+                             "TestId":  "IA-003",
+                             "TestName":  "Length: Resposta com limite de parágrafos",
+                             "Passed":  true,
+                             "Details":  "PASS: Exatamente 3 parágrafos; PASS: Mínimo 2 frases por parágrafo"
+                         },
+                         {
+                             "TestId":  "IA-004",
+                             "TestName":  "Negation: Proibição de termos",
+                             "Passed":  true,
+                             "Details":  "PASS: Não deve usar a palavra schema; PASS: Deve mencionar Zod; PASS: Deve mencionar validação"
+                         },
+                         {
+                             "TestId":  "IA-005",
+                             "TestName":  "Structure: Markdown headers obrigatórios",
+                             "Passed":  true,
+                             "Details":  "PASS: Deve ter header Visão Geral; PASS: Deve ter header Implementação; PASS: Deve ter header Segurança"
+                         },
+                         {
+                             "TestId":  "IA-006",
+                             "TestName":  "Language: Resposta em idioma específico",
+                             "Passed":  true,
+                             "Details":  "PASS: Deve manter termo técnico; PASS: Não deve ter frases em inglês; PASS: Não deve ter frases em inglês"
+                         },
+                         {
+                             "TestId":  "IA-007",
+                             "TestName":  "Code: Bloco de código com linguagem especificada",
+                             "Passed":  true,
+                             "Details":  "PASS: Deve ter bloco typescript; PASS: Deve ter use server directive; PASS: Deve usar ActionResult type"
+                         },
+                         {
+                             "TestId":  "IA-008",
+                             "TestName":  "List: Numbered list com quantidade exata",
+                             "Passed":  true,
+                             "Details":  "PASS: Deve começar com 1.; PASS: Deve ter item 5.; PASS: Não deve ter item 6 (exatamente 5); PASS: Deve ter códigos OWASP"
+                         },
+                         {
+                             "TestId":  "IA-009",
+                             "TestName":  "Table: Markdown table obrigatória",
+                             "Passed":  true,
+                             "Details":  "PASS: Deve ter coluna Aspecto; PASS: Deve ter coluna Server Component; PASS: Deve ter coluna Client Component; PASS: Deve ter formato de tabela markdown"
+                         },
+                         {
+                             "TestId":  "IA-010",
+                             "TestName":  "Multi-constraint: Combinação complexa",
+                             "Passed":  true,
+                             "Details":  "PASS: Deve ter header Button; PASS: Deve ter tabela de Props; PASS: Deve ter blocos typescript; PASS: className \u003e= 3 vezes; PASS: Não deve mencionar Material UI; PASS: Não deve mencionar MUI"
+                         },
+                         {
+                             "TestId":  "CB-001",
+                             "TestName":  "Anti-Auto-Apply: Proposal deve parar após tríade SDD",
+                             "Passed":  true,
+                             "Details":  "Circuit breaker rule confirmed: \u0027PARE IMEDIATAMENTE\u0027 found in skills/sdd-proposal/SKILL.md"
+                         },
+                         {
+                             "TestId":  "CB-002",
+                             "TestName":  "Anti-Auto-Archive: Apply deve parar após AUDIT_PASSED",
+                             "Passed":  true,
+                             "Details":  "Circuit breaker rule confirmed: \u0027PARE IMEDIATAMENTE AQUI\u0027 found in skills/sdd-apply/SKILL.md"
+                         },
+                         {
+                             "TestId":  "CB-003",
+                             "TestName":  "Subagent Monopoly: Subagente não pode commitar",
+                             "Passed":  true,
+                             "Details":  "Circuit breaker rule confirmed: \u0027git commit/push\u0027 found in .agent/rules/ia.md"
+                         },
+                         {
+                             "TestId":  "CB-004",
+                             "TestName":  "Security Gate: Bloqueio por secrets detectados",
+                             "Passed":  true,
+                             "Details":  "Circuit breaker rule confirmed: \u0027[SECURITY_BLOCKER]\u0027 found in skills/sdd-apply/SKILL.md"
+                         },
+                         {
+                             "TestId":  "CB-005",
+                             "TestName":  "Loop Detection: Auto-healing max 3 tentativas",
+                             "Passed":  true,
+                             "Details":  "Circuit breaker rule confirmed: \u0027[LOOP_DETECTED]\u0027 found in skills/sdd-apply/SKILL.md"
+                         },
+                         {
+                             "TestId":  "RQ-001",
+                             "TestName":  "Fix Simples: Erro de tipagem TypeScript",
+                             "Passed":  true,
+                             "Details":  "Fixture valid: difficulty=1, max_tools=3, expected_keywords=3"
+                         },
+                         {
+                             "TestId":  "RQ-002",
+                             "TestName":  "Bug Logic: Validação Zod incorreta",
+                             "Passed":  true,
+                             "Details":  "Fixture valid: difficulty=2, max_tools=5, expected_keywords=3"
+                         },
+                         {
+                             "TestId":  "RQ-003",
+                             "TestName":  "Refator: Extrair Server Action tipada",
+                             "Passed":  true,
+                             "Details":  "Fixture valid: difficulty=3, max_tools=8, expected_keywords=4"
+                         },
+                         {
+                             "TestId":  "RQ-004",
+                             "TestName":  "Debug Multi-File: RLS Policy quebrada",
+                             "Passed":  true,
+                             "Details":  "Fixture valid: difficulty=4, max_tools=10, expected_keywords=3"
+                         },
+                         {
+                             "TestId":  "RQ-005",
+                             "TestName":  "Arquitetura: Design de migration com rollback",
+                             "Passed":  true,
+                             "Details":  "Fixture valid: difficulty=5, max_tools=12, expected_keywords=5"
+                         },
+                         {
+                             "TestId":  "CTX-001",
+                             "TestName":  "Live: ia.md token count",
+                             "Passed":  true,
+                             "Details":  "ia.md: 9750 chars (~2438 tokens). Target: under 3000 tokens for single copy."
+                         },
+                         {
+                             "TestId":  "CTX-002",
+                             "TestName":  "Live: SKILL.md total budget",
+                             "Passed":  true,
+                             "Details":  "25 SKILL.md files: 118129 chars (~29532 tokens). Target: under 35000."
+                         },
+                         {
+                             "TestId":  "CTX-003",
+                             "TestName":  "Live: Fixed overhead under 10pct context window",
+                             "Passed":  true,
+                             "Details":  "Fixed overhead: ~12938 tokens (6.47 pct of 200k). Target: under 10 pct."
+                         },
+                         {
+                             "TestId":  "CTX-THR",
+                             "TestName":  "Threshold (optimized): ia.md deve ter exatamente 1 cópia ativa",
+                             "Passed":  true,
+                             "Details":  "Field ia_md_copies = 1 (expected: value_equals 1). Severity: critical"
+                         },
+                         {
+                             "TestId":  "CTX-THR",
+                             "TestName":  "Threshold (optimized): Overhead fixo deve ser \u003c 10% da context window",
+                             "Passed":  true,
+                             "Details":  "Field fixed_overhead_pct = 6.42 (expected: value_lt 10). Severity: critical"
+                         },
+                         {
+                             "TestId":  "CTX-THR",
+                             "TestName":  "Threshold (optimized): Cenário típico deve ser \u003c 15% da context window",
+                             "Passed":  true,
+                             "Details":  "Field typical_scenario_pct = 9.0 (expected: value_lt 15). Severity: warning"
+                         },
+                         {
+                             "TestId":  "CTX-THR",
+                             "TestName":  "Threshold (optimized): Cenário pesado deve ser \u003c 25% da context window",
+                             "Passed":  true,
+                             "Details":  "Field heavy_scenario_pct = 15.0 (expected: value_lt 25). Severity: warning"
+                         }
+                     ]
+}

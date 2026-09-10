@@ -26,8 +26,6 @@ $syncMap = @(
     @{ Source = "skills";                Dest = "skills";                 Type = "dir"  },
     @{ Source = ".agent\agents";         Dest = "skills\.agents";         Type = "dir"  },
     @{ Source = ".agent\rules\ia.md";    Dest = "rules\ia.md";            Type = "file" },
-    @{ Source = ".agent\rules\ia.md";    Dest = "GEMINI.md";              Type = "file" },
-    @{ Source = ".agent\rules\ia.md";    Dest = "AGENTS.md";              Type = "file" },
     @{ Source = "schemas";               Dest = "skills\.agents\schemas"; Type = "dir"  }
 )
 
@@ -81,6 +79,20 @@ foreach ($mapping in $syncMap) {
             Copy-Item -Path $srcPath -Destination $dstPath -Force
             Write-Host "[OK]   $($mapping.Source) -> $($mapping.Dest)" -ForegroundColor Green
             $totalCopied++
+        }
+    }
+}
+
+# --- Cleanup redundant global files that cause system prompt triplication ---
+$redundantFiles = @("GEMINI.md", "AGENTS.md")
+foreach ($rf in $redundantFiles) {
+    $rfPath = Join-Path $globalConfig $rf
+    if (Test-Path $rfPath) {
+        if ($DryRun) {
+            Write-Host "[DRY]  Remove redundant duplicate: $rf" -ForegroundColor Yellow
+        } else {
+            Remove-Item -Path $rfPath -Force
+            Write-Host "[CLEAN] Removed duplicate prompt file: $rf (eliminates 2.3k tokens overhead)" -ForegroundColor Cyan
         }
     }
 }
