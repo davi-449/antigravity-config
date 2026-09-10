@@ -1,5 +1,5 @@
 ﻿{
-    "timestamp":  "2026-09-10T14:42:59Z",
+    "timestamp":  "2026-09-10T14:54:21Z",
     "profile":  "optimized",
     "environment":  {
                         "os_platform":  "Windows_NT",
@@ -245,19 +245,19 @@
                                                "TestId":  "CTX-001",
                                                "TestName":  "Live: ia.md token count",
                                                "Passed":  true,
-                                               "Details":  "ia.md: 9750 chars (~2438 tokens). Target: under 3000 tokens for single copy."
+                                               "Details":  "ia.md: 9767 chars (~2442 tokens). Target: under 3000 tokens for single copy."
                                            },
                                            {
                                                "TestId":  "CTX-002",
                                                "TestName":  "Live: SKILL.md total budget",
                                                "Passed":  true,
-                                               "Details":  "25 SKILL.md files: 118129 chars (~29532 tokens). Target: under 35000."
+                                               "Details":  "25 SKILL.md files: 118365 chars (~29591 tokens). Target: under 35000."
                                            },
                                            {
                                                "TestId":  "CTX-003",
                                                "TestName":  "Live: Fixed overhead under 10pct context window",
                                                "Passed":  true,
-                                               "Details":  "Fixed overhead: ~12938 tokens (6.47 pct of 200k). Target: under 10 pct."
+                                               "Details":  "Fixed overhead: ~12942 tokens (6.47 pct of 200k). Target: under 10 pct."
                                            },
                                            {
                                                "TestId":  "CTX-THR",
@@ -411,19 +411,19 @@
                              "TestId":  "CTX-001",
                              "TestName":  "Live: ia.md token count",
                              "Passed":  true,
-                             "Details":  "ia.md: 9750 chars (~2438 tokens). Target: under 3000 tokens for single copy."
+                             "Details":  "ia.md: 9767 chars (~2442 tokens). Target: under 3000 tokens for single copy."
                          },
                          {
                              "TestId":  "CTX-002",
                              "TestName":  "Live: SKILL.md total budget",
                              "Passed":  true,
-                             "Details":  "25 SKILL.md files: 118129 chars (~29532 tokens). Target: under 35000."
+                             "Details":  "25 SKILL.md files: 118365 chars (~29591 tokens). Target: under 35000."
                          },
                          {
                              "TestId":  "CTX-003",
                              "TestName":  "Live: Fixed overhead under 10pct context window",
                              "Passed":  true,
-                             "Details":  "Fixed overhead: ~12938 tokens (6.47 pct of 200k). Target: under 10 pct."
+                             "Details":  "Fixed overhead: ~12942 tokens (6.47 pct of 200k). Target: under 10 pct."
                          },
                          {
                              "TestId":  "CTX-THR",
