@@ -41,22 +41,26 @@ Para cada task `- [ ] Pending` no `spec-plan.md`, atualize para `- [/] In Progre
 
 <domain type="Database">
 Se envolver Banco/Supabase:
-- Carregue: `skills/database/SKILL.md`
+- Carregue: `skills/database/SKILL.md` (e `references/rls-patterns.md` se criar/editar policies).
 - Inspecione as colunas existentes via SQL antes de criar novas.
 - Escreva e aplique a migration em `supabase/migrations/<timestamp>_<nome>.sql`.
+- Toda tabela DEVE ter RLS habilitado (`ALTER TABLE ... ENABLE ROW LEVEL SECURITY`) e policy multi-tenant.
 </domain>
 
 <domain type="Backend">
 Se envolver Server Actions / APIs / Auth:
 - Carregue: `skills/backend-patterns/SKILL.md` (e `skills/auth/SKILL.md` se envolver sessão).
-- Implemente Server Actions tipadas com retorno `ActionResult<T>`.
+- Implemente Server Actions tipadas com retorno `ActionResult<T>` e schemas de validação Zod.
 - Use `getUser()` no server (nunca `getSession()` para segurança).
+- Aplique Taint Analysis defensiva (`skills/security/references/sentry-taint-analysis.md`): sanitize inputs de formulários antes de passar para queries ou mutações.
 </domain>
 
 <domain type="Frontend">
 Se envolver Telas / Componentes React:
-- Carregue: `skills/ui-components/SKILL.md` (e `skills/ui-motion/SKILL.md` se houver animação).
-- Respeite Dark UI sólida (Zinc-950), tipografia Inter/Outfit e `'use client'` apenas nas folhas interativas.
+- Carregue: `skills/frontend-design-pro/SKILL.md` e `skills/ui-components/SKILL.md` (e `skills/ui-motion/SKILL.md` se houver animação).
+- Respeite estritamente `DESIGN.md`: Dark UI sólida (Zinc-950), superfícies por luminância (dark.design), tipografia Inter/Outfit e `'use client'` apenas nas folhas interativas.
+- Bloqueio ativo de AI Slop: proibido gradientes borrados com blur(100px), icon tile stacks repetitivos ou animações > 200ms.
+- Siga os princípios de Rauno Freiberg (`skills/frontend-design-pro/references/interface-guidelines.md`) para inputs, dados e micro-interações.
 </domain>
 
 Após concluir cada task, marque imediatamente no `spec-plan.md` como `- [x] Completed`.
