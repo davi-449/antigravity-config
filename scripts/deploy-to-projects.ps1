@@ -1,5 +1,5 @@
-# deploy-to-projects.ps1
-# Instala o Antigravity Config v6 (Leads/Workers, agy integration, ia.md, GEMINI.md, AGENTS.md)
+﻿# deploy-to-projects.ps1
+# Instala o Antigravity Config v7 Native AGY Edition (Single-Agent, Plan-First, DESIGN.md Semântico)
 # em todos os projetos e repositórios locais em ~/.gemini/antigravity/scratch/.
 # Usage: .\deploy-to-projects.ps1 [-DryRun]
 
@@ -14,7 +14,7 @@ $repoRoot = Split-Path -Parent $scriptDir
 $scratchDir = "C:\Users\admin\.gemini\antigravity\scratch"
 
 Write-Host "=================================================" -ForegroundColor Magenta
-Write-Host " Antigravity v6 - Multi-Project Local Deployment" -ForegroundColor Magenta
+Write-Host " Antigravity v7 Native - Deployment Engine       " -ForegroundColor Magenta
 Write-Host "=================================================" -ForegroundColor Magenta
 Write-Host "Source:  $repoRoot" -ForegroundColor White
 Write-Host "Target:  $scratchDir" -ForegroundColor White
@@ -41,18 +41,18 @@ Write-Host ""
 
 $sourceIa = Join-Path $repoRoot ".agent\rules\ia.md"
 $sourceAgents = Join-Path $repoRoot ".agent\agents"
-$sourceSchemas = Join-Path $repoRoot "schemas"
-$sourceSpawn = Join-Path $repoRoot "scripts\spawn-agy-worker.ps1"
+$sourceDesign = Join-Path $repoRoot "DESIGN.md"
+$sourceSkills = Join-Path $repoRoot "skills"
 
 $successCount = 0
 $failCount = 0
 
 foreach ($project in $projects) {
     $projPath = $project.FullName
-    Write-Host "--> Deploying to: $($project.Name)..." -ForegroundColor Yellow
+    Write-Host "--> Deploying v7 to: $($project.Name)..." -ForegroundColor Yellow
 
     if ($DryRun) {
-        Write-Host "    [DRY RUN] Would install .agent/ rules, agents, schemas, GEMINI.md, AGENTS.md" -ForegroundColor Yellow
+        Write-Host "    [DRY RUN] Would install v7 config" -ForegroundColor Yellow
         $successCount++
         continue
     }
@@ -62,57 +62,35 @@ foreach ($project in $projects) {
         $targetAgent = Join-Path $projPath ".agent"
         $targetRules = Join-Path $targetAgent "rules"
         $targetAgents = Join-Path $targetAgent "agents"
-        $targetSchemas = Join-Path $targetAgent "schemas"
-        $targetScripts = Join-Path $targetAgent "scripts"
 
         New-Item -ItemType Directory -Path $targetRules -Force | Out-Null
         New-Item -ItemType Directory -Path $targetAgents -Force | Out-Null
-        New-Item -ItemType Directory -Path $targetSchemas -Force | Out-Null
-        New-Item -ItemType Directory -Path $targetScripts -Force | Out-Null
 
-        # 2. Copy ia.md
+        # 2. Copy ia.md (Constitution v7)
         Copy-Item -Path $sourceIa -Destination (Join-Path $targetRules "ia.md") -Force
-
-        # 3. Copy GEMINI.md and AGENTS.md to root
         Copy-Item -Path $sourceIa -Destination (Join-Path $projPath "GEMINI.md") -Force
         Copy-Item -Path $sourceIa -Destination (Join-Path $projPath "AGENTS.md") -Force
 
-        # 4. Copy agents hierarchy (leads, workers, README)
-        $robocopyArgs = @($sourceAgents, $targetAgents, "/MIR", "/NJH", "/NJS", "/NDL", "/NC", "/NS")
-        $null = & robocopy @robocopyArgs
-
-        # 5. Copy schemas
-        $robocopyArgs2 = @($sourceSchemas, $targetSchemas, "/MIR", "/NJH", "/NJS", "/NDL", "/NC", "/NS")
-        $null = & robocopy @robocopyArgs2
-
-        # 6. Copy spawn-agy-worker helper
-        Copy-Item -Path $sourceSpawn -Destination (Join-Path $targetScripts "spawn-agy-worker.ps1") -Force
-
-        # 6.1 Ensure DESIGN.md exists in project root (do not overwrite existing)
-        $targetDesign = Join-Path $projPath "DESIGN.md"
-        $sourceDesign = Join-Path $repoRoot "DESIGN.md"
-        if ((Test-Path $sourceDesign) -and (-not (Test-Path $targetDesign))) {
-            Copy-Item -Path $sourceDesign -Destination $targetDesign -Force
-            Write-Host "    Created default DESIGN.md" -ForegroundColor DarkCyan
+        # 3. Clean up obsolete multi-agent leads/workers from projects
+        if (Test-Path (Join-Path $targetAgents "leads")) {
+            Remove-Item -Recurse -Force (Join-Path $targetAgents "leads") -ErrorAction SilentlyContinue
+        }
+        if (Test-Path (Join-Path $targetAgents "workers")) {
+            Remove-Item -Recurse -Force (Join-Path $targetAgents "workers") -ErrorAction SilentlyContinue
+        }
+        if (Test-Path (Join-Path $projPath ".council")) {
+            Remove-Item -Recurse -Force (Join-Path $projPath ".council") -ErrorAction SilentlyContinue
         }
 
-        # 6.2 Mirror skills/ to project
-        $sourceSkills = Join-Path $repoRoot "skills"
+        # 4. Copy DESIGN.md (Semantic Tokens)
+        Copy-Item -Path $sourceDesign -Destination (Join-Path $projPath "DESIGN.md") -Force
+
+        # 5. Mirror lean skills/ to project
         $targetSkills = Join-Path $projPath "skills"
         $robocopySkills = @($sourceSkills, $targetSkills, "/MIR", "/NJH", "/NJS", "/NDL", "/NC", "/NS")
         $null = & robocopy @robocopySkills
 
-        # 7. Clean up deprecated workflows if present
-        $legacyWorkflows = Join-Path $targetAgent "workflows"
-        if (Test-Path $legacyWorkflows) {
-            Remove-Item -Path $legacyWorkflows -Recurse -Force -ErrorAction SilentlyContinue
-            Write-Host "    Cleaned deprecated .agent/workflows/" -ForegroundColor DarkGray
-        }
-
-        # 8. Clean up obsolete flat agents in project
-        Get-ChildItem -Path $targetAgents -Filter "*-agent.md" -File | Remove-Item -Force -ErrorAction SilentlyContinue
-
-        Write-Host "    [OK] Installed v6 config successfully" -ForegroundColor Green
+        Write-Host "    [OK] Installed v7 Native config successfully" -ForegroundColor Green
         $successCount++
     }
     catch {
