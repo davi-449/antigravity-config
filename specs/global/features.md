@@ -1,0 +1,34 @@
+﻿# 🌐 Mapa Global de Features & Componentes Canônicos
+
+Este arquivo é o registro mestre de tudo o que já existe no ecossistema Antigravity 2.0.
+Toda nova spec DEVE consultar este catálogo para **REUTILIZAR** em vez de duplicar.
+
+---
+
+## 1. Workflows & Ciclo de Vida SDD
+- `/sdd-proposal`: Planejamento determinístico e mapeamento de Blast Radius via Graphify.
+- `/sdd-apply`: Implementação cirúrgica com build gate no terminal e rollback automático.
+- `/sdd-archive`: Quality gate, atualização do grafo topológico, limpeza de resíduos e commit seletivo.
+- `/sdd-debug`: Diagnóstico forense com inspeção de logs reais e SQL.
+- `/council`: Deliberação multi-agente pontual sob demanda explícita.
+
+---
+
+## 2. Skills Canônicas Ativas (11 Skills)
+1. `frontend-design-pro`: Hub de Design Engineering, Dark UI Zinc-950, 48 guidelines do Rauno e anti-slop.
+2. `ui-components`: Catálogo de componentes Shadcn/Tailwind semânticos.
+3. `ui-motion`: Micro-interações e animações Magic UI (≤ 200ms).
+4. `backend-patterns`: Server Actions tipadas `ActionResult<T>`, Zod e revalidação de cache.
+5. `database`: Padrões PostgreSQL/Supabase, multi-tenant RLS e migrations idempotentes.
+6. `auth`: Autenticação SSR segura, PKCE, `getUser()` no server.
+7. `deploy-production`: 4 camadas de cache App Router, SEO metadata e Core Web Vitals.
+8. `security`: AppSec, Taint Analysis (Sentry), Pentest (Cloudflare) e OWASP Top 10.
+9. `github-ops`: Git headless e GitHub CLI token-driven.
+10. `agy-bridge`: Integração com agy CLI para workers assíncronos.
+11. `council-debate`: Deliberação multi-agente em 3 rodadas para stress-test arquitetural.
+
+---
+
+## 3. Design System & Theming
+- `DESIGN.md`: Dicionário de tokens semânticos (`bg-background`, `bg-card`, `border-border`, `text-foreground`).
+- Controle central de tema dark/preto absoluto via CSS variables no `globals.css`.

@@ -1,4 +1,4 @@
-﻿# deploy-to-projects.ps1
+# deploy-to-projects.ps1
 # Instala o Antigravity Config v7 Native AGY Edition (Single-Agent, Plan-First, DESIGN.md Semântico)
 # em todos os projetos e repositórios locais em ~/.gemini/antigravity/scratch/.
 # Usage: .\deploy-to-projects.ps1 [-DryRun]
@@ -90,7 +90,23 @@ foreach ($project in $projects) {
         $robocopySkills = @($sourceSkills, $targetSkills, "/MIR", "/NJH", "/NJS", "/NDL", "/NC", "/NS")
         $null = & robocopy @robocopySkills
 
-        Write-Host "    [OK] Installed v7 Native config successfully" -ForegroundColor Green
+        # 6. Copy Manual de Operacao to docs/
+        $targetDocs = Join-Path $projPath "docs"
+        New-Item -ItemType Directory -Path $targetDocs -Force | Out-Null
+        $sourceManual = Join-Path $repoRoot "docs\manual-operacao-antigravity.md"
+        if (Test-Path $sourceManual) {
+            Copy-Item -Path $sourceManual -Destination (Join-Path $targetDocs "manual-operacao-antigravity.md") -Force
+        }
+
+        # 7. Copy specs/global/features.md
+        $targetSpecsGlobal = Join-Path $projPath "specs\global"
+        New-Item -ItemType Directory -Path $targetSpecsGlobal -Force | Out-Null
+        $sourceFeatures = Join-Path $repoRoot "specs\global\features.md"
+        if (Test-Path $sourceFeatures) {
+            Copy-Item -Path $sourceFeatures -Destination (Join-Path $targetSpecsGlobal "features.md") -Force
+        }
+
+        Write-Host "    [OK] Installed v7 Native config + docs successfully" -ForegroundColor Green
         $successCount++
     }
     catch {
