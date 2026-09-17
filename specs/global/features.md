@@ -1,4 +1,4 @@
-﻿# 🌐 Mapa Global de Features & Componentes Canônicos
+# 🌐 Mapa Global de Features & Componentes Canônicos
 
 Este arquivo é o registro mestre de tudo o que já existe no ecossistema Antigravity 2.0.
 Toda nova spec DEVE consultar este catálogo para **REUTILIZAR** em vez de duplicar.
@@ -32,3 +32,22 @@ Toda nova spec DEVE consultar este catálogo para **REUTILIZAR** em vez de dupli
 ## 3. Design System & Theming
 - `DESIGN.md`: Dicionário de tokens semânticos (`bg-background`, `bg-card`, `border-border`, `text-foreground`).
 - Controle central de tema dark/preto absoluto via CSS variables no `globals.css`.
+
+---
+
+## 4. Engenharia de Fluxo (GitHub Flow & CI)
+- **Issues & PRs**: Criação de issue obrigatória (`gh issue create`), branch por tarefa (`feat/id` ou `fix/id`) e PR (`gh pr create`) sempre referenciando `Closes #ID`.
+- **PR Template**: `.github/PULL_REQUEST_TEMPLATE.md` padronizando Resumo, Issue, Alterações e Checklist de Testes.
+- **CI Quality Gate**: `.github/workflows/quality.yml.example` com lint, typecheck, tests e build verification.
+
+---
+
+## 5. Padrões de Motion & Micro-UX
+- **Skeleton Loading**: Obrigatório para todos os estados de carregamento assíncrono (evita layout shift).
+- **Transições GPU-accelerated**: Keyframes `slideIn` (240ms ease-out) e saída suave (`scale(0.96)`, 200ms ease-in). Respeito estrito a `prefers-reduced-motion`.
+
+---
+
+## 6. Observabilidade & Telemetria
+- **Sentry Breadcrumbs**: Emissão de breadcrumbs estruturados antes de qualquer operação crítica de negócio (campanhas, pagamentos, mutações).
+- **Contextual Capture**: Captura enriquecida com `tags` (feature, entityId) e `extra` seguro (sem PII) em blocos `catch`.

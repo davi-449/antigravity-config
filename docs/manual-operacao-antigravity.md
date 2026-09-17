@@ -1,4 +1,4 @@
-﻿# 📖 Manual de Operação Unificado: Antigravity 2.0 (Native AGY Edition)
+# 📖 Manual de Operação Unificado: Antigravity 2.0 (Native AGY Edition)
 
 Este manual é a fonte oficial de consulta e governança para desenvolvedores e agentes no ecossistema **Google Antigravity 2.0 (AGY)**.
 Ele define a doutrina de execução, o ciclo determinístico de desenvolvimento (SDD), a integração com o grafo topológico e o padrão visual semântico.
@@ -162,6 +162,58 @@ Para garantir que uma alteração de hoje nunca quebre código de anteontem:
 2. **Edição Cirúrgica Obrigatória:** É proibido reescrever o arquivo inteiro. A IA deve usar `replace_file_content` alterando apenas o bloco estritamente necessário.
 3. **Rollback Imediato:** Se o build falhar, reverta a alteração (`git checkout -- <arquivo>`) antes de formular nova hipótese. Nunca construa código em cima de um arquivo já quebrado.
 4. **Staging Seletivo:** Nunca use `git add .`. Sempre adicione individualmente apenas os arquivos validados pertencentes àquela spec.
+
+---
+
+## 7. Padrão de Observabilidade (Sentry Breadcrumbs & Capture)
+
+Toda mutação sensível ou chamada externa de rede (pagamentos, webhooks, campanhas, envio de mensagens) deve registrar telemetria estruturada antes e durante a execução:
+
+```typescript
+import * as Sentry from "@sentry/nextjs";
+
+export async function executeOperation(operationId: string, payload: any) {
+  // 1. Breadcrumb estruturado antes de iniciar a operação
+  Sentry.addBreadcrumb({
+    category: "workflow",
+    message: "Iniciando operacao estruturada",
+    level: "info",
+    data: { operationId, timestamp: new Date().toISOString() },
+  });
+
+  try {
+    const result = await processAction(payload);
+    return { success: true, result };
+  } catch (error) {
+    // 2. Captura contextual de erro com tags de busca e extras seguros
+    Sentry.captureException(error, {
+      tags: { feature: "operation-handler", operationId },
+      extra: { payloadSafe: sanitize(payload) },
+    });
+    throw error;
+  }
+}
+```
+
+---
+
+## 8. GitHub Flow & Pipeline de Qualidade CI/CD
+
+Para garantir que o código só entre em produção após auditoria automática:
+
+### 1. Ciclo de Branches e Issues:
+* **Issue Obrigatória:** Aberta via `gh issue create` com requisitos e critérios de aceite antes de iniciar o código.
+* **Branch Dedicada:** `feature/<id>-<nome>` ou `fix/<id>-<nome>`.
+* **Pull Request com Fechamento Automático:**
+  - O PR é aberto com o template canônico de `.github/PULL_REQUEST_TEMPLATE.md`.
+  - A descrição **DEVE** conter `Closes #ID` para vincular e encerrar a issue no merge.
+
+### 2. Pipeline de Qualidade no GitHub Actions (`.github/workflows/quality.yml`):
+Todo PR disparado para a branch `main` executa:
+1. `bun run lint`: Validação estática de estilo (Biome / ESLint).
+2. `bun run typecheck`: Compilação TypeScript estrita (`tsc --noEmit`).
+3. `bun run test`: Testes unitários de regras de negócio.
+4. `bun run build`: Compilação final limpa de produção.
 
 ---
 

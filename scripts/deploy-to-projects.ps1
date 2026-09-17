@@ -106,7 +106,21 @@ foreach ($project in $projects) {
             Copy-Item -Path $sourceFeatures -Destination (Join-Path $targetSpecsGlobal "features.md") -Force
         }
 
-        # 8. Bootstrap Obsidian Memory (.agent/memory/)
+        # 8. Copy .github templates (PR template & CI workflow example)
+        $targetGithub = Join-Path $projPath ".github"
+        New-Item -ItemType Directory -Path $targetGithub -Force | Out-Null
+        $sourcePrTemplate = Join-Path $repoRoot ".github\PULL_REQUEST_TEMPLATE.md"
+        if (Test-Path $sourcePrTemplate) {
+            Copy-Item -Path $sourcePrTemplate -Destination (Join-Path $targetGithub "PULL_REQUEST_TEMPLATE.md") -Force
+        }
+        $targetWorkflows = Join-Path $targetGithub "workflows"
+        New-Item -ItemType Directory -Path $targetWorkflows -Force | Out-Null
+        $sourceQualityWorkflow = Join-Path $repoRoot ".github\workflows\quality.yml.example"
+        if (Test-Path $sourceQualityWorkflow) {
+            Copy-Item -Path $sourceQualityWorkflow -Destination (Join-Path $targetWorkflows "quality.yml.example") -Force
+        }
+
+        # 9. Bootstrap Obsidian Memory (.agent/memory/)
         $targetMemory = Join-Path $targetAgent "memory"
         New-Item -ItemType Directory -Path $targetMemory -Force | Out-Null
         $sourceMemory = Join-Path $repoRoot ".agent\memory"
