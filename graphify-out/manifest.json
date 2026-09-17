@@ -1,0 +1,142 @@
+{
+  "examples/mirage-test/package.json": {
+    "mtime": 1783456628.2556517,
+    "ast_hash": "e7074cfadf6fa1d25ea1b048154c72a1",
+    "semantic_hash": "e7074cfadf6fa1d25ea1b048154c72a1"
+  },
+  "schemas/agy-task.schema.json": {
+    "mtime": 1788965432.1000412,
+    "ast_hash": "cc35e5dd3b3793b8e3daaba5b67d6ff8",
+    "semantic_hash": "cc35e5dd3b3793b8e3daaba5b67d6ff8"
+  },
+  "schemas/worker-output.schema.json": {
+    "mtime": 1788965432.0372918,
+    "ast_hash": "3552a5e7fc7fa40f55bb46d9752b2f02",
+    "semantic_hash": "3552a5e7fc7fa40f55bb46d9752b2f02"
+  },
+  "scripts/deploy-to-projects.ps1": {
+    "mtime": 1789665796.7370691,
+    "ast_hash": "151a3fd3cd781a63da8d7dcb1f725412",
+    "semantic_hash": "151a3fd3cd781a63da8d7dcb1f725412"
+  },
+  "scripts/run-evals.ps1": {
+    "mtime": 1788876051.2307508,
+    "ast_hash": "faf61df99a50888514836733be5ede1c",
+    "semantic_hash": "faf61df99a50888514836733be5ede1c"
+  },
+  "scripts/security-audit.ps1": {
+    "mtime": 1788985883.6635866,
+    "ast_hash": "2ed04c2c4f1c5817384393bd022552b0",
+    "semantic_hash": "2ed04c2c4f1c5817384393bd022552b0"
+  },
+  "scripts/spawn-agy-worker.ps1": {
+    "mtime": 1788966184.783543,
+    "ast_hash": "d8e064492dbeb1f9b2a77429810cdffb",
+    "semantic_hash": "d8e064492dbeb1f9b2a77429810cdffb"
+  },
+  "scripts/sync-global.ps1": {
+    "mtime": 1789062085.087185,
+    "ast_hash": "d01fb80e5b89c0da5f7af2a274a6c890",
+    "semantic_hash": "d01fb80e5b89c0da5f7af2a274a6c890"
+  },
+  "setup/install.ps1": {
+    "mtime": 1788966156.9099965,
+    "ast_hash": "f2d834149ec40ae5350b79b736bee073",
+    "semantic_hash": "f2d834149ec40ae5350b79b736bee073"
+  },
+  "setup/install.sh": {
+    "mtime": 1776178708.0,
+    "ast_hash": "2f5494fdc6f8921f959433474dcb4f91",
+    "semantic_hash": "2f5494fdc6f8921f959433474dcb4f91"
+  },
+  "tests/benchmark/fixtures/circuit_breaker_stress.json": {
+    "mtime": 1789061982.428269,
+    "ast_hash": "12ce3fd577335875be771192a8230849",
+    "semantic_hash": "12ce3fd577335875be771192a8230849"
+  },
+  "tests/benchmark/fixtures/context_budget.json": {
+    "mtime": 1789046346.0808299,
+    "ast_hash": "de4e90d93ac9058b9c64565719aa3135",
+    "semantic_hash": "de4e90d93ac9058b9c64565719aa3135"
+  },
+  "tests/benchmark/fixtures/instruction_adherence.json": {
+    "mtime": 1789046305.383688,
+    "ast_hash": "f5151beba02d92350a67c5d09cf51d66",
+    "semantic_hash": "f5151beba02d92350a67c5d09cf51d66"
+  },
+  "tests/benchmark/fixtures/reasoning_quality.json": {
+    "mtime": 1789046345.7110372,
+    "ast_hash": "ba812b43809a30e5dfc306a04ea0148f",
+    "semantic_hash": "ba812b43809a30e5dfc306a04ea0148f"
+  },
+  "tests/benchmark/graders/benchmark_graders.ps1": {
+    "mtime": 1789046572.5691686,
+    "ast_hash": "845a21b4b2392e416f3eecac234cb420",
+    "semantic_hash": "845a21b4b2392e416f3eecac234cb420"
+  },
+  "tests/benchmark/reports/baseline_report.json": {
+    "mtime": 1789061990.6051812,
+    "ast_hash": "15ff482c2919f56174c13f310d172ff5",
+    "semantic_hash": "15ff482c2919f56174c13f310d172ff5"
+  },
+  "tests/benchmark/reports/current_report.json": {
+    "mtime": 1789061990.6051812,
+    "ast_hash": "15ff482c2919f56174c13f310d172ff5",
+    "semantic_hash": "15ff482c2919f56174c13f310d172ff5"
+  },
+  "tests/benchmark/reports/optimized_report.json": {
+    "mtime": 1789069497.423678,
+    "ast_hash": "09a2481f78805e4b61631680fe27dc05",
+    "semantic_hash": "09a2481f78805e4b61631680fe27dc05"
+  },
+  "tests/benchmark/run-benchmark.ps1": {
+    "mtime": 1789046420.783787,
+    "ast_hash": "b0959dde97aff47f016f7c9d0c8a6dbe",
+    "semantic_hash": "b0959dde97aff47f016f7c9d0c8a6dbe"
+  },
+  "tests/eval-harness/fixtures/adversarial_auto_chain.json": {
+    "mtime": 1788875992.6137323,
+    "ast_hash": "bbdac5e71c6128a14fe4735120a37827",
+    "semantic_hash": "bbdac5e71c6128a14fe4735120a37827"
+  },
+  "tests/eval-harness/fixtures/agy_worker_timeout.json": {
+    "mtime": 1788966034.1645598,
+    "ast_hash": "9e49b0782afae9fa3d2685d98efc0e6b",
+    "semantic_hash": "9e49b0782afae9fa3d2685d98efc0e6b"
+  },
+  "tests/eval-harness/fixtures/edge_case_playwright_offline.json": {
+    "mtime": 1788876069.2517016,
+    "ast_hash": "a86e0aa7fbe174b94a317ba93d4191aa",
+    "semantic_hash": "a86e0aa7fbe174b94a317ba93d4191aa"
+  },
+  "tests/eval-harness/fixtures/happy_path_proposal.json": {
+    "mtime": 1788875973.8015766,
+    "ast_hash": "76d36bd1d32f89804aed234c0f2204ff",
+    "semantic_hash": "76d36bd1d32f89804aed234c0f2204ff"
+  },
+  "tests/eval-harness/fixtures/off_topic_docker.json": {
+    "mtime": 1788875996.9981458,
+    "ast_hash": "dd502be206aaeea7dfe8ac8cfeb5d1f3",
+    "semantic_hash": "dd502be206aaeea7dfe8ac8cfeb5d1f3"
+  },
+  "tests/eval-harness/fixtures/subagent_recursion_limit.json": {
+    "mtime": 1788966029.4768844,
+    "ast_hash": "a798bc315f7c1f71c14247d20ab751c4",
+    "semantic_hash": "a798bc315f7c1f71c14247d20ab751c4"
+  },
+  "tests/eval-harness/graders/deterministic_graders.ps1": {
+    "mtime": 1788876096.3829484,
+    "ast_hash": "d7eb5d18c91f1816fd5a139e413e6f72",
+    "semantic_hash": "d7eb5d18c91f1816fd5a139e413e6f72"
+  },
+  "tests/eval-harness/reports/eval_report.json": {
+    "mtime": 1789069487.0903668,
+    "ast_hash": "1f3b53cf03b834784502c1b3fb517600",
+    "semantic_hash": "1f3b53cf03b834784502c1b3fb517600"
+  },
+  "tests/eval-harness/schemas/fixture_schema.json": {
+    "mtime": 1788875967.955632,
+    "ast_hash": "a2ca109e03c4662bfe585cd62f41d858",
+    "semantic_hash": "a2ca109e03c4662bfe585cd62f41d858"
+  }
+}

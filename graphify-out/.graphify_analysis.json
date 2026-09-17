@@ -1,0 +1,388 @@
+{
+  "communities": {
+    "0": [
+      "schemas_worker_output_schema_duration_ms_description",
+      "schemas_worker_output_schema_duration_ms_minimum",
+      "schemas_worker_output_schema_duration_ms_type",
+      "schemas_worker_output_schema_errors_description",
+      "schemas_worker_output_schema_errors_items",
+      "schemas_worker_output_schema_errors_type",
+      "schemas_worker_output_schema_fallback_triggered_description",
+      "schemas_worker_output_schema_fallback_triggered_type",
+      "schemas_worker_output_schema_files_created_description",
+      "schemas_worker_output_schema_files_created_items",
+      "schemas_worker_output_schema_files_created_type",
+      "schemas_worker_output_schema_files_modified_description",
+      "schemas_worker_output_schema_files_modified_items",
+      "schemas_worker_output_schema_files_modified_type",
+      "schemas_worker_output_schema_items_type",
+      "schemas_worker_output_schema_lead_description",
+      "schemas_worker_output_schema_lead_type",
+      "schemas_worker_output_schema_properties",
+      "schemas_worker_output_schema_properties_duration_ms",
+      "schemas_worker_output_schema_properties_errors",
+      "schemas_worker_output_schema_properties_fallback_triggered",
+      "schemas_worker_output_schema_properties_files_created",
+      "schemas_worker_output_schema_properties_files_modified",
+      "schemas_worker_output_schema_properties_lead",
+      "schemas_worker_output_schema_properties_skill_used",
+      "schemas_worker_output_schema_properties_summary",
+      "schemas_worker_output_schema_properties_worker",
+      "schemas_worker_output_schema_skill_used_description",
+      "schemas_worker_output_schema_skill_used_type",
+      "schemas_worker_output_schema_summary_description",
+      "schemas_worker_output_schema_summary_type",
+      "schemas_worker_output_schema_worker_description",
+      "schemas_worker_output_schema_worker_type"
+    ],
+    "1": [
+      "schemas_agy_task_schema_fallback_to_native_default",
+      "schemas_agy_task_schema_fallback_to_native_description",
+      "schemas_agy_task_schema_fallback_to_native_type",
+      "schemas_agy_task_schema_model_default",
+      "schemas_agy_task_schema_model_description",
+      "schemas_agy_task_schema_model_type",
+      "schemas_agy_task_schema_output_schema_description",
+      "schemas_agy_task_schema_output_schema_type",
+      "schemas_agy_task_schema_prompt_description",
+      "schemas_agy_task_schema_prompt_minlength",
+      "schemas_agy_task_schema_prompt_type",
+      "schemas_agy_task_schema_properties",
+      "schemas_agy_task_schema_properties_fallback_to_native",
+      "schemas_agy_task_schema_properties_model",
+      "schemas_agy_task_schema_properties_output_schema",
+      "schemas_agy_task_schema_properties_prompt",
+      "schemas_agy_task_schema_properties_sandbox",
+      "schemas_agy_task_schema_properties_skip_permissions",
+      "schemas_agy_task_schema_properties_task_id",
+      "schemas_agy_task_schema_properties_worker_agent",
+      "schemas_agy_task_schema_sandbox_default",
+      "schemas_agy_task_schema_sandbox_description",
+      "schemas_agy_task_schema_sandbox_type",
+      "schemas_agy_task_schema_skip_permissions_default",
+      "schemas_agy_task_schema_skip_permissions_description",
+      "schemas_agy_task_schema_skip_permissions_type",
+      "schemas_agy_task_schema_task_id_description",
+      "schemas_agy_task_schema_task_id_pattern",
+      "schemas_agy_task_schema_task_id_type",
+      "schemas_agy_task_schema_worker_agent_description",
+      "schemas_agy_task_schema_worker_agent_type"
+    ],
+    "2": [
+      "schemas_agy_task_schema_add_dirs_description",
+      "schemas_agy_task_schema_add_dirs_items",
+      "schemas_agy_task_schema_add_dirs_type",
+      "schemas_agy_task_schema_injected_context_additionalproperties",
+      "schemas_agy_task_schema_injected_context_description",
+      "schemas_agy_task_schema_injected_context_properties",
+      "schemas_agy_task_schema_injected_context_type",
+      "schemas_agy_task_schema_items_type",
+      "schemas_agy_task_schema_memory_files_description",
+      "schemas_agy_task_schema_memory_files_items",
+      "schemas_agy_task_schema_memory_files_type",
+      "schemas_agy_task_schema_properties_add_dirs",
+      "schemas_agy_task_schema_properties_injected_context",
+      "schemas_agy_task_schema_properties_memory_files",
+      "schemas_agy_task_schema_properties_skill_files",
+      "schemas_agy_task_schema_properties_spec_files",
+      "schemas_agy_task_schema_skill_files_description",
+      "schemas_agy_task_schema_skill_files_items",
+      "schemas_agy_task_schema_skill_files_type",
+      "schemas_agy_task_schema_spec_files_description",
+      "schemas_agy_task_schema_spec_files_items",
+      "schemas_agy_task_schema_spec_files_type"
+    ],
+    "3": [
+      "ref_circuit_breaker_expected",
+      "ref_execution_mode",
+      "ref_hard_stop_expected",
+      "ref_multi_agent_explicit",
+      "ref_single_agent",
+      "tests_eval_harness_schemas_fixture_schema_circuit_breaker_expected_type",
+      "tests_eval_harness_schemas_fixture_schema_execution_mode_enum",
+      "tests_eval_harness_schemas_fixture_schema_execution_mode_type",
+      "tests_eval_harness_schemas_fixture_schema_expected_behavior_properties",
+      "tests_eval_harness_schemas_fixture_schema_expected_behavior_required",
+      "tests_eval_harness_schemas_fixture_schema_expected_behavior_type",
+      "tests_eval_harness_schemas_fixture_schema_hard_stop_expected_type",
+      "tests_eval_harness_schemas_fixture_schema_properties_circuit_breaker_expected",
+      "tests_eval_harness_schemas_fixture_schema_properties_execution_mode",
+      "tests_eval_harness_schemas_fixture_schema_properties_expected_behavior",
+      "tests_eval_harness_schemas_fixture_schema_properties_hard_stop_expected",
+      "tests_eval_harness_schemas_fixture_schema_properties_required_elements",
+      "tests_eval_harness_schemas_fixture_schema_properties_visual_qa_behavior",
+      "tests_eval_harness_schemas_fixture_schema_required_elements_items",
+      "tests_eval_harness_schemas_fixture_schema_required_elements_type",
+      "tests_eval_harness_schemas_fixture_schema_visual_qa_behavior_type"
+    ],
+    "4": [
+      "tests_eval_harness_schemas_fixture_schema",
+      "tests_eval_harness_schemas_fixture_schema_assertions_items",
+      "tests_eval_harness_schemas_fixture_schema_assertions_type",
+      "tests_eval_harness_schemas_fixture_schema_description",
+      "tests_eval_harness_schemas_fixture_schema_description_type",
+      "tests_eval_harness_schemas_fixture_schema_forbidden_patterns_items",
+      "tests_eval_harness_schemas_fixture_schema_forbidden_patterns_type",
+      "tests_eval_harness_schemas_fixture_schema_id_pattern",
+      "tests_eval_harness_schemas_fixture_schema_id_type",
+      "tests_eval_harness_schemas_fixture_schema_input_prompt_type",
+      "tests_eval_harness_schemas_fixture_schema_items_type",
+      "tests_eval_harness_schemas_fixture_schema_properties",
+      "tests_eval_harness_schemas_fixture_schema_properties_assertions",
+      "tests_eval_harness_schemas_fixture_schema_properties_description",
+      "tests_eval_harness_schemas_fixture_schema_properties_forbidden_patterns",
+      "tests_eval_harness_schemas_fixture_schema_properties_id",
+      "tests_eval_harness_schemas_fixture_schema_properties_input_prompt",
+      "tests_eval_harness_schemas_fixture_schema_schema",
+      "tests_eval_harness_schemas_fixture_schema_title",
+      "tests_eval_harness_schemas_fixture_schema_type"
+    ],
+    "5": [
+      "ref_array",
+      "ref_boolean",
+      "ref_budget_limit",
+      "ref_file_boundary",
+      "ref_number",
+      "ref_rule_presence",
+      "ref_schema_validation",
+      "ref_state_transition",
+      "ref_string",
+      "tests_eval_harness_schemas_fixture_schema_check_type_enum",
+      "tests_eval_harness_schemas_fixture_schema_check_type_type",
+      "tests_eval_harness_schemas_fixture_schema_expected_value_type",
+      "tests_eval_harness_schemas_fixture_schema_items_properties",
+      "tests_eval_harness_schemas_fixture_schema_name_type",
+      "tests_eval_harness_schemas_fixture_schema_properties_check_type",
+      "tests_eval_harness_schemas_fixture_schema_properties_expected_value",
+      "tests_eval_harness_schemas_fixture_schema_properties_name",
+      "tests_eval_harness_schemas_fixture_schema_properties_target",
+      "tests_eval_harness_schemas_fixture_schema_target_type"
+    ],
+    "6": [
+      "examples_mirage_test_package",
+      "examples_mirage_test_package_author",
+      "examples_mirage_test_package_dependencies",
+      "examples_mirage_test_package_dependencies_playwright",
+      "examples_mirage_test_package_description",
+      "examples_mirage_test_package_keywords",
+      "examples_mirage_test_package_license",
+      "examples_mirage_test_package_main",
+      "examples_mirage_test_package_name",
+      "examples_mirage_test_package_scripts",
+      "examples_mirage_test_package_scripts_test",
+      "examples_mirage_test_package_type",
+      "examples_mirage_test_package_version",
+      "playwright"
+    ],
+    "7": [
+      "ref_assertions",
+      "ref_check_type",
+      "ref_description",
+      "ref_expected_behavior",
+      "ref_expected_value",
+      "ref_forbidden_patterns",
+      "ref_id",
+      "ref_input_prompt",
+      "ref_name",
+      "ref_operator",
+      "ref_phase",
+      "ref_target",
+      "tests_eval_harness_schemas_fixture_schema_items_required",
+      "tests_eval_harness_schemas_fixture_schema_required"
+    ],
+    "8": [
+      "ref_model",
+      "ref_prompt",
+      "ref_task_id",
+      "ref_worker_agent",
+      "schemas_agy_task_schema",
+      "schemas_agy_task_schema_additionalproperties",
+      "schemas_agy_task_schema_description",
+      "schemas_agy_task_schema_required",
+      "schemas_agy_task_schema_schema",
+      "schemas_agy_task_schema_title",
+      "schemas_agy_task_schema_type"
+    ],
+    "9": [
+      "ref_status",
+      "ref_summary",
+      "ref_worker",
+      "schemas_worker_output_schema",
+      "schemas_worker_output_schema_additionalproperties",
+      "schemas_worker_output_schema_description",
+      "schemas_worker_output_schema_required",
+      "schemas_worker_output_schema_schema",
+      "schemas_worker_output_schema_title",
+      "schemas_worker_output_schema_type"
+    ],
+    "10": [
+      "ref_contains",
+      "ref_equals",
+      "ref_less_than_or_equal",
+      "ref_matches",
+      "ref_not_contains",
+      "tests_eval_harness_schemas_fixture_schema_operator_enum",
+      "tests_eval_harness_schemas_fixture_schema_operator_type",
+      "tests_eval_harness_schemas_fixture_schema_properties_operator"
+    ],
+    "11": [
+      "ref_done",
+      "ref_failed",
+      "ref_partial",
+      "ref_timeout",
+      "schemas_worker_output_schema_properties_status",
+      "schemas_worker_output_schema_status_description",
+      "schemas_worker_output_schema_status_enum",
+      "schemas_worker_output_schema_status_type"
+    ],
+    "12": [
+      "ref_apply",
+      "ref_archive",
+      "ref_general",
+      "ref_proposal",
+      "tests_eval_harness_schemas_fixture_schema_phase_enum",
+      "tests_eval_harness_schemas_fixture_schema_phase_type",
+      "tests_eval_harness_schemas_fixture_schema_properties_phase"
+    ],
+    "13": [
+      "ref_agy_cli",
+      "ref_native_subagent",
+      "schemas_worker_output_schema_execution_mode_description",
+      "schemas_worker_output_schema_execution_mode_enum",
+      "schemas_worker_output_schema_execution_mode_type",
+      "schemas_worker_output_schema_properties_execution_mode"
+    ],
+    "14": [
+      "schemas_agy_task_schema_properties_timeout_seconds",
+      "schemas_agy_task_schema_timeout_seconds_default",
+      "schemas_agy_task_schema_timeout_seconds_description",
+      "schemas_agy_task_schema_timeout_seconds_maximum",
+      "schemas_agy_task_schema_timeout_seconds_minimum",
+      "schemas_agy_task_schema_timeout_seconds_type"
+    ],
+    "15": [
+      "tests_benchmark_graders_benchmark_graders",
+      "tests_benchmark_graders_benchmark_graders_get_benchmarksummary",
+      "tests_benchmark_graders_benchmark_graders_test_circuitbreakercompliance",
+      "tests_benchmark_graders_benchmark_graders_test_contextbudget",
+      "tests_benchmark_graders_benchmark_graders_test_instructionadherence",
+      "tests_benchmark_graders_benchmark_graders_test_reasoningqualityfixtures"
+    ],
+    "16": [
+      "tests_eval_harness_graders_deterministic_graders",
+      "tests_eval_harness_graders_deterministic_graders_evaluate_assertion",
+      "tests_eval_harness_graders_deterministic_graders_evaluate_executiontrace",
+      "tests_eval_harness_graders_deterministic_graders_evaluate_governancerules",
+      "tests_eval_harness_graders_deterministic_graders_test_fixtureschemaconformance"
+    ],
+    "17": [
+      "setup_install_sh__entry",
+      "setup_install_sh_setup_install"
+    ],
+    "18": [
+      "scripts_deploy_to_projects"
+    ],
+    "19": [
+      "scripts_run_evals"
+    ],
+    "20": [
+      "scripts_security_audit"
+    ],
+    "21": [
+      "scripts_spawn_agy_worker"
+    ],
+    "22": [
+      "scripts_sync_global"
+    ],
+    "23": [
+      "setup_install_ps1_setup_install"
+    ],
+    "24": [
+      "tests_benchmark_run_benchmark"
+    ]
+  },
+  "cohesion": {
+    "0": 0.06439393939393939,
+    "1": 0.06451612903225806,
+    "2": 0.09956709956709957,
+    "3": 0.09523809523809523,
+    "4": 0.10526315789473684,
+    "5": 0.10526315789473684,
+    "6": 0.14285714285714285,
+    "7": 0.14285714285714285,
+    "8": 0.18181818181818182,
+    "9": 0.2,
+    "10": 0.25,
+    "11": 0.25,
+    "12": 0.2857142857142857,
+    "13": 0.3333333333333333,
+    "14": 0.3333333333333333,
+    "15": 0.3333333333333333,
+    "16": 0.4,
+    "17": 1.0,
+    "18": 1.0,
+    "19": 1.0,
+    "20": 1.0,
+    "21": 1.0,
+    "22": 1.0,
+    "23": 1.0,
+    "24": 1.0
+  },
+  "gods": [
+    {
+      "id": "tests_eval_harness_schemas_fixture_schema_required",
+      "label": "required",
+      "degree": 9
+    },
+    {
+      "id": "schemas_agy_task_schema_properties_timeout_seconds",
+      "label": "timeout_seconds",
+      "degree": 6
+    },
+    {
+      "id": "tests_eval_harness_schemas_fixture_schema_items_required",
+      "label": "required",
+      "degree": 6
+    },
+    {
+      "id": "tests_eval_harness_schemas_fixture_schema_check_type_enum",
+      "label": "enum",
+      "degree": 6
+    },
+    {
+      "id": "tests_eval_harness_schemas_fixture_schema_operator_enum",
+      "label": "enum",
+      "degree": 6
+    },
+    {
+      "id": "schemas_agy_task_schema_required",
+      "label": "required",
+      "degree": 5
+    },
+    {
+      "id": "schemas_agy_task_schema_properties_injected_context",
+      "label": "injected_context",
+      "degree": 5
+    },
+    {
+      "id": "schemas_worker_output_schema_status_enum",
+      "label": "enum",
+      "degree": 5
+    },
+    {
+      "id": "tests_eval_harness_schemas_fixture_schema_phase_enum",
+      "label": "enum",
+      "degree": 5
+    },
+    {
+      "id": "schemas_agy_task_schema_properties_task_id",
+      "label": "task_id",
+      "degree": 4
+    }
+  ],
+  "surprises": [],
+  "tokens": {
+    "input": 0,
+    "output": 0
+  }
+}
