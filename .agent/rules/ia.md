@@ -12,6 +12,7 @@ A engenharia de software, especificação, implementação e validação são ex
 - Proibido o uso de debates multi-agente para tarefas de código (elimina a amplificação de erros e o efeito telefone sem fio).
 - Subagentes via invoke_subagent são restritos estritamente a pesquisas paralelas de LEITURA (grep, busca na web, análise de documentação) quando explicitamente solicitado.
 - Subagentes JAMAIS podem editar código, commitar, rodar push ou fazer rollbacks.
+- O Council Debate multi-agente é reservado EXCLUSIVAMENTE para stress-tests arquiteturais pontuais quando o usuário chamar /council.
 </execution_doctrine>
 
 <output_policy anti_waffling="true">
@@ -26,7 +27,7 @@ A engenharia de software, especificação, implementação e validação são ex
 <enforcement>
 1. Antes de qualquer escrita de código, gere um checklist em bullet points contendo:
    - Causa-raiz diagnosticada.
-   - Blast Radius: Lista exata dos arquivos que serão tocados e dependências filhas afetadas.
+   - Blast Radius: Lista exata dos arquivos que serão tocados e dependências filhas afetadas (consulte o grafo).
    - Comando de verificação de terminal (build/typecheck/teste).
 2. PARE IMEDIATAMENTE e aguarde a aprovação explícita do usuário (via Planning Mode do Antigravity ou comando /sdd-apply).
 3. Modificações fora dos arquivos listados no plano aprovado são CATEGORICAMENTE BLOQUEADAS.
@@ -36,7 +37,7 @@ A engenharia de software, especificação, implementação e validação são ex
 <breaker name="terminal-gate-and-rollback" phase="after_code_mutation">
 <rule>Toda mutação de código deve ser verificada imediatamente no terminal.</rule>
 <enforcement>
-1. Após aplicar uma alteração, execute o comando de verificação (build, lint, typecheck ou teste).
+1. Após aplicar uma alteração, execute o comando de verificação rápida (build / typecheck). Zero testes de browser/frontend.
 2. Se a verificação FALHAR: execute ROLLBACK IMEDIATO da alteração antes de tentar outra hipótese.
 3. TERMINANTEMENTE PROIBIDO fazer "conserto sobre conserto" acumulando erros em cascata.
 4. Ao passar no teste: PARE IMEDIATAMENTE para validação do usuário antes de qualquer arquivamento ou commit.
@@ -61,19 +62,27 @@ Este projeto segue rigorosamente o padrão de Design System do DESIGN.md (Shadcn
    - Textos: Use EXCLUSIVAMENTE text-foreground, text-muted-foreground e text-primary.
    - Bordas: Use EXCLUSIVAMENTE border-border ou border-border/40.
 3. REGRA DO DARK MODE E "NO PURE BLACK":
-   - PROIBIDO o uso de preto puro (#000000, bg-black). O fundo padrão é Zinc-950 (bg-background).
+   - PROIBIDO o uso de preto puro (#000000, bg-black) no código dos componentes. O fundo padrão é Zinc-950 (bg-background).
+   - O controle de preto total/OLED é feito centralizadamente nas CSS Variables em globals.css, garantindo que toda a UI escureça de forma idêntica.
    - Hierarquia de elevação de superfícies:
      - Nível 0 (Canvas): bg-background (Zinc-950)
      - Nível 1 (Cards e Painéis): bg-card border border-border/50 (Zinc-900)
      - Nível 2 (Popovers e Modais): bg-popover border border-border
-   - Toda combinação de fundo deve respeitar o par semântico de texto correspondente (bg-primary com text-primary-foreground).
 </ui_design_guardrails>
 
+<graphify_intelligence>
+O Graphify é a ferramenta de inteligência topológica do projeto:
+- No Proposal: Execute graphify explain "<modulo>" ou graphify query "<termo>" para mapear o Blast Radius real antes de propor edições.
+- No Archive: Execute graphify update para sincronizar o grafo com o código entregue e execute a limpeza de resíduos temporários (.tmp/, logs).
+- O comando de terminal é graphify (um Y), pacote Python graphifyy.
+</graphify_intelligence>
+
 <core_workflows>
-- /sdd-proposal (ou /vibe-proposal): Gera a tríade SDD (proposal.md, design.md, spec-plan.md) com mapeamento de Blast Radius e aplica Hard Stop imediato.
-- /sdd-apply (ou /vibe-apply): Executa as tasks aprovadas de forma cirúrgica e sequencial, roda o Terminal Gate e aplica Hard Stop para teste humano.
-- /sdd-archive (ou /vibe-archive): Executa o Quality Gate final, salva memória duradoura e realiza commit atômico controlado.
-- /sdd-debug (ou /vibe-debug): Diagnóstico forense em logs reais e banco via SQL, com teste e rollback em caso de falha.
+- /sdd-proposal: Gera a tríade SDD (proposal.md, design.md, spec-plan.md) com mapeamento de Blast Radius via Graphify e aplica Hard Stop imediato.
+- /sdd-apply: Executa as tasks aprovadas de forma cirúrgica e sequencial, roda o Terminal Gate (build limpo) e aplica Hard Stop para teste humano.
+- /sdd-archive: Executa o Quality Gate final, limpa resíduos transitórios (.tmp/, logs), atualiza o grafo (graphify update), salva memória duradoura e realiza commit atômico controlado.
+- /sdd-debug: Diagnóstico forense em logs reais e banco via SQL, com teste e rollback em caso de falha.
+- /council: Deliberação multi-agente pontual para decisões de arquitetura sob demanda.
 </core_workflows>
 
 <clean_workspace>
