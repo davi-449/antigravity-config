@@ -78,3 +78,7 @@ n8n_tool_snippet.json
 .council/*.json
 .council/round_*/*.json
 
+
+# Graphify AST cache
+graphify-out/cache/
+

@@ -106,7 +106,21 @@ foreach ($project in $projects) {
             Copy-Item -Path $sourceFeatures -Destination (Join-Path $targetSpecsGlobal "features.md") -Force
         }
 
-        Write-Host "    [OK] Installed v7 Native config + docs successfully" -ForegroundColor Green
+        # 8. Bootstrap Obsidian Memory (.agent/memory/)
+        $targetMemory = Join-Path $targetAgent "memory"
+        New-Item -ItemType Directory -Path $targetMemory -Force | Out-Null
+        $sourceMemory = Join-Path $repoRoot ".agent\memory"
+        if (Test-Path $sourceMemory) {
+            $categories = @("ui", "supabase", "auth", "infra", "domain")
+            foreach ($cat in $categories) {
+                $targetCatFile = Join-Path $targetMemory "$cat.md"
+                if (-not (Test-Path $targetCatFile)) {
+                    Copy-Item -Path (Join-Path $sourceMemory "$cat.md") -Destination $targetCatFile -Force
+                }
+            }
+        }
+
+        Write-Host "    [OK] Installed v7 Native config + docs + Obsidian memory successfully" -ForegroundColor Green
         $successCount++
     }
     catch {
