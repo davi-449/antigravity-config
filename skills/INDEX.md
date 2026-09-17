@@ -19,6 +19,7 @@ Este índice é o ponto de entrada central para o agente. Identifique a intenç�
 | **Cybersecurity & AppSec** | `security/SKILL.md` | `security/references/sentry-taint-analysis.md`, `cloudflare-adversarial.md` |
 | **Git Headless / Branches / PRs / CI-CD** | `github-ops/SKILL.md` | `github-ops/SKILL.md` |
 | **Integração agy CLI / Workers Headless** | `agy-bridge/SKILL.md` | `scripts/spawn-agy-worker.ps1` |
+| **Debate do Conselho (Stress-Test Arquitetural)** | `council-debate/SKILL.md` | `.council/`, `agents/`, `references/debate-rules.md` (Acionado EXCLUSIVAMENTE sob demanda explícita do usuário via `/council`) |
 
 ---
 
@@ -31,11 +32,12 @@ Este índice é o ponto de entrada central para o agente. Identifique a intenç�
 | **Implementação & QA (Surgical)** | `sdd-apply/SKILL.md` | "implementar spec", "executar spec" | `/sdd-apply` |
 | **Auditoria & Commit** | `sdd-archive/SKILL.md` | "arquivar spec", "finalizar feature" | `/sdd-archive` |
 | **Diagnóstico Forense** | `sdd-debug/SKILL.md` | "corrigir bug", "investigar erro" | `/sdd-debug` |
+| **Deliberação do Conselho** | `council-debate/SKILL.md` | "debate do conselho", "chamar council" | `/council` |
 
 ---
 
 ## 🛑 Regras Rígidas de Context Budget
 
 1. **Progressive Disclosure**: Carregue no máximo 1-2 skills simultâneas por turno.
-2. **Single-Agent Direct**: Sem despacho em cadeia multi-agente para tarefas de escrita.
+2. **Single-Agent Direct por Padrão**: O modo de código diário é estritamente 1 agente. O Conselho Multi-Agente é acionado APENAS sob comando explícito do usuário.
 3. **Plan-First Mandatório**: Nenhuma edição de código sem mapeamento de Blast Radius e aprovação prévia.

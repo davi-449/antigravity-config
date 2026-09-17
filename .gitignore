@@ -74,3 +74,8 @@ n8n_tool_snippet.json
 .idea/
 .vscode/settings.json
 *.swp
+
+# Council cache/memory dumps
+.council/*.json
+.council/round_*/*.json
+
