@@ -51,3 +51,17 @@ Toda nova spec DEVE consultar este catálogo para **REUTILIZAR** em vez de dupli
 ## 6. Observabilidade & Telemetria
 - **Sentry Breadcrumbs**: Emissão de breadcrumbs estruturados antes de qualquer operação crítica de negócio (campanhas, pagamentos, mutações).
 - **Contextual Capture**: Captura enriquecida com `tags` (feature, entityId) e `extra` seguro (sem PII) em blocos `catch`.
+
+---
+
+## 7. MCPs Instalados & Ativos
+
+| MCP | Tools | Quando Usar |
+|---|:---:|---|
+| `lazyweb` | 42 | Nova UI, paywall, pricing, dashboard — pesquisa competitiva de mercado pré-proposal. |
+| `chrome-devtools-mcp` | 29 | Validação visual pós-build: Lighthouse, performance trace, console/network errors. |
+| `supabase` | 27 | DDL, migrations, Edge Functions, logs, RLS em projetos com `project_id` configurado. |
+| `lovable` | 40 | Projetos Lovable: create, send_message, get_diff, set_project_knowledge. |
+
+**Skill dedicada de browser QA:** `skills/browser-qa/SKILL.md`.
+**Projeto Lovable/Supabase ativo:** Financeiro/Conciliação (ver `.agent/memory/infra.md`).

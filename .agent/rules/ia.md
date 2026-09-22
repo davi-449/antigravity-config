@@ -1,4 +1,4 @@
-﻿---
+---
 trigger: always_on
 ---
 
@@ -90,5 +90,31 @@ O Graphify é a ferramenta de inteligência topológica do projeto:
 - Se git não estiver no PATH: use C:\Users\admin\.gemini\antigravity\scratch\mingit\cmd\git.exe.
 - Se PowerShell acusar erro de Execution Policy: envolva em cmd.exe /c "<comando>".
 </clean_workspace>
+
+<mcp_tools>
+O Antigravity 2.0 possui 4 MCPs instalados e ativos. Use-os conforme o contexto — nunca os ignore silenciosamente.
+
+### 1. lazyweb — Pesquisa Competitiva de UX (42 tools)
+- **Quando usar:** SEMPRE que a task envolver criação de nova tela, componente de UI, paywall, pricing, landing page ou dashboard. Consulte ANTES de propor qualquer estrutura visual.
+- **Lembre ao usuário que essa opção existe** se o contexto for de UI e Lazyweb não foi mencionado.
+- **Tools principais:** `lazyweb_search_screens` (refs de mercado), `lazyweb_generate_report` (relatório de otimização a partir de screenshot), `lazyweb_propose_ui_changes` (proposta interativa de mudanças), `lazyweb_search_experiments` (A/B tests reais).
+- **REGRA CRÍTICA:** Nunca copiar schemas, regras de scoring ou lógica de produto do Lazyweb para skills ou regras. Os MCPs são a fonte de verdade; as skills apenas descrevem *quando* e *como* chamá-los.
+
+### 2. chrome-devtools-mcp — Browser Real & QA Visual (29 tools)
+- **Quando usar:** Validação visual pós-implementação, audit de Lighthouse, inspeção de erros de console/network, performance profiling.
+- **Não substitui** o Terminal Gate (`npm run build`). É uma **camada adicional** após o build passar.
+- **Tools principais:** `take_screenshot`, `lighthouse_audit`, `list_console_messages`, `list_network_requests`, `performance_start_trace` / `performance_stop_trace` / `performance_analyze_insight`.
+
+### 3. supabase — DDL & Operações Diretas (27 tools)
+- **Quando usar:** Via primária para migrações, inspeção de schema, logs e Edge Functions em projetos Supabase conectados.
+- **Sequência obrigatória para DDL:** `list_tables` (inspecionar) → `execute_sql` (rascunho/verificação) → `apply_migration` (DDL definitivo com nome em snake_case).
+- **Para diagnóstico:** `query_logs` + `get_advisors` antes de qualquer mudança no schema.
+- **Fallback:** CLI local (`npx supabase db push --linked`) quando não houver `project_id` disponível.
+
+### 4. lovable — App Builder Programático (40 tools)
+- **Quando usar:** Projetos hospedados no Lovable (não para projetos locais de scratch/).
+- **Tools principais:** `send_message` (instrui o agente Lovable), `get_diff` (inspeciona mudanças), `set_project_knowledge` (injeta contexto persistente), `list_projects`.
+- **Projeto ativo configurado:** Financeiro/Conciliação (ver `.agent/memory/infra.md` para IDs).
+</mcp_tools>
 
 </constitution>
