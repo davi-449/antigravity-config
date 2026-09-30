@@ -14,6 +14,8 @@ Executa o checklist de `specs/<id>/spec-plan.md` diretamente com um único agent
 <guardrails>
 - <rule type="execution">Execução direta por UM ÚNICO AGENTE. Não lance subagentes por tarefa (zero invoke_subagent).</rule>
 - <rule type="mandatory">A spec é a lei. Implemente estritamente o que foi acordado no proposal.md e design.md.</rule>
+- <rule type="preserve_existing">Antes de editar, registre HEAD, `git status --porcelain=v1`, `git diff --binary` e `git diff --cached --binary`, além dos caminhos untracked. Preserve o index e todas as mudanças preexistentes. Se um caminho de implementação aprovado já tiver mudança staged, unstaged ou untracked, pare diante de sobreposição ambígua; não sobrescreva nem desfaça trabalho anterior. Os três documentos da spec aprovada são entrada do apply: registre seu conteúdo inicial e limite a edição de `spec-plan.md` ao progresso das tasks.</rule>
+- <rule type="scope">Edite apenas os caminhos aprovados na spec. Se a solução exigir outro caminho ou contrato, pare, apresente a evidência e peça revisão da proposta antes de continuar.</rule>
 - <rule type="save_state">Atualize o spec-plan.md: [- [/] In Progress] ao iniciar e [- [x] Completed] ao finalizar cada task.</rule>
 - <rule type="budgets">Limites operacionais rígidos: max_auto_healing_attempts = 3; max_tool_calls_per_task = 15; max_total_retries = 5. Se o budget for atingido, documente a justificativa técnica, interrompa a execução e consulte o usuário.</rule>
 - <rule type="loop_prevention">Loop Scorer: Se a mesma ação, patch ou ferramenta falhar 2 vezes de forma idêntica sem mudança de estado, aborte a repetição imediatamente como [LOOP_DETECTED].</rule>
@@ -28,6 +30,8 @@ Leia rapidamente a spec em `specs/<id>/`:
 2. `design.md` (interfaces TypeScript, happy path, edge cases, critérios de aceitação)
 3. `spec-plan.md` (lista de tasks atômicas pendentes)
 
+Registre o estado inicial do working tree **e do index** antes de qualquer mutação. Compare os caminhos de implementação aprovados com `git status --porcelain=v1`, com o diff unstaged, com o diff staged e com os caminhos untracked. Mudanças preexistentes fora do escopo ficam intactas. Os documentos em `specs/<id>/` podem estar untracked após o proposal; registre seu conteúdo inicial como entrada aprovada e não altere `proposal.md` ou `design.md` no apply. Se um caminho de implementação já estiver alterado ou a autoria dos trechos for ambígua, interrompa sem editar. Guarde esse baseline para comparar com o diff produzido pela tarefa; hash isolado não demonstra autoria.
+
 Carregue variáveis do `.env` silenciosamente no terminal:
 ```powershell
 $env:SUPABASE_ACCESS_TOKEN = "<valor do .env>"
@@ -37,7 +41,7 @@ $env:GH_TOKEN              = "<valor do .env>"
 </step>
 
 <step number="1" name="Execução Sequencial das Tasks">
-Para cada task `- [ ] Pending` no `spec-plan.md`, atualize para `- [/] In Progress` e execute:
+Para cada task `- [ ] Pending` no `spec-plan.md`, confirme novamente o arquivo e os símbolos existentes, atualize para `- [/] In Progress` e execute apenas os caminhos aprovados. Se surgir dependência fora do escopo, pare e solicite revisão da proposta antes de tocá-la:
 
 <domain type="Database">
 Se envolver Banco/Supabase:
@@ -63,7 +67,7 @@ Se envolver Telas / Componentes React:
 - Siga os princípios de Rauno Freiberg (`skills/frontend-design-pro/references/interface-guidelines.md`) para inputs, dados e micro-interações.
 </domain>
 
-Após concluir cada task, marque imediatamente no `spec-plan.md` como `- [x] Completed`.
+Após a edição, compare `git diff --binary` e `git diff --cached --binary` com o baseline: identifique o diff produzido pela tarefa e confira que o index e as mudanças preexistentes não mudaram. Execute o critério de verificação da task definido no `spec-plan.md`, registre comando, resultado e evidência. Só então marque `- [x] Completed`. Falha, teste ausente ou verificação impossível deixam a task pendente ou em progresso, com o motivo explícito.
 </step>
 
 <step number="2" name="Auto-Healing, Loop Detection & Safe Rollback">
@@ -74,7 +78,7 @@ Se ocorrer erro de compilação ou teste durante a task:
 - **Tentativa 3 (Budget 3/3):** Tentativa final isolada. Se falhar:
   - **PROIBIDO:** `git reset --hard` automático desassistido.
   - **Safe Rollback Protocol:**
-    1. Execute `git status --short` e grave o diff em `.tmp/rollback_backup_<timestamp>/changes.patch`.
+    1. Execute `git status --short`; preserve separadamente o diff inicial, o diff produzido pela tarefa e o estado inicial do index em `.tmp/rollback_backup_<timestamp>/`. Nunca trate o diff total como se fosse da tarefa.
     2. Registre o log forense do erro em `.tmp/rollback_backup_<timestamp>/error_log.txt`.
     3. Notifique o usuário com a causa do bloqueio, o caminho do backup criado e solicite autorização explícita antes de descartar modificações.
 </step>
@@ -91,7 +95,7 @@ Se ocorrer erro de compilação ou teste durante a task:
    ```bash
    cmd.exe /c "npm run build"
    ```
-   (Se o projeto possuir testes unitários rápidos de backend/lógica, execute-os opcionalmente via terminal: `npm test -- --passWithNoTests`).
+   Execute também os testes exigidos pelos critérios de cada task. Testes unitários adicionais de backend/lógica continuam opcionais (`npm test -- --passWithNoTests`), mas `--passWithNoTests` não comprova um critério que exigia teste executado.
 3. **Security Gate (Pre-Commit Secrets Blocker & Cadência de Auditoria):**
    - **Bloqueador Rígido de Segredos:** Inspecione os arquivos modificados. Se encontrar chaves reais (OpenAI `sk-`, Stripe `sk_live_`, Supabase `service_role`, AWS keys), **BLOQUEIE IMEDIATAMENTE**:
      `[SECURITY_BLOCKER]: Segredo detectado em <arquivo>. Remova credenciais e use variáveis de ambiente antes de continuar.`

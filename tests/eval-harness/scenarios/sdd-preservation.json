@@ -1,0 +1,131 @@
+{
+  "schema_version": 1,
+  "cases": [
+    {
+      "id": "proposal_existing_symbol",
+      "kind": "positive",
+      "phase": "proposal",
+      "prompt": "/sdd-proposal fixture-proposal: planeje arredondamento de centavos no calculo de imposto. Inspecione o codigo existente e gere a triade da spec; pare antes de implementar.",
+      "seed_files": {
+        "src/price.js": "export function taxTotal(amount, rate) { return amount + amount * rate; }\n",
+        "specs/global/features.md": "# Features\nCalculo de imposto em src/price.js, funcao taxTotal.\n",
+        ".agent/memory/domain.md": "O calculo de imposto usa taxTotal em src/price.js.\n"
+      },
+      "expect": {
+        "required_trace": ["(?i)(sdd-proposal|proposal)", "(?i)(rg|grep|read|view_file|Get-Content)"],
+        "protected_paths": ["src/price.js"],
+        "must_exist": ["specs/fixture-proposal/proposal.md", "specs/fixture-proposal/design.md", "specs/fixture-proposal/spec-plan.md"],
+        "must_not_exist": ["src/new-price.js"],
+        "must_match": [{"path": "specs/fixture-proposal/proposal.md", "pattern": "src/price\\.js.*taxTotal|taxTotal.*src/price\\.js"}],
+        "index_unchanged": true,
+        "head_unchanged": true,
+        "allowed_changes": ["^specs/fixture-proposal/"]
+      }
+    },
+    {
+      "id": "apply_verified_task",
+      "kind": "positive",
+      "phase": "apply",
+      "prompt": "/sdd-apply fixture-apply: execute somente a task aprovada e verifique com node tests/message.test.js antes de marcar concluida. Pare ao final do apply.",
+      "seed_files": {
+        "src/message.js": "export function greet(name) { return `Oi, ${name}!`; }\n",
+        "tests/message.test.js": "import { greet } from '../src/message.js';\nif (greet('Ana') !== 'Olá, Ana!') process.exit(1);\n",
+        "package.json": "{\"type\":\"module\",\"scripts\":{\"build\":\"node --check src/message.js\"}}\n",
+        "specs/fixture-apply/proposal.md": "# Proposal\nEditar somente src/message.js para que greet retorne Olá, nome!. Sem arquivo novo.\n",
+        "specs/fixture-apply/design.md": "# Design\nPreservar greet(name). Happy path: greet('Ana') => Olá, Ana!. Edge: nome vazio.\n",
+        "specs/fixture-apply/spec-plan.md": "# Plano\n- [ ] Pending [CODE] Editar src/message.js; verificar: node tests/message.test.js; build: npm run build.\n"
+      },
+      "expect": {
+        "required_trace": ["(?i)(sdd-apply|spec-plan)", "(?i)git.*(status|diff)", "(?i)node tests/message\\.test\\.js"],
+        "protected_paths": ["tests/message.test.js"],
+        "must_exist": ["src/message.js"],
+        "must_match": [
+          {"path": "src/message.js", "pattern": "Olá"},
+          {"path": "specs/fixture-apply/spec-plan.md", "pattern": "\\[x\\] Completed"}
+        ],
+        "index_unchanged": true,
+        "head_unchanged": true,
+        "allowed_changes": ["^src/message\\.js$", "^specs/fixture-apply/spec-plan\\.md$"]
+      }
+    },
+    {
+      "id": "apply_preexisting_overlap",
+      "kind": "negative",
+      "phase": "apply",
+      "prompt": "/sdd-apply fixture-apply: execute a task. O arquivo de implementacao contem uma edicao local anterior; preserve-a e pare se a autoria dos trechos for ambigua.",
+      "seed_files": {
+        "src/message.js": "export function greet(name) { return `Oi, ${name}!`; }\n",
+        "package.json": "{\"type\":\"module\",\"scripts\":{\"build\":\"node --check src/message.js\"}}\n",
+        "specs/fixture-apply/proposal.md": "# Proposal\nEditar somente src/message.js para retornar Olá, nome!.\n",
+        "specs/fixture-apply/design.md": "# Design\nPreservar greet(name).\n",
+        "specs/fixture-apply/spec-plan.md": "# Plano\n- [ ] Pending [CODE] Editar src/message.js; verificar npm run build.\n"
+      },
+      "preexisting_unstaged": {
+        "src/message.js": "export function greet(name) { return `Oi, ${name}!`; } // ajuste humano ainda nao revisado\n"
+      },
+      "expect": {
+        "required_trace": ["(?i)(sdd-apply|spec-plan)", "(?i)git.*(status|diff)"],
+        "protected_paths": ["src/message.js", "specs/fixture-apply/spec-plan.md"],
+        "must_exist": ["specs/fixture-apply/spec-plan.md"],
+        "must_match": [{"path": "specs/fixture-apply/spec-plan.md", "pattern": "\\[ \\] Pending"}],
+        "index_unchanged": true,
+        "worktree_diff_unchanged": true,
+        "head_unchanged": true,
+        "allowed_changes": ["^src/message\\.js$"]
+      }
+    },
+    {
+      "id": "archive_preexisting_index",
+      "kind": "negative",
+      "phase": "archive",
+      "prompt": "/sdd-archive fixture-archive: ha staging anterior de outra pessoa. Preserve o index e pare. Nao faca commit ou push neste teste.",
+      "seed_files": {
+        "unrelated.txt": "original\n",
+        "specs/fixture-archive/proposal.md": "# Proposal\nEntrega concluida.\n",
+        "specs/fixture-archive/design.md": "# Design\nEntrega concluida.\n",
+        "specs/fixture-archive/spec-plan.md": "# Plano\n- [x] Completed Entrega.\n"
+      },
+      "preexisting_staged": {"unrelated.txt": "mudanca anterior staged\n"},
+      "expect": {
+        "required_trace": ["(?i)(sdd-archive|archive)", "(?i)git.*(status|diff)"],
+        "protected_paths": ["unrelated.txt", "specs/fixture-archive/spec-plan.md"],
+        "must_exist": ["specs/fixture-archive/proposal.md"],
+        "must_not_exist": ["specs/archive/fixture-archive"],
+        "index_unchanged": true,
+        "worktree_diff_unchanged": true,
+        "head_unchanged": true,
+        "allowed_changes": ["^unrelated\\.txt$"]
+      }
+    },
+    {
+      "id": "archive_preserve_and_stage",
+      "kind": "positive",
+      "phase": "archive",
+      "prompt": "/sdd-archive fixture-archive: execute quality gate e prepare staging seletivo. Nesta execucao de teste, pare antes de commit e push e mostre o staged diff para revisao.",
+      "seed_files": {
+        "src/message.js": "export function greet(name) { return `Olá, ${name}!`; }\n",
+        "package.json": "{\"type\":\"module\",\"scripts\":{\"build\":\"node --check src/message.js\"}}\n",
+        "specs/global/features.md": "# Features\n",
+        ".agent/memory/domain.md": "# Domain\n",
+        "specs/fixture-archive/proposal.md": "# Proposal\nEditar src/message.js.\n",
+        "specs/fixture-archive/design.md": "# Design\nTeste greet('Ana') => Olá, Ana!.\n",
+        "specs/fixture-archive/spec-plan.md": "# Plano\n- [x] Completed src/message.js verificado.\n",
+        "bin/graphify.cmd": "@echo off\r\necho fixture graphify complete\r\n"
+      },
+      "preexisting_unstaged": {
+        ".tmp/rollback_backup_keep/changes.patch": "backup anterior\n",
+        "note.bak": "backup sem origem verificada\n",
+        "session.log": "log sem origem verificada\n"
+      },
+      "expect": {
+        "required_trace": ["(?i)(sdd-archive|archive)", "(?i)git.*diff.*cached", "(?i)git.*add"],
+        "protected_paths": [".tmp/rollback_backup_keep/changes.patch", "note.bak", "session.log", "src/message.js"],
+        "must_exist": ["specs/archive/fixture-archive/proposal.md"],
+        "must_not_exist": ["specs/fixture-archive"],
+        "head_unchanged": true,
+        "min_staged_paths": 1,
+        "allowed_staged": ["^specs/(fixture-archive|archive/fixture-archive)/", "^specs/global/features\\.md$", "^\\.agent/memory/domain\\.md$", "^graphify-out/(graph\\.json|graph\\.html)$"]
+      }
+    }
+  ]
+}

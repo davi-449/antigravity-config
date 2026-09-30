@@ -1,0 +1,67 @@
+{
+  "id": "sdd_preservation_rules",
+  "name": "SDD preservation policy text checks",
+  "phase": "general",
+  "description": "Checks that the approved preservation rules are present. These assertions do not validate agent behavior.",
+  "input_prompt": "Inspect proposal, apply and archive preservation rules.",
+  "expected_behavior": {
+    "execution_mode": "single-agent",
+    "circuit_breaker_expected": true,
+    "hard_stop_expected": true
+  },
+  "assertions": [
+    {
+      "name": "proposal_records_evidence",
+      "check_type": "rule_presence",
+      "target": "skills/sdd-proposal/SKILL.md",
+      "operator": "contains",
+      "expected_value": "Evidência e Decisão"
+    },
+    {
+      "name": "apply_records_index",
+      "check_type": "rule_presence",
+      "target": "skills/sdd-apply/SKILL.md",
+      "operator": "contains",
+      "expected_value": "git diff --cached --binary"
+    },
+    {
+      "name": "apply_verifies_before_complete",
+      "check_type": "rule_presence",
+      "target": "skills/sdd-apply/SKILL.md",
+      "operator": "contains",
+      "expected_value": "Só então marque `- [x] Completed`"
+    },
+    {
+      "name": "archive_preserves_unowned",
+      "check_type": "rule_presence",
+      "target": "skills/sdd-archive/SKILL.md",
+      "operator": "contains",
+      "expected_value": "Não apague `.tmp/`, `*.bak`, logs ou outros arquivos sem origem verificada"
+    },
+    {
+      "name": "archive_checks_staged_diff",
+      "check_type": "rule_presence",
+      "target": "skills/sdd-archive/SKILL.md",
+      "operator": "contains",
+      "expected_value": "git diff --cached --check"
+    },
+    {
+      "name": "archive_no_broad_tmp_delete",
+      "check_type": "rule_presence",
+      "target": "skills/sdd-archive/SKILL.md",
+      "operator": "not_contains",
+      "expected_value": "Remove-Item -Recurse -Force .tmp/*"
+    },
+    {
+      "name": "archive_no_memory_directory_add",
+      "check_type": "rule_presence",
+      "target": "skills/sdd-archive/SKILL.md",
+      "operator": "not_contains",
+      "expected_value": "git add \".agent/memory/\""
+    }
+  ],
+  "forbidden_patterns": [
+    "Remove-Item -Recurse -Force .tmp/",
+    "git add .agent/memory/"
+  ]
+}

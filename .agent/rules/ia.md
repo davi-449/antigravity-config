@@ -38,7 +38,7 @@ A engenharia de software, especificação, implementação e validação são ex
 <rule>Toda mutação de código deve ser verificada imediatamente no terminal.</rule>
 <enforcement>
 1. Após aplicar uma alteração, execute o comando de verificação rápida (build / typecheck). Zero testes de browser/frontend.
-2. Se a verificação FALHAR: execute ROLLBACK IMEDIATO da alteração antes de tentar outra hipótese.
+2. Se a verificação FALHAR: compare o diff inicial (staged e unstaged) com o diff da tarefa. Reverta apenas trechos comprovadamente produzidos pela tarefa antes de tentar outra hipótese; se houver sobreposição ambígua, PARE sem sobrescrever trabalho preexistente.
 3. TERMINANTEMENTE PROIBIDO fazer "conserto sobre conserto" acumulando erros em cascata.
 4. Ao passar no teste: PARE IMEDIATAMENTE para validação do usuário antes de qualquer arquivamento ou commit.
 </enforcement>
@@ -73,14 +73,14 @@ Este projeto segue rigorosamente o padrão de Design System do DESIGN.md (Shadcn
 <graphify_intelligence>
 O Graphify é a ferramenta de inteligência topológica do projeto:
 - No Proposal: Execute graphify explain "<modulo>" ou graphify query "<termo>" para mapear o Blast Radius real antes de propor edições.
-- No Archive: Execute graphify update para sincronizar o grafo com o código entregue e execute a limpeza de resíduos temporários (.tmp/, logs).
+- No Archive: Execute graphify update para sincronizar o grafo com o código entregue. Preserve `.tmp/`, backups e logs sem origem verificada; mantenha-os fora do staging.
 - O comando de terminal é graphify (um Y), pacote Python graphifyy.
 </graphify_intelligence>
 
 <core_workflows>
 - /sdd-proposal: Gera a tríade SDD (proposal.md, design.md, spec-plan.md) com mapeamento de Blast Radius via Graphify e aplica Hard Stop imediato.
 - /sdd-apply: Executa as tasks aprovadas de forma cirúrgica e sequencial, roda o Terminal Gate (build limpo) e aplica Hard Stop para teste humano.
-- /sdd-archive: Executa o Quality Gate final, limpa resíduos transitórios (.tmp/, logs), atualiza o grafo (graphify update), salva memória duradoura e realiza commit atômico controlado.
+- /sdd-archive: Executa o Quality Gate final, preserva resíduos sem origem verificada fora do staging, atualiza o grafo (graphify update), salva memória duradoura e realiza commit atômico controlado.
 - /sdd-debug: Diagnóstico forense em logs reais e banco via SQL, com teste e rollback em caso de falha.
 - /council: Deliberação multi-agente pontual para decisões de arquitetura sob demanda.
 </core_workflows>

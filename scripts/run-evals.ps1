@@ -37,6 +37,7 @@ Write-Host "`n=======================================================" -Foregrou
 Write-Host "   Antigravity Evaluation Harness Runner" -ForegroundColor Cyan
 Write-Host "=======================================================" -ForegroundColor Cyan
 Write-Host "Mode:        $Mode"
+Write-Host "Evidence:    Rule text checks; agent behavior is evaluated separately"
 Write-Host "Repo Root:   $RepoRoot"
 Write-Host "Dry Run:     $($DryRun.IsPresent)"
 Write-Host "Timestamp:   $((Get-Date).ToString('yyyy-MM-dd HH:mm:ss'))"
@@ -134,6 +135,7 @@ Write-Host "-------------------------------------------------------`n"
 $reportObject = [PSCustomObject]@{
     timestamp           = (Get-Date).ToString("yyyy-MM-ddTHH:mm:ssZ")
     mode                = $Mode
+    evidence_level      = "rule_text_only"
     dry_run             = [bool]$DryRun.IsPresent
     environment         = [PSCustomObject]@{
         os_platform     = $env:OS
