@@ -21,11 +21,11 @@ Transforma requisitos em uma especificação técnica determinística física em
 
 <workflow_steps>
 <step number="1" name="Scan Rápido de Contexto (Legado + Grafo + Memória)">
-Execute diretamente no seu contexto em menos de 1 minuto:
+Faça uma inspeção proporcional ao risco e ao tamanho da mudança; uma edição local simples exige apenas as evidências relevantes:
 1. **Memória Obsidian:** Leia a memória relevante em `.agent/memory/` (`ui.md`, `supabase.md`, `auth.md` ou `domain.md`).
 2. **Grafo / Dependências:** Execute `graphify explain "<modulo-central>"` para saber quem depende do arquivo que você vai mexer (ou use `grep_search` para rastrear imports).
 3. **Código Legado (AST Skeleton):** Abra os arquivos legados existentes com `view_file` e copie as interfaces TypeScript reais e tipos de retorno. **Proibido inventar tipos de cabeça.**
-4. **Anti-Duplicação:** Se a tabela, componente ou função já existe no projeto, **REUTILIZE**. Não crie stubs duplicados.
+4. **Anti-Duplicação:** Consulte `specs/global/features.md` e busque no código real pelos símbolos e contratos afetados. Para cada artefato relevante, registre caminho e símbolo/trecho encontrado, escolha **reutilizar, editar ou criar** e justifique por que a opção atende ao requisito. O catálogo e o grafo orientam a busca; o código encontrado sustenta a decisão. Se a existência ou a fonte de verdade continuar incerta, marque como questão aberta em vez de recomendar criação por suposição. Para uma edição pequena, uma linha de evidência basta.
 5. **Roteamento de Skills Especializadas (Carregamento Sob Demanda):**
    Consulte as skills canônicas do domínio afetado ANTES de redigir a especificação:
    - **Se envolver UI / Telas / Componentes:** Consulte `DESIGN.md` e `skills/frontend-design-pro/SKILL.md`. A spec DEVE exigir tokens do design system (Zinc-950), superfícies por luminância (dark.design), conformidade com os 48 princípios de Rauno Freiberg e bloqueio de anti-patterns do catálogo de AI Slop.
@@ -44,6 +44,7 @@ Crie os 3 arquivos essenciais em `specs/<id>/`:
    - **Skills Especializadas Aplicadas:** Liste quais skills de domínio foram consultadas (`frontend-design-pro`, `backend-patterns`, `database`, `security`, `auth`).
    - **Contratos de Dados:** Tabelas, colunas, RPCs ou tipos de API.
    - **Arquivos Afetados:** Lista explícita separando [Arquivos Existentes Reutilizados/Modificados] de [Arquivos Novos].
+   - **Evidência e Decisão:** Para cada artefato afetado, `caminho:símbolo/trecho → reutilizar | editar | criar → motivo → verificação`. Cite também a alternativa descartada quando houver risco real de duplicação ou de alterar a fonte de verdade errada.
    - **Plano de Rollback:** Estratégia clara para reverter as alterações sem perda de dados caso a implementação falhe ou seja cancelada.
    - **Risco Principal:** O que pode quebrar e estratégia de mitigação.
 

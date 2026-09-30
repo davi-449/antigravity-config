@@ -18,10 +18,12 @@ Conclui o fluxo da Spec garantindo que a entrega não quebrou o build, registran
 - <rule type="prohibition">JAMAIS use git push --force.</rule>
 - <rule type="safety">Bloqueio ativo de segredos e voláteis: PROIBIDO incluir no staging .env*, *.pem, *.key, *.dump, backups SQL e diretórios .tmp/.</rule>
 - <rule type="staging_allowlist">Staging estritamente seletivo: apenas arquivos pertencentes à allowlist do escopo (specs/archive/, .agent/memory/, graphify-out/ e caminhos específicos de código validados).</rule>
+- <rule type="preserve_index">No início, registre `git status --porcelain=v1` e `git diff --cached --binary`. Se o index já contiver mudanças staged, pare antes de adicionar, desfazer, arquivar ou commitar: não misture a entrega com staging preexistente.</rule>
 </guardrails>
 
 <steps>
 <step number="1" name="Quality Gate & Pre-Archive Audits (Build & Segurança)">
+0. **Baseline de Git:** Registre HEAD, status, diff unstaged e diff staged. Identifique mudanças preexistentes e os caminhos produzidos pela spec. Se houver staging preexistente ou autoria ambígua em um caminho da entrega, interrompa sem alterar o index.
 1. **Build Gate:**
    Execute o build completo da aplicação para garantir compilação limpa e zero erros de TypeScript:
    ```bash
@@ -79,20 +81,14 @@ Isso alimenta o bloqueio anti-duplicação das próximas propostas.
 </step>
 
 <step number="6" name="Arquivamento da Spec">
-Mova a pasta de spec ativa para o diretório de histórico:
+Confirme que `specs/<id>` existe e `specs/archive/<id>` **não** existe. Se o destino estiver ocupado, pare sem mover nada. Só então mova a pasta de spec ativa para o diretório de histórico:
 ```powershell
 Move-Item "specs/<id>" "specs/archive/<id>"
 ```
 </step>
 
-<step number="6.1" name="Limpeza de Resíduos Transitórios e Caches">
-Antes de preparar o staging, execute a faxina completa de artefatos efêmeros do ciclo:
-1. **Limpeza de temporários:** Remova arquivos em `.tmp/`:
-   ```powershell
-   if (Test-Path .tmp) { Remove-Item -Recurse -Force .tmp/* -ErrorAction SilentlyContinue }
-   ```
-2. **Limpeza de backups de edição:** Remova arquivos `*.bak` ou logs soltos.
-3. **Proteção do Grafo:** O cache bruto de AST (`graphify-out/cache/`) NUNCA é commitado. Apenas o grafo consolidado (`graphify-out/graph.json` e `graphify-out/graph.html`) deve ser preservado.
+<step number="6.1" name="Preservação de Artefatos Fora da Entrega">
+Não apague `.tmp/`, `*.bak`, logs ou outros arquivos sem origem verificada. Backups de apply podem estar em `.tmp/`. Exclua esses caminhos do staging. O cache bruto de AST (`graphify-out/cache/`) também fica fora do commit; inclua somente arquivos consolidados do grafo que tenham sido produzidos por esta entrega.
 </step>
 
 <step number="7" name="Staging Seletivo & Commit Controlado">
@@ -103,20 +99,25 @@ Antes de preparar o staging, execute a faxina completa de artefatos efêmeros do
 2. **Filtro Anti-Vazamento:**
    - Verifique que NENHUM arquivo `.env*`, `*.pem`, `*.key`, `*.dump` ou `.tmp/` está na lista.
    - Inspecione `git diff --cached` em busca de padrões de chaves reais (OpenAI, Stripe, Supabase service keys).
-3. **Staging Seletivo por Allowlist (PROIBIDO git add .):**
+3. **Staging Seletivo por Caminho da Entrega (PROIBIDO git add .):**
+   Derive a lista exata dos arquivos da spec aprovada e dos artefatos realmente produzidos neste archive. Inclua os caminhos antigos e novos da spec movida. Um diretório permitido não autoriza adicionar todos os seus arquivos. Compare cada caminho com o baseline e pare se a autoria for ambígua.
    ```bash
-   git add "specs/archive/<id>"
-   git add ".agent/memory/"
-   git add "graphify-out/graph.json" "graphify-out/graph.html"
-   # Adicione pontualmente apenas os arquivos de código implementados nesta spec:
-   git add "src/<caminho_específico>" "supabase/migrations/<caminho_específico>"
+   git add -A -- "specs/<id>/<arquivo_específico_rastreado_antes_do_move>" "specs/archive/<id>/<arquivo_específico>"
+   git add -- ".agent/memory/<arquivo_modificado_nesta_entrega>"
+   git add -- "graphify-out/<arquivo_consolidado_modificado_nesta_entrega>"
+   git add -- "src/<caminho_específico>" "supabase/migrations/<caminho_específico>"
    ```
-4. **Relatório de Staging & Commit:**
+   Os exemplos acima são placeholders: inclua o caminho antigo somente se já era rastreado pelo Git e adicione somente caminhos da lista exata. Nunca inclua uma mudança preexistente no mesmo arquivo sem separar seus hunks com segurança; se não conseguir, pare.
+4. **Inspeção do Staged Diff & Commit:**
    ```bash
    git status --short
+   git diff --cached --name-status
+   git diff --cached --check
+   git diff --cached
    git commit -m "feat(<id>): <resumo do que foi implementado>"
    git push origin main
    ```
+   Antes do commit, confirme que o staged diff contém somente os caminhos e trechos desta entrega e nenhum segredo ou arquivo volátil. Se houver divergência, pare sem desfazer staging preexistente.
 </step>
 </steps>
 

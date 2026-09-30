@@ -7,8 +7,8 @@ Toda nova spec DEVE consultar este catálogo para **REUTILIZAR** em vez de dupli
 
 ## 1. Workflows & Ciclo de Vida SDD
 - `/sdd-proposal`: Planejamento determinístico e mapeamento de Blast Radius via Graphify.
-- `/sdd-apply`: Implementação cirúrgica com build gate no terminal e rollback automático.
-- `/sdd-archive`: Quality gate, atualização do grafo topológico, limpeza de resíduos e commit seletivo.
+- `/sdd-apply`: Implementação cirúrgica com build gate no terminal e reversão restrita às mudanças da tarefa.
+- `/sdd-archive`: Quality gate, atualização do grafo topológico, preservação de resíduos fora do staging e commit seletivo.
 - `/sdd-debug`: Diagnóstico forense com inspeção de logs reais e SQL.
 - `/council`: Deliberação multi-agente pontual sob demanda explícita.
 

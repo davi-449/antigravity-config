@@ -46,7 +46,7 @@ O desenvolvimento é estruturado em uma máquina de estados finita determinísti
           │
           ▼
 ┌──────────────────┐
-│   /sdd-archive   │ ──(Memória Obsidian + graphify update + Faxina + Commit)
+│   /sdd-archive   │ ──(Memória Obsidian + graphify update + Staging Seletivo + Commit)
 └──────────────────┘
           │
           └─► Em caso de falhas complexas ou bugs: /sdd-debug
@@ -74,7 +74,7 @@ O desenvolvimento é estruturado em uma máquina de estados finita determinísti
 * **Ações:**
   1. Registra lições aprendidas em `.agent/memory/<categoria>.md` (Obsidian).
   2. Atualiza o grafo de dependências com `graphify update`.
-  3. **Faxina de Resíduos (Step 6.1):** Esvazia a pasta `.tmp/`, remove backups `*.bak` e garante que caches brutos de AST (`graphify-out/cache/`) não sujem o Git.
+  3. **Preservação de Resíduos (Step 6.1):** Mantém `.tmp/`, backups `*.bak`, logs e caches brutos de AST (`graphify-out/cache/`) fora do staging; não apaga arquivos sem origem verificada.
   4. Move `specs/<feature>` para `specs/archive/<feature>`.
   5. Realiza o commit seletivo via allowlist rigorosa (PROIBIDO `git add .`).
 
@@ -214,6 +214,10 @@ Todo PR disparado para a branch `main` executa:
 2. `bun run typecheck`: Compilação TypeScript estrita (`tsc --noEmit`).
 3. `bun run test`: Testes unitários de regras de negócio.
 4. `bun run build`: Compilação final limpa de produção.
+
+### Evals das proteções SDD
+
+`scripts/run-evals.ps1` verifica texto de regras; seu relatório usa `evidence_level=rule_text_only`. Para avaliar comportamento, execute `scripts/run-behavior-evals.ps1 -Mode Prepare -CaseId <caso>`, abra o `workspace` retornado no **Antigravity 2.0** e envie o `prompt` retornado. Depois execute `-Mode Verify -CaseId <caso> -WorkspacePath <workspace> -TranscriptPath <caminho-do-transcript.jsonl>`. O verificador confere chamadas de ferramenta no transcript do AGY 2.0 e o estado final do repositório descartável. Transcript ausente, insuficiente ou de outra execução resulta em `NAO_VERIFICADO`; `PREPARADO` também não é um teste aprovado. O CLI não substitui esta validação.
 
 ---
 

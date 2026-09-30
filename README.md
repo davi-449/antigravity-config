@@ -7,7 +7,7 @@
 ## ⚡ Doutrina de Alta Performance
 
 Este ecossistema foi projetado para eliminar as três maiores causas de falhas no desenvolvimento com IA:
-1. **Fim do Loop de Regressão ("Arruma hoje, quebra anteontem"):** Implementações cirúrgicas por bloco via `replace_file_content` com isolamento de *Blast Radius* e rollback automático.
+1. **Fim do Loop de Regressão ("Arruma hoje, quebra anteontem"):** Implementações cirúrgicas por bloco via `replace_file_content`, com isolamento de *Blast Radius* e reversão restrita às mudanças da tarefa.
 2. **Fim do AI Slop e da Salada Visual (Preto vs. Cinza):** Interface 100% amarrada aos tokens semânticos do Shadcn (`bg-background`, `bg-card`, `border-border`) e controle de Dark Theme/OLED centralizado nas CSS Variables do `globals.css`.
 3. **Fim do Waffling e da Amnésia:** Eliminação da sobrecarga de multi-agentes. O modo padrão é **Single-Agent Direto (`Concurrency: 1`)**, garantindo respostas rápidas, técnicas e sem prolixidade.
 
@@ -21,7 +21,7 @@ Este ecossistema foi projetado para eliminar as três maiores causas de falhas n
 |---|---|---|---|
 | `/sdd-proposal <id>` | **Planejamento** | Inspeciona dependências com **Graphify**, consulta memória Obsidian e gera a tríade SDD (`proposal.md`, `design.md`, `spec-plan.md`). | 🛑 Para imediatamente para aprovação do plano (zero código). |
 | `/sdd-apply <id>` | **Implementação** | Executa as tasks sequencialmente, aplica patches cirúrgicos e valida com `npm run build` no terminal. | 🛑 Para imediatamente para validação humana em localhost. |
-| `/sdd-archive <id>` | **Consolidação** | Registra lições no Obsidian, atualiza o grafo (`graphify update`), limpa `.tmp/` e faz commit seletivo. | ✅ Conclusão do ciclo com hash do commit. |
+| `/sdd-archive <id>` | **Consolidação** | Registra lições no Obsidian, atualiza o grafo (`graphify update`), preserva temporários fora do staging e faz commit seletivo. | ✅ Conclusão do ciclo com hash do commit. |
 | `/sdd-debug <id>` | **Diagnóstico** | Investiga logs reais e SQL com até 3 tentativas isoladas e rollback automático em caso de falha. | 🛑 Para se o budget de tentativas for atingido. |
 | `/council <tópico>` | **Deliberação** | Dispara debate de 4 especialistas (Architect, Engineer, Analyst, Contrarian) + Síntese para stress-test arquitetural sob demanda. | 🛑 Entrega o veredito final ao usuário. |
 
