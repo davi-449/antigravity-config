@@ -1,6 +1,6 @@
 ---
 name: sdd-apply
-description: "Implementação técnica determinística rápida e direta para Antigravity 2.0. Um único agente executa as tasks sequencialmente, com save-state contínuo no spec-plan.md, auto-healing em até 3 tentativas, verificação rápida via terminal (build/typecheck/segurança) e Hard Stop final (sem browser/subagentes)."
+description: "Implementação SDD para Antigravity 2.0. O agente principal executa as tarefas sequencialmente, preserva mudanças anteriores, verifica cada tarefa no terminal e para antes do archive."
 triggers: [apply, implementar spec, executar spec, codificar spec, sdd-apply, vibe-apply]
 ---
 
@@ -8,11 +8,11 @@ triggers: [apply, implementar spec, executar spec, codificar spec, sdd-apply, vi
 
 <skill>
 <overview>
-Executa o checklist de `specs/<id>/spec-plan.md` diretamente com um único agente (sem latência ou overhead de múltiplos subagentes). Implementa as tasks de forma sequencial e atômica, valida 100% via terminal rápido (build gate, typecheck e segurança, sem testes de frontend/browser) e finaliza com Hard Stop obrigatório.
+Executa o checklist de `specs/<id>/spec-plan.md` pelo agente principal. Implementa as tarefas de forma sequencial, verifica os critérios por terminal e finaliza com Hard Stop obrigatório.
 </overview>
 
 <guardrails>
-- <rule type="execution">Execução direta por UM ÚNICO AGENTE. Não lance subagentes por tarefa (zero invoke_subagent).</rule>
+- <rule type="execution">O agente principal edita e verifica. O `sdd-reviewer` pode examinar em leitura um contrato sensível ou diff incerto; não delegue a implementação nem trate seu parecer como validação. Não o acione em cada tarefa simples.</rule>
 - <rule type="mandatory">A spec é a lei. Implemente estritamente o que foi acordado no proposal.md e design.md.</rule>
 - <rule type="preserve_existing">Antes de editar, registre HEAD, `git status --porcelain=v1`, `git diff --binary` e `git diff --cached --binary`, além dos caminhos untracked. Preserve o index e todas as mudanças preexistentes. Se um caminho de implementação aprovado já tiver mudança staged, unstaged ou untracked, pare diante de sobreposição ambígua; não sobrescreva nem desfaça trabalho anterior. Os três documentos da spec aprovada são entrada do apply: registre seu conteúdo inicial e limite a edição de `spec-plan.md` ao progresso das tasks.</rule>
 - <rule type="scope">Edite apenas os caminhos aprovados na spec. Se a solução exigir outro caminho ou contrato, pare, apresente a evidência e peça revisão da proposta antes de continuar.</rule>
@@ -84,11 +84,11 @@ Se ocorrer erro de compilação ou teste durante a task:
 </step>
 
 <step number="3" name="Quality Gate Rápido via Terminal (Build, Testes & Segurança)">
-1. **Verificação 100% Headless via Terminal (Zero Overhead de Frontend/Browser):**
+1. **Verificação via Terminal:**
    - **PROIBIDO:** Abrir navegadores, rodar Playwright, tirar screenshots ou inicializar dev servers para inspeção de tela no apply. Isso elimina latência, lentidão desnecessária e alucinações de renderização.
-   - O agente opera em modo 100% headless:
+   - Nesta fase, o agente opera no terminal:
      `[VISUAL_QA_OFFLINE]: Testes de UI via browser/Playwright desativados por design. Verificação 100% focada em gates rápidos de terminal (build, typecheck, lint).`
-   - **PROIBIDO:** Declarar falsamente que o Visual QA passou lendo apenas arquivos HTML/CSS estáticos.
+   - **PROIBIDO:** Declarar que o Visual QA passou lendo apenas arquivos HTML/CSS estáticos.
    - A avaliação visual de telas pertence exclusivamente ao desenvolvedor humano no navegador em localhost antes de aprovar com `/vibe-archive`: marque como `[HUMAN_REVIEW_PENDING]`.
 2. **Build & Typecheck Gate (Terminal Rápido):**
    Execute a compilação no terminal para garantir zero erros de TypeScript e zero quebras de bundling:
@@ -114,7 +114,7 @@ Se ocorrer erro de compilação ou teste durante a task:
 </step>
 
 <step number="4" name="Conclusão e Hard Stop Obrigatório">
-Apresente o resumo das tasks concluídas, o status do build gate no terminal e a aprovação técnica [AUDIT_PASSED].
+Apresente em português simples o que mudou, o que foi testado e o que ficou pendente. Use `[AUDIT_PASSED]` somente quando todas as verificações exigidas tiverem passado; inclua o comando e o resultado.
 
 <hard_stop>
 <directive>
@@ -123,7 +123,7 @@ PARE IMEDIATAMENTE AQUI.
 - NÃO execute git commit ou git push.
 - NÃO mova pastas de specs/ para specs/archive/.
 - Finalize sua resposta exclusivamente informando:
-  "Implementação concluída e verificada via terminal com sucesso! Teste a aplicação no seu navegador em localhost. Quando estiver pronto para arquivar e commitar, envie: /vibe-archive <id> (ou /sdd-archive <id>)."
+  "Implementação <id> concluída. Confira o resumo dos testes e teste no navegador se houver tela. Quando aprovar, peça /vibe-archive <id> (ou /sdd-archive <id>)."
 </directive>
 </hard_stop>
 </step>

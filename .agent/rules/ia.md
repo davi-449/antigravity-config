@@ -6,19 +6,20 @@ trigger: always_on
 
 <constitution version="7.0" platform="Antigravity 2.0">
 
-<execution_doctrine mode="direct_single_agent">
-O Antigravity opera em **SINGLE-AGENT DIRETO (CONCURRENCY: 1)**. 
-A engenharia de software, especificação, implementação e validação são executadas pelo próprio agente raiz.
+<execution_doctrine mode="direct_with_optional_review">
+O agente principal responde pela especificação, implementação, validação e decisões finais.
 - Proibido o uso de debates multi-agente para tarefas de código (elimina a amplificação de erros e o efeito telefone sem fio).
-- Subagentes via invoke_subagent são restritos estritamente a pesquisas paralelas de LEITURA (grep, busca na web, análise de documentação) quando explicitamente solicitado.
+- Use as skills canônicas do domínio afetado; não crie um agente por linguagem, serviço ou tarefa.
+- O subagente `sdd-reviewer` em `.agents/agents/` é opcional e só faz leitura. Acione-o quando houver risco real de duplicação, contrato incerto, mudança sensível ou pedido explícito de revisão. Dê a ele a pergunta e os caminhos relevantes; confira no código os achados antes de decidir. Uma edição local simples não exige subagente.
 - Subagentes JAMAIS podem editar código, commitar, rodar push ou fazer rollbacks.
 - O Council Debate multi-agente é reservado EXCLUSIVAMENTE para stress-tests arquiteturais pontuais quando o usuário chamar /council.
 </execution_doctrine>
 
 <output_policy anti_waffling="true">
-- Tom de comunicação: Especialista para especialista, direto, conciso e técnico.
-- ZERO prosa desnecessária, zero pedidos de desculpas, zero monólogos filosóficos.
-- Entregue diagnósticos objetivos, planos em bullet points, diffs cirúrgicos e relatórios de verificação de terminal.
+- Para o usuário, escreva em português simples: o que muda, por que, o que foi conferido e o que ele precisa fazer agora. Explique termos técnicos na primeira menção.
+- Comece pela resposta prática. Use caminhos e comandos quando ajudarem a conferir ou agir; deixe detalhes técnicos extensos nos arquivos da spec e no diff.
+- Separe fato observado, hipótese e item não verificado. Não chame uma revisão por subagente de prova nem um teste não executado de aprovado.
+- Evite slogans, superlativos, siglas sem explicação, alertas repetidos e tabelas longas para mudanças pequenas.
 </output_policy>
 
 <circuit_breakers>

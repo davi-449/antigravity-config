@@ -4,7 +4,8 @@
 
 param(
     [switch]$DryRun,
-    [switch]$ShowDiff
+    [switch]$ShowDiff,
+    [string]$GlobalConfigPath = ""
 )
 
 $ErrorActionPreference = "Stop"
@@ -12,7 +13,7 @@ $ErrorActionPreference = "Stop"
 # --- Paths ---
 $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 $repoRoot = Split-Path -Parent $scriptDir
-$globalConfig = Join-Path $env:USERPROFILE ".gemini\config"
+$globalConfig = if ($GlobalConfigPath) { [IO.Path]::GetFullPath($GlobalConfigPath) } else { Join-Path $env:USERPROFILE ".gemini\config" }
 
 Write-Host "=============================================" -ForegroundColor Cyan
 Write-Host " Antigravity Config Sync: Repo -> Global" -ForegroundColor Cyan
@@ -24,14 +25,56 @@ Write-Host ""
 # --- Sync Mappings ---
 $syncMap = @(
     @{ Source = "skills";                Dest = "skills";                 Type = "dir"  },
-    @{ Source = ".agent\agents";         Dest = "skills\.agents";         Type = "dir"  },
-    @{ Source = ".agent\rules\ia.md";    Dest = "rules\ia.md";            Type = "file" },
-    @{ Source = "schemas";               Dest = "skills\.agents\schemas"; Type = "dir"  }
+    @{ Source = ".agents\agents";        Dest = "agents";                 Type = "dir"  },
+    @{ Source = ".agent\rules\ia.md";    Dest = "rules\ia.md";            Type = "file" }
 )
 
 $totalCopied = 0
 $totalSkipped = 0
 $errors = @()
+$conflicts = @()
+
+function Test-KnownSourceVersion {
+    param([string]$Source, [string]$Destination)
+    $relative = $Source.Substring($repoRoot.Length).TrimStart([IO.Path]::DirectorySeparatorChar).Replace('\', '/')
+    $destinationBlob = ((& git -C $repoRoot hash-object -- $Destination) -join '').Trim()
+    if ($LASTEXITCODE -ne 0 -or -not $destinationBlob) { return $false }
+    $knownBlobs = @(& git -C $repoRoot rev-list --objects --all -- $relative 2>$null)
+    if ($LASTEXITCODE -ne 0) { return $false }
+    return @($knownBlobs | Where-Object { $_ -match "^$([regex]::Escape($destinationBlob))\s" }).Count -gt 0
+}
+
+function Copy-IfSafe {
+    param([string]$Source, [string]$Destination)
+    if (Test-Path -LiteralPath $Destination -PathType Leaf) {
+        $sourceHash = (Get-FileHash -LiteralPath $Source -Algorithm SHA256).Hash
+        $targetHash = (Get-FileHash -LiteralPath $Destination -Algorithm SHA256).Hash
+        if ($sourceHash -ne $targetHash) {
+            if (-not (Test-KnownSourceVersion -Source $Source -Destination $Destination)) {
+                Write-Host "[CONFLICT] Existing file preserved: $Destination" -ForegroundColor Yellow
+                $script:conflicts += $Destination
+                return
+            }
+            if ($DryRun) {
+                Write-Host "[DRY]  Would update verified prior version: $Destination" -ForegroundColor Yellow
+                return
+            }
+            Copy-Item -LiteralPath $Source -Destination $Destination -Force
+            Write-Host "[UPDATE] Verified prior version: $Destination" -ForegroundColor Green
+            $script:totalCopied++
+            return
+        }
+        $script:totalSkipped++
+        return
+    }
+    if ($DryRun) {
+        Write-Host "[DRY]  Would copy $Destination" -ForegroundColor Yellow
+        return
+    }
+    New-Item -ItemType Directory -Path (Split-Path -Parent $Destination) -Force | Out-Null
+    Copy-Item -LiteralPath $Source -Destination $Destination
+    $script:totalCopied++
+}
 
 foreach ($mapping in $syncMap) {
     $srcPath = Join-Path $repoRoot $mapping.Source
@@ -46,54 +89,23 @@ foreach ($mapping in $syncMap) {
     if ($mapping.Type -eq "dir") {
         $srcFiles = Get-ChildItem -Path $srcPath -Recurse -File
         $fileCount = $srcFiles.Count
-
-        if ($DryRun) {
-            Write-Host "[DRY]  $($mapping.Source) -> $($mapping.Dest) ($fileCount files)" -ForegroundColor Yellow
-        } else {
-            if (-not (Test-Path $dstPath)) {
-                New-Item -ItemType Directory -Path $dstPath -Force | Out-Null
-            }
-
-            $robocopyArgs = @($srcPath, $dstPath, "/MIR", "/NJH", "/NJS", "/NDL", "/NC", "/NS")
-            $null = & robocopy @robocopyArgs
-
-            if ($LASTEXITCODE -le 7) {
-                Write-Host "[OK]   $($mapping.Source) -> $($mapping.Dest) ($fileCount files)" -ForegroundColor Green
-                $totalCopied += $fileCount
-            } else {
-                $errMsg = "Robocopy failed for $($mapping.Source) with code $LASTEXITCODE"
-                Write-Host "[FAIL] $errMsg" -ForegroundColor Red
-                $errors += $errMsg
-            }
+        foreach ($srcFile in $srcFiles) {
+            $relative = $srcFile.FullName.Substring($srcPath.Length).TrimStart([IO.Path]::DirectorySeparatorChar)
+            Copy-IfSafe -Source $srcFile.FullName -Destination (Join-Path $dstPath $relative)
         }
+        Write-Host "[CHECKED] $($mapping.Source) -> $($mapping.Dest) ($fileCount files)" -ForegroundColor Cyan
     }
     elseif ($mapping.Type -eq "file") {
-        if ($DryRun) {
-            Write-Host "[DRY]  $($mapping.Source) -> $($mapping.Dest)" -ForegroundColor Yellow
-        } else {
-            $dstDir = Split-Path -Parent $dstPath
-            if (-not (Test-Path $dstDir)) {
-                New-Item -ItemType Directory -Path $dstDir -Force | Out-Null
-            }
-
-            Copy-Item -Path $srcPath -Destination $dstPath -Force
-            Write-Host "[OK]   $($mapping.Source) -> $($mapping.Dest)" -ForegroundColor Green
-            $totalCopied++
-        }
+        Copy-IfSafe -Source $srcPath -Destination $dstPath
     }
 }
 
-# --- Cleanup redundant global files that cause system prompt triplication ---
+# --- Report possible duplicates; never delete files of unverified origin ---
 $redundantFiles = @("GEMINI.md", "AGENTS.md")
 foreach ($rf in $redundantFiles) {
     $rfPath = Join-Path $globalConfig $rf
     if (Test-Path $rfPath) {
-        if ($DryRun) {
-            Write-Host "[DRY]  Remove redundant duplicate: $rf" -ForegroundColor Yellow
-        } else {
-            Remove-Item -Path $rfPath -Force
-            Write-Host "[CLEAN] Removed duplicate prompt file: $rf (eliminates 2.3k tokens overhead)" -ForegroundColor Cyan
-        }
+        Write-Host "[REVIEW] Existing $rf preserved; verify its origin before removing a duplicate rule." -ForegroundColor Yellow
     }
 }
 
@@ -130,6 +142,7 @@ if ($DryRun) {
     Write-Host " SYNC COMPLETE" -ForegroundColor Green
     Write-Host " Files synced: $totalCopied" -ForegroundColor White
     Write-Host " Skipped:      $totalSkipped" -ForegroundColor White
+    Write-Host " Conflicts preserved: $($conflicts.Count)" -ForegroundColor $(if ($conflicts.Count) { 'Yellow' } else { 'White' })
     if ($errors.Count -gt 0) {
         Write-Host " Errors:       $($errors.Count)" -ForegroundColor Red
         foreach ($e in $errors) {
@@ -138,3 +151,4 @@ if ($DryRun) {
     }
 }
 Write-Host "=============================================" -ForegroundColor Cyan
+if ($errors.Count -gt 0 -or $conflicts.Count -gt 0) { exit 1 }

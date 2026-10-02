@@ -4,12 +4,12 @@
 
 ---
 
-## ⚡ Doutrina de Alta Performance
+## Como funciona
 
-Este ecossistema foi projetado para eliminar as três maiores causas de falhas no desenvolvimento com IA:
-1. **Fim do Loop de Regressão ("Arruma hoje, quebra anteontem"):** Implementações cirúrgicas por bloco via `replace_file_content`, com isolamento de *Blast Radius* e reversão restrita às mudanças da tarefa.
-2. **Fim do AI Slop e da Salada Visual (Preto vs. Cinza):** Interface 100% amarrada aos tokens semânticos do Shadcn (`bg-background`, `bg-card`, `border-border`) e controle de Dark Theme/OLED centralizado nas CSS Variables do `globals.css`.
-3. **Fim do Waffling e da Amnésia:** Eliminação da sobrecarga de multi-agentes. O modo padrão é **Single-Agent Direto (`Concurrency: 1`)**, garantindo respostas rápidas, técnicas e sem prolixidade.
+Este repositório reúne as regras, skills e o fluxo de trabalho do Antigravity 2.0:
+1. **Preservar trabalho existente:** O agente inspeciona o código e registra mudanças locais antes de editar. Se houver sobreposição incerta, para.
+2. **Manter a interface consistente:** As skills de UI usam os tokens definidos em `DESIGN.md`.
+3. **Respostas fáceis de conferir:** O agente principal explica em português simples o que mudou e mostra a evidência técnica quando ela importa. Um revisor opcional, somente de leitura, ajuda em decisões incertas.
 
 📖 **Consulte o guia completo:** [Manual de Operação Unificado](docs/manual-operacao-antigravity.md)
 
@@ -22,12 +22,12 @@ Este ecossistema foi projetado para eliminar as três maiores causas de falhas n
 | `/sdd-proposal <id>` | **Planejamento** | Inspeciona dependências com **Graphify**, consulta memória Obsidian e gera a tríade SDD (`proposal.md`, `design.md`, `spec-plan.md`). | 🛑 Para imediatamente para aprovação do plano (zero código). |
 | `/sdd-apply <id>` | **Implementação** | Executa as tasks sequencialmente, aplica patches cirúrgicos e valida com `npm run build` no terminal. | 🛑 Para imediatamente para validação humana em localhost. |
 | `/sdd-archive <id>` | **Consolidação** | Registra lições no Obsidian, atualiza o grafo (`graphify update`), preserva temporários fora do staging e faz commit seletivo. | ✅ Conclusão do ciclo com hash do commit. |
-| `/sdd-debug <id>` | **Diagnóstico** | Investiga logs reais e SQL com até 3 tentativas isoladas e rollback automático em caso de falha. | 🛑 Para se o budget de tentativas for atingido. |
+| `/sdd-debug <id>` | **Diagnóstico** | Investiga evidências reais e tenta corrigir sem descartar trabalho preexistente. | 🛑 Para se o limite de tentativas for atingido. |
 | `/council <tópico>` | **Deliberação** | Dispara debate de 4 especialistas (Architect, Engineer, Analyst, Contrarian) + Síntese para stress-test arquitetural sob demanda. | 🛑 Entrega o veredito final ao usuário. |
 
 ---
 
-## 🧰 Catálogo de Skills Canônicas Ativas (11 Skills)
+## 🧰 Skills e revisão
 
 Consulte [`skills/INDEX.md`](skills/INDEX.md) para roteamento sob demanda:
 
@@ -40,8 +40,10 @@ Consulte [`skills/INDEX.md`](skills/INDEX.md) para roteamento sob demanda:
 7. **`deploy-production`**: 4 camadas de cache App Router, SEO metadata e Core Web Vitals.
 8. **`security`**: AppSec, Taint Analysis (Sentry), Pentest (Cloudflare), OWASP Top 10 e Secrets.
 9. **`github-ops`**: Operações Git headless e GitHub CLI token-driven.
-10. **`agy-bridge`**: Integração com agy CLI para workers assíncronos.
+10. **`agy-bridge`**: Integração legada com agy CLI, apenas quando solicitada.
 11. **`council-debate`**: Deliberação multi-agente em 3 rodadas para stress-test arquitetural.
+
+O agente principal usa as skills por assunto. `sdd-reviewer` é um agente opcional de leitura para conferir escolhas com risco real de duplicação ou contratos incertos; ele não edita nem aprova testes.
 
 ---
 
@@ -62,4 +64,4 @@ Para aplicar esta configuração em todos os projetos locais em `~/.gemini/antig
 powershell -ExecutionPolicy Bypass -File scripts/deploy-to-projects.ps1
 ```
 
-O sincronizador espelha a Constituição v7, o `DESIGN.md`, a pasta `docs/` e o catálogo de skills limpas de forma 100% idempotente.
+Primeiro rode `scripts/sync-global.ps1 -DryRun` para ver a cópia global. Os scripts preservam arquivos personalizados: atualizam apenas uma versão anterior comprovada do mesmo arquivo canônico e relatam conflitos. `deploy-to-projects.ps1` aceita `-ProjectName <nome>` para testar um projeto antes da propagação geral.

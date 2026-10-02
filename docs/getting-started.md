@@ -1,98 +1,12 @@
-# Getting Started — antigravity-config
+# Comece por aqui
 
-Bem-vindo ao `antigravity-config` — repositório de configuração de skills, workflows e regras de orquestração para o Gemini CLI / Antigravity.
+Este repositório guarda as regras e skills canônicas do Antigravity 2.0.
 
----
+1. Leia [o manual](manual-operacao-antigravity.md) para entender as três fases.
+2. Use `/sdd-proposal <id>` (ou `/vibe-proposal <id>`) para planejar. O agente para antes de mexer no código.
+3. Depois de aprovar o plano, use `/sdd-apply <id>` (ou `/vibe-apply <id>`). O agente implementa, verifica e para para sua revisão.
+4. Após sua validação, use `/sdd-archive <id>` (ou `/vibe-archive <id>`) para registrar a entrega.
 
-## O que é este repositório?
+O agente principal escolhe as skills do assunto usando [o índice](../skills/INDEX.md). Um revisor opcional só lê código quando há decisão incerta. Para testar a distribuição, comece por `scripts/sync-global.ps1 -DryRun` e `scripts/deploy-to-projects.ps1 -DryRun -ProjectName <nome>`. Conflitos são preservados para revisão.
 
-Este repo contém:
-- **Skills curadas** — playbooks que ensinam ao agente como executar tarefas específicas
-- **Bundles** — agrupamentos de skills por tipo de tarefa
-- **Workflows** — sequências de passos guiados (slash commands)
-- **Regras** — princípios de orquestração anti-vibe-coding
-- **Políticas** — contexto, ativação e sync com upstream
-
----
-
-## Estrutura rápida
-
-```
-.agent/
-├── rules/ia.md           ← Regras principais (FONTE DA VERDADE)
-├── workflows/            ← Slash commands (/vibe-proposal, /route-task, etc.)
-├── manifests/            ← skill-manifest.yaml (catálogo central)
-├── bundles/              ← Agrupamentos de skills por tipo de tarefa
-├── catalog/              ← Índice navegável de skills
-└── policies/             ← context-budget, activation-rules, sync-upstream
-
-.antigravity/
-└── rules.md              ← Espelho das regras principais
-
-skills/                   ← Todas as skills (SKILL.md)
-docs/                     ← Documentação
-setup/                    ← Scripts de instalação
-```
-
----
-
-## Instalação (novo ambiente)
-
-### Linux / macOS
-```bash
-bash setup/install.sh
-```
-
-### Windows (PowerShell)
-```powershell
-.\setup\install.ps1
-```
-
----
-
-## Primeiros passos
-
-### 1. Verificar que as regras estão carregadas
-As regras em `.agent/rules/ia.md` e `.antigravity/rules.md` são carregadas automaticamente pelo Gemini CLI/Antigravity.
-
-### 2. Usar um workflow
-```
-/route-task — receber recomendação de bundle para a tarefa atual
-/vibe-proposal "nome da feature" — iniciar planejamento
-/skill-audit — verificar sobrecarga de contexto
-```
-
-### 3. Ativar um bundle
-```
-Ative o bundle planning-mode para planejar esta feature.
-Ative o bundle fullstack-dev para implementar esta spec.
-```
-
-### 4. Usar uma skill individual
-```
-Use brainstorming para planejar esta mudança.
-Use debugging-strategies para investigar este erro.
-Use lint-and-validate antes de commitar.
-```
-
----
-
-## Fluxo completo de desenvolvimento
-
-```
-1. /route-task  →  identifica o tipo de tarefa
-2. /vibe-proposal "feature"  →  spec completo (proposal + design + tasks)
-3. /bundle-activate fullstack-dev  →  ativa skills de implementação
-4. /vibe-apply <id>  →  implementação guiada pelo spec
-5. /ship-pr  →  quality gate + commit semântico + PR
-6. /vibe-archive <id>  →  arquiva spec e limpa contexto
-```
-
----
-
-## Próximos passos
-
-- [Ver todos os bundles disponíveis →](bundles.md)
-- [Ver catálogo de skills →](../.agent/catalog/README.md)
-- [Entender o roteamento →](router-guide.md)
-- [Como usar skills →](skills-usage.md)
+Os guias de bundles e comandos da configuração v6 não fazem parte deste fluxo.

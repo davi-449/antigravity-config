@@ -1,7 +1,9 @@
 ﻿# 🧭 Antigravity 2.0 Skills Index
 
 Este índice mapeia as capacidades e procedimentos especializados disponíveis no Antigravity 2.0.
-Carregue **APENAS** a skill estritamente necessária para o domínio da tarefa atual (máximo 1-2 skills por turno).
+Carregue a skill do fluxo SDD e apenas as skills do domínio afetado. Evite carregar especialistas sem relação com a tarefa.
+
+O agente principal decide e escreve. Para risco real de duplicação, contrato incerto ou mudança sensível, pode pedir uma revisão em leitura ao `sdd-reviewer` (`.agents/agents/sdd-reviewer.md`). Ele não implementa nem valida testes. Para uma edição simples, siga direto com a evidência local.
 
 ---
 
@@ -18,7 +20,7 @@ Carregue **APENAS** a skill estritamente necessária para o domínio da tarefa a
 | **Deploy / SEO / Performance / Prod Readiness** | `deploy-production/SKILL.md` | `deploy-production/references/checklist-launch.md` |
 | **Cybersecurity & AppSec** | `security/SKILL.md` | `security/references/sentry-taint-analysis.md`, `cloudflare-adversarial.md` |
 | **Git Headless / Branches / PRs / CI-CD** | `github-ops/SKILL.md` | `github-ops/SKILL.md` |
-| **Integração agy CLI / Workers Headless** | `agy-bridge/SKILL.md` | `scripts/spawn-agy-worker.ps1` |
+| **Integração legada com agy CLI (somente sob pedido)** | `agy-bridge/SKILL.md` | `scripts/spawn-agy-worker.ps1` |
 | **Debate do Conselho (Stress-Test Arquitetural)** | `council-debate/SKILL.md` | `.council/`, `agents/`, `references/debate-rules.md` (Acionado EXCLUSIVAMENTE sob demanda explícita via `/council`) |
 
 ---
@@ -39,5 +41,5 @@ Carregue **APENAS** a skill estritamente necessária para o domínio da tarefa a
 ## 🛑 Diretrizes de Context Budget
 
 1. **Progressive Disclosure**: Carregue no máximo 1-2 skills simultâneas por turno.
-2. **Single-Agent Direct**: Tarefas de código são executadas pelo agente raiz sem intermediate wrappers.
+2. **Agente principal**: Tarefas de código são executadas por ele; a revisão opcional é somente leitura.
 3. **Plan-First Mandatório**: Nenhuma edição de código sem mapeamento de Blast Radius e aprovação prévia.

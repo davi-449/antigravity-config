@@ -122,12 +122,7 @@ Não apague `.tmp/`, `*.bak`, logs ou outros arquivos sem origem verificada. Bac
 </steps>
 
 <completion>
-Notifique o usuário com o resumo:
-- ✅ Build verificado
-- 📝 Lições registradas na memória Obsidian
-- 📊 Grafo de dependências atualizado
-- 📦 Spec arquivada em `specs/archive/<id>/`
-- 🔗 Hash do commit gerado
+Explique em português simples o que foi entregue, quais verificações realmente passaram, onde ficou a spec e qual commit foi criado. Se build, auditoria, grafo ou outra etapa não tiver sido executada, pare no gate correspondente e diga o motivo sem marcar a entrega como concluída.
 
 <cadence_reminder>
 A cada 5 a 10 archives concluídos no projeto, emita com destaque o alerta:
