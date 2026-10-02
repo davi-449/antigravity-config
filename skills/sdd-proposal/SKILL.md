@@ -1,6 +1,6 @@
 ---
 name: sdd-proposal
-description: "Planejamento e especificação física determinística (SDD) rápida e direta para Antigravity 2.0. Um único agente inspeciona o código legado, consulta Obsidian e Grafo, e gera proposal.md, design.md e spec-plan.md com Hard Stop obrigatório (sem subagentes)."
+description: "Planejamento SDD para Antigravity 2.0. O agente principal inspeciona o código, consulta memória e grafo, gera proposal.md, design.md e spec-plan.md e para antes do apply."
 triggers: [proposal, planejar feature, criar spec, planejar, sdd-proposal, especificação, vibe-proposal]
 ---
 
@@ -8,12 +8,12 @@ triggers: [proposal, planejar feature, criar spec, planejar, sdd-proposal, espec
 
 <skill>
 <overview>
-Transforma requisitos em uma especificação técnica determinística física em `specs/<id>/` de forma rápida e direta por um único agente (sem latência de subagentes). Inspeciona código legado e dependências reais para garantir alucinação zero, finalizando com Hard Stop obrigatório.
+Transforma requisitos em uma especificação em `specs/<id>/`. O agente principal inspeciona código existente e dependências reais, registra o que verificou e finaliza com Hard Stop obrigatório.
 </overview>
 
 <guardrails>
 - <rule type="prohibition">NÃO ESCREVA CÓDIGO de implementação nesta fase (src/, lib/, supabase/). Seu único output são arquivos .md em specs/<id>/.</rule>
-- <rule type="execution">Execução direta por UM ÚNICO AGENTE. Não lance subagentes por tarefa (zero invoke_subagent).</rule>
+- <rule type="execution">O agente principal redige a spec. Pode pedir uma revisão em leitura ao `sdd-reviewer` quando houver risco concreto de duplicação, contrato incerto ou mudança sensível. Confira os achados antes de incorporá-los; não delegue a spec nem abra revisão para edição simples.</rule>
 - <rule type="mandatory">Inspecione o código legado e a memória Obsidian ANTES de propor. Zero suposições de tipos.</rule>
 - <rule type="requirements">Toda spec exige obrigatoriamente: 1 Happy Path, 1 Edge Case, Critérios de Aceitação Verificáveis, Lista de Arquivos Afetados e Plano de Rollback.</rule>
 - <rule type="circuit_breaker">PARADA OBRIGATÓRIA (HARD STOP) no final. Proibido auto-engatar o apply ou marcar tasks no spec-plan.</rule>
@@ -69,6 +69,7 @@ Apresente ao usuário:
 - Arquivos legados reutilizados vs novos
 - Checklist do `spec-plan.md`
 - Plano de Rollback e Critérios de Aceitação
+- Em linguagem simples, diga primeiro o que o usuário ganha, quais arquivos mudariam e como ele confere. Deixe interfaces, comandos e evidências detalhadas na spec; não esconda limitações.
 
 <hard_stop>
 <directive>
@@ -77,7 +78,7 @@ PARE IMEDIATAMENTE AQUI.
 - NÃO execute comandos de modificação em src/, lib/ ou supabase/.
 - NÃO marque nenhuma task como [/] ou [x].
 - Finalize sua resposta exclusivamente informando:
-  "Especificação da Spec <id> concluída. Aguardando sua aprovação. Para implementar, digite: /vibe-apply <id> (ou /sdd-apply <id>)."
+  "Plano <id> pronto. Ainda não alterei o código. Confira a proposta e, se estiver de acordo, peça /vibe-apply <id> (ou /sdd-apply <id>)."
 </directive>
 </hard_stop>
 </step>

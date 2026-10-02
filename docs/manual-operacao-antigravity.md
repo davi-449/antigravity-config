@@ -7,17 +7,16 @@ Ele define a doutrina de execução, o ciclo determinístico de desenvolvimento 
 
 ## 1. Fundamentos da Doutrina Operacional
 
-O Antigravity 2.0 foi arquitetado para superar as falhas comuns de desenvolvimento assistido por IA: o *loop de regressão* ("arruma hoje, quebra anteontem"), a *salada visual* e o *waffling* (prolixidade excessiva que causa amnésia de contexto).
+O agente lê o código antes de propor uma solução, muda apenas o escopo aprovado e mostra o que conseguiu verificar. Para o usuário, explica o resultado em português simples; a spec e o diff guardam os detalhes técnicos.
 
 ### Os Três Pilares Invioláveis:
-1. **Single-Agent Direct Execution (`Concurrency: 1`):**
+1. **Agente principal responsável:**
    - A engenharia de software é executada diretamente pelo agente raiz do Antigravity.
-   - Eliminou-se o mito do multi-agente descontrolado para código sequencial. Estudos no **SWE-bench** comprovaram que debates encadeados de IA degradam tarefas de software em **39% a 70%** e amplificam erros em até **17×** (*Error Compounding Trap*).
-   - Subagentes são permitidos **apenas** para pesquisas paralelas de leitura (`read-only`) ou sob demanda explícita via `/council`.
+   - Skills técnicas são escolhidas pelo domínio, sem criar uma equipe fixa por linguagem.
+   - O `sdd-reviewer` pode revisar em leitura uma decisão incerta ou sensível. O agente principal confere os achados. `/council` continua sob demanda explícita.
 2. **Output Policy Anti-Waffling:**
-   - Comunicação de especialista para especialista: objetiva, técnica e concisa.
-   - Zero pedidos de desculpas, zero prosa filosófica desnecessária.
-   - Entregas estruturadas em: Diagnóstico breve -> Diff cirúrgico -> Relatório de terminal.
+   - Comunicação simples para o usuário: o que muda, por que, o que foi testado e o próximo passo.
+   - Detalhes técnicos ficam na spec e no diff; resultados não verificados são nomeados como tal.
 3. **Governança por Ferramentas e Guardrails:**
    - O agente nunca toma ações destrutivas (`git reset --hard`, exclusão de branches, force push) sem autorização explícita humana.
 
@@ -83,7 +82,7 @@ O desenvolvimento é estruturado em uma máquina de estados finita determinísti
 * **Ações:**
   1. Inspeciona logs reais e schema do banco via SQL.
   2. Formula até 3 hipóteses técnicas isoladas.
-  3. Aplica **Fast Rollback**: se uma tentativa de reparo falhar, desfaz a alteração antes de formular a próxima hipótese, impedindo o "conserto sobre conserto".
+  3. Se uma tentativa falhar, compara o diff inicial com o produzido pela tarefa. Reverte apenas trechos comprovadamente seus; se a autoria for ambígua, para sem sobrescrever.
 
 ---
 

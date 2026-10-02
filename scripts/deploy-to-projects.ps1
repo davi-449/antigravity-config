@@ -1,17 +1,19 @@
 # deploy-to-projects.ps1
 # Instala o Antigravity Config v7 Native AGY Edition (Single-Agent, Plan-First, DESIGN.md Semântico)
 # em todos os projetos e repositórios locais em ~/.gemini/antigravity/scratch/.
-# Usage: .\deploy-to-projects.ps1 [-DryRun]
+# Usage: .\deploy-to-projects.ps1 [-DryRun] [-ProjectName <name>] [-ScratchPath <path>]
 
 param(
-    [switch]$DryRun
+    [switch]$DryRun,
+    [string]$ProjectName = "",
+    [string]$ScratchPath = ""
 )
 
 $ErrorActionPreference = "Stop"
 
 $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 $repoRoot = Split-Path -Parent $scriptDir
-$scratchDir = "C:\Users\admin\.gemini\antigravity\scratch"
+$scratchDir = if ($ScratchPath) { [IO.Path]::GetFullPath($ScratchPath) } else { "C:\Users\admin\.gemini\antigravity\scratch" }
 
 Write-Host "=================================================" -ForegroundColor Magenta
 Write-Host " Antigravity v7 Native - Deployment Engine       " -ForegroundColor Magenta
@@ -29,8 +31,51 @@ $excludeNames = @(
     "config.zip"
 )
 
-$projects = Get-ChildItem -Path $scratchDir -Directory | Where-Object {
-    $excludeNames -notcontains $_.Name
+$projects = @(Get-ChildItem -LiteralPath $scratchDir -Directory | Where-Object {
+    ($excludeNames -notcontains $_.Name) -and (-not $ProjectName -or $_.Name -eq $ProjectName)
+})
+if ($ProjectName -and $projects.Count -ne 1) { throw "Project '$ProjectName' was not found in $scratchDir." }
+
+function Test-KnownSourceVersion {
+    param([string]$Source, [string]$Destination)
+    $relative = $Source.Substring($repoRoot.Length).TrimStart([IO.Path]::DirectorySeparatorChar).Replace('\', '/')
+    $destinationBlob = ((& git -C $repoRoot hash-object -- $Destination) -join '').Trim()
+    if ($LASTEXITCODE -ne 0 -or -not $destinationBlob) { return $false }
+    $knownBlobs = @(& git -C $repoRoot rev-list --objects --all -- $relative 2>$null)
+    if ($LASTEXITCODE -ne 0) { return $false }
+    return @($knownBlobs | Where-Object { $_ -match "^$([regex]::Escape($destinationBlob))\s" }).Count -gt 0
+}
+
+function Copy-IfSafe {
+    param([string]$Source, [string]$Destination)
+    if (-not (Test-Path -LiteralPath $Source -PathType Leaf)) { return }
+    if (Test-Path -LiteralPath $Destination -PathType Leaf) {
+        $sourceHash = (Get-FileHash -LiteralPath $Source -Algorithm SHA256).Hash
+        $targetHash = (Get-FileHash -LiteralPath $Destination -Algorithm SHA256).Hash
+        if ($sourceHash -ne $targetHash) {
+            if (-not (Test-KnownSourceVersion -Source $Source -Destination $Destination)) {
+                Write-Host "    [CONFLICT] Existing file preserved: $Destination" -ForegroundColor Yellow
+                $script:conflictCount++
+                return
+            }
+            if ($DryRun) {
+                Write-Host "    [DRY] Would update verified prior version: $Destination" -ForegroundColor Yellow
+                return
+            }
+            Copy-Item -LiteralPath $Source -Destination $Destination -Force
+            Write-Host "    [UPDATE] Verified prior version: $Destination" -ForegroundColor Green
+            return
+        }
+        Write-Host "    [SAME] $Destination" -ForegroundColor DarkGray
+        return
+    }
+    if ($DryRun) {
+        Write-Host "    [DRY] Would copy: $Destination" -ForegroundColor Yellow
+        return
+    }
+    New-Item -ItemType Directory -Path (Split-Path -Parent $Destination) -Force | Out-Null
+    Copy-Item -LiteralPath $Source -Destination $Destination
+    Write-Host "    [NEW] $Destination" -ForegroundColor Green
 }
 
 Write-Host "Found $($projects.Count) target projects:" -ForegroundColor Cyan
@@ -39,103 +84,79 @@ foreach ($p in $projects) {
 }
 Write-Host ""
 
-$sourceIa = Join-Path $repoRoot ".agent\rules\ia.md"
-$sourceAgents = Join-Path $repoRoot ".agent\agents"
 $sourceDesign = Join-Path $repoRoot "DESIGN.md"
 $sourceSkills = Join-Path $repoRoot "skills"
 
 $successCount = 0
 $failCount = 0
+$conflictCount = 0
 
 foreach ($project in $projects) {
     $projPath = $project.FullName
+    $conflictsBefore = $conflictCount
     Write-Host "--> Deploying v7 to: $($project.Name)..." -ForegroundColor Yellow
 
-    if ($DryRun) {
-        Write-Host "    [DRY RUN] Would install v7 config" -ForegroundColor Yellow
-        $successCount++
-        continue
-    }
-
     try {
-        # 1. Ensure .agent structure
+        # The global rule is installed by sync-global.ps1. Preserve project-owned root rules.
+        foreach ($ruleName in @('AGENTS.md', 'GEMINI.md')) {
+            if (Test-Path -LiteralPath (Join-Path $projPath $ruleName)) {
+                Write-Host "    [REVIEW] Existing $ruleName preserved; check for duplicate rules." -ForegroundColor Yellow
+            }
+        }
+        $localIa = Join-Path $projPath '.agent/rules/ia.md'
+        if (Test-Path -LiteralPath $localIa) {
+            # Existing local constitutions may override the global rule. Update only a verified prior version.
+            Copy-IfSafe -Source (Join-Path $repoRoot '.agent/rules/ia.md') -Destination $localIa
+        }
+
+        # 1. Ensure .agent memory structure without overwriting project memory.
         $targetAgent = Join-Path $projPath ".agent"
-        $targetRules = Join-Path $targetAgent "rules"
-        $targetAgents = Join-Path $targetAgent "agents"
+        # 2. Copy project defaults only when the target path is absent or identical.
+        Copy-IfSafe -Source $sourceDesign -Destination (Join-Path $projPath "DESIGN.md")
 
-        New-Item -ItemType Directory -Path $targetRules -Force | Out-Null
-        New-Item -ItemType Directory -Path $targetAgents -Force | Out-Null
-
-        # 2. Copy ia.md (Constitution v7)
-        Copy-Item -Path $sourceIa -Destination (Join-Path $targetRules "ia.md") -Force
-        Copy-Item -Path $sourceIa -Destination (Join-Path $projPath "GEMINI.md") -Force
-        Copy-Item -Path $sourceIa -Destination (Join-Path $projPath "AGENTS.md") -Force
-
-        # 3. Clean up obsolete multi-agent leads/workers from projects
-        if (Test-Path (Join-Path $targetAgents "leads")) {
-            Remove-Item -Recurse -Force (Join-Path $targetAgents "leads") -ErrorAction SilentlyContinue
-        }
-        if (Test-Path (Join-Path $targetAgents "workers")) {
-            Remove-Item -Recurse -Force (Join-Path $targetAgents "workers") -ErrorAction SilentlyContinue
-        }
-        if (Test-Path (Join-Path $projPath ".council")) {
-            Remove-Item -Recurse -Force (Join-Path $projPath ".council") -ErrorAction SilentlyContinue
-        }
-
-        # 4. Copy DESIGN.md (Semantic Tokens)
-        Copy-Item -Path $sourceDesign -Destination (Join-Path $projPath "DESIGN.md") -Force
-
-        # 5. Mirror lean skills/ to project
+        # 3. Copy skills file by file. Never mirror-delete or overwrite local variants.
         $targetSkills = Join-Path $projPath "skills"
-        $robocopySkills = @($sourceSkills, $targetSkills, "/MIR", "/NJH", "/NJS", "/NDL", "/NC", "/NS")
-        $null = & robocopy @robocopySkills
+        foreach ($skillFile in (Get-ChildItem -LiteralPath $sourceSkills -Recurse -File)) {
+            $relative = $skillFile.FullName.Substring($sourceSkills.Length).TrimStart([IO.Path]::DirectorySeparatorChar)
+            Copy-IfSafe -Source $skillFile.FullName -Destination (Join-Path $targetSkills $relative)
+        }
 
-        # 6. Copy Manual de Operacao to docs/
+        # 4. Copy documentation without overwriting project-owned edits.
         $targetDocs = Join-Path $projPath "docs"
-        New-Item -ItemType Directory -Path $targetDocs -Force | Out-Null
         $sourceManual = Join-Path $repoRoot "docs\manual-operacao-antigravity.md"
-        if (Test-Path $sourceManual) {
-            Copy-Item -Path $sourceManual -Destination (Join-Path $targetDocs "manual-operacao-antigravity.md") -Force
-        }
+        Copy-IfSafe -Source $sourceManual -Destination (Join-Path $targetDocs "manual-operacao-antigravity.md")
 
-        # 7. Copy specs/global/features.md
+        # 5. Copy the feature catalog only if it has no local changes.
         $targetSpecsGlobal = Join-Path $projPath "specs\global"
-        New-Item -ItemType Directory -Path $targetSpecsGlobal -Force | Out-Null
         $sourceFeatures = Join-Path $repoRoot "specs\global\features.md"
-        if (Test-Path $sourceFeatures) {
-            Copy-Item -Path $sourceFeatures -Destination (Join-Path $targetSpecsGlobal "features.md") -Force
-        }
+        Copy-IfSafe -Source $sourceFeatures -Destination (Join-Path $targetSpecsGlobal "features.md")
 
-        # 8. Copy .github templates (PR template & CI workflow example)
+        # 6. Copy .github templates without replacing existing templates.
         $targetGithub = Join-Path $projPath ".github"
-        New-Item -ItemType Directory -Path $targetGithub -Force | Out-Null
         $sourcePrTemplate = Join-Path $repoRoot ".github\PULL_REQUEST_TEMPLATE.md"
-        if (Test-Path $sourcePrTemplate) {
-            Copy-Item -Path $sourcePrTemplate -Destination (Join-Path $targetGithub "PULL_REQUEST_TEMPLATE.md") -Force
-        }
+        Copy-IfSafe -Source $sourcePrTemplate -Destination (Join-Path $targetGithub "PULL_REQUEST_TEMPLATE.md")
         $targetWorkflows = Join-Path $targetGithub "workflows"
-        New-Item -ItemType Directory -Path $targetWorkflows -Force | Out-Null
         $sourceQualityWorkflow = Join-Path $repoRoot ".github\workflows\quality.yml.example"
-        if (Test-Path $sourceQualityWorkflow) {
-            Copy-Item -Path $sourceQualityWorkflow -Destination (Join-Path $targetWorkflows "quality.yml.example") -Force
-        }
+        Copy-IfSafe -Source $sourceQualityWorkflow -Destination (Join-Path $targetWorkflows "quality.yml.example")
 
-        # 9. Bootstrap Obsidian Memory (.agent/memory/)
+        # 7. Bootstrap Obsidian memory only where the category is absent.
         $targetMemory = Join-Path $targetAgent "memory"
-        New-Item -ItemType Directory -Path $targetMemory -Force | Out-Null
         $sourceMemory = Join-Path $repoRoot ".agent\memory"
         if (Test-Path $sourceMemory) {
             $categories = @("ui", "supabase", "auth", "infra", "domain")
             foreach ($cat in $categories) {
                 $targetCatFile = Join-Path $targetMemory "$cat.md"
-                if (-not (Test-Path $targetCatFile)) {
-                    Copy-Item -Path (Join-Path $sourceMemory "$cat.md") -Destination $targetCatFile -Force
-                }
+                Copy-IfSafe -Source (Join-Path $sourceMemory "$cat.md") -Destination $targetCatFile
             }
         }
 
-        Write-Host "    [OK] Installed v7 Native config + docs + Obsidian memory successfully" -ForegroundColor Green
-        $successCount++
+        if ($conflictCount -gt $conflictsBefore) {
+            Write-Host "    [REVIEW] Existing custom files were preserved; inspect conflicts above." -ForegroundColor Yellow
+            $failCount++
+        } else {
+            Write-Host "    [OK] Canonical files checked." -ForegroundColor Green
+            $successCount++
+        }
     }
     catch {
         Write-Host "    [FAIL] Error: $($_.Exception.Message)" -ForegroundColor Red
@@ -148,4 +169,6 @@ Write-Host "=================================================" -ForegroundColor 
 Write-Host " Deployment Complete" -ForegroundColor Magenta
 Write-Host " Success: $successCount projects" -ForegroundColor Green
 Write-Host " Failed:  $failCount projects" -ForegroundColor $(if ($failCount -gt 0) { "Red" } else { "White" })
+Write-Host " Conflicts preserved: $conflictCount" -ForegroundColor $(if ($conflictCount -gt 0) { "Yellow" } else { "White" })
 Write-Host "=================================================" -ForegroundColor Magenta
+if ($failCount -gt 0 -or $conflictCount -gt 0) { exit 1 }

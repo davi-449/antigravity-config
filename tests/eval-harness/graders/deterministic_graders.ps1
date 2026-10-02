@@ -132,20 +132,20 @@ function Evaluate-GovernanceRules {
 
     $tests = @()
 
-    # 1. ia.md single-agent default and subagent constraints
+    # 1. Main agent owns implementation; optional reviewer is read-only.
     $iaPath = Join-Path $RepoRoot ".agent/rules/ia.md"
     $iaContent = if (Test-Path $iaPath) { Get-Content -Path $iaPath -Raw -Encoding UTF8 } else { "" }
 
     $tests += [PSCustomObject]@{
-        TestName = "Governance: ia.md single-agent mode declared"
-        Passed   = ($iaContent -match "SINGLE-AGENT DIRETO")
-        Details  = if ($iaContent -match "SINGLE-AGENT DIRETO") { "Single-agent mode declared as default." } else { "Missing SINGLE-AGENT DIRETO in ia.md" }
+        TestName = "Governance: main agent owns code and validation"
+        Passed   = ($iaContent -match "agente principal" -and $iaContent -match "sdd-reviewer")
+        Details  = if ($iaContent -match "agente principal" -and $iaContent -match "sdd-reviewer") { "Main agent and optional reviewer are declared." } else { "Missing main agent or optional reviewer rule." }
     }
 
     $tests += [PSCustomObject]@{
-        TestName = "Governance: ia.md subagent commit/reset restrictions"
-        Passed   = ($iaContent -match "Subagentes jamais podem executar commit")
-        Details  = if ($iaContent -match "Subagentes jamais podem executar commit") { "Subagent boundaries explicitly enforced." } else { "Missing subagent constraints in ia.md" }
+        TestName = "Governance: reviewer cannot modify or commit"
+        Passed   = ($iaContent -match "Subagentes JAMAIS podem editar c.digo, commitar, rodar push")
+        Details  = if ($iaContent -match "Subagentes JAMAIS podem editar c.digo, commitar, rodar push") { "Subagent write and Git boundaries are declared." } else { "Missing subagent write and Git restrictions." }
     }
 
     # 2. sdd-apply budgets and loop scorer

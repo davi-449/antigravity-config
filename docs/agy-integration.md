@@ -1,5 +1,7 @@
 # 🚀 Integração agy CLI como Worker Headless
 
+> Histórico da configuração v6. O fluxo padrão atual roda no Antigravity 2.0 com o agente principal e, quando necessário, o `sdd-reviewer` de leitura. O CLI abaixo permanece apenas para uso explícito; seus resultados não validam comportamento do AGY 2.0.
+
 ## 1. O que é o agy CLI no contexto v6?
 
 O `agy.exe` (Antigravity CLI) é o utilitário de linha de comando oficial do ecossistema Google Antigravity. No Antigravity Config v6, ele opera como um **processo filho isolado no sistema operacional** para execução paralela não bloqueante de Workers especializados.

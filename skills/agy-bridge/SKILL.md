@@ -1,9 +1,11 @@
 ---
 name: agy-bridge
-description: Skill de integracao com agy CLI como worker headless — ensina como spawnar, monitorar e parsear output de workers via agy.exe com fallback para subagentes nativos.
+description: Use somente quando o usuário pedir integração legada com agy CLI; não faz parte do fluxo padrão SDD do Antigravity 2.0.
 ---
 
 # agy CLI Bridge — Worker Headless Integration
+
+> Legado v6, sob pedido explícito. Este fluxo não substitui a execução nem os testes de comportamento no Antigravity 2.0. As instruções históricas abaixo não alteram o roteamento padrão de `skills/INDEX.md`.
 
 ## Visao Geral
 

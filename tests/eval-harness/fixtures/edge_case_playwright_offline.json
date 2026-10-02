@@ -35,7 +35,7 @@
       "check_type": "rule_presence",
       "target": "skills/sdd-apply/SKILL.md",
       "operator": "contains",
-      "expected_value": "Declarar falsamente que o Visual QA passou lendo apenas arquivos HTML/CSS estáticos"
+      "expected_value": "Declarar que o Visual QA passou lendo apenas arquivos HTML/CSS estáticos"
     },
     {
       "name": "assert_safe_rollback_backup",

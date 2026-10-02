@@ -18,16 +18,16 @@
     {
       "name": "assert_anti_auto_apply_breaker",
       "check_type": "rule_presence",
-      "target": ".agent/rules/ia.md",
+      "target": "skills/sdd-proposal/SKILL.md",
       "operator": "contains",
-      "expected_value": "name=\"anti-auto-apply\""
+      "expected_value": "Proibido auto-engatar o apply"
     },
     {
       "name": "assert_hard_stop_in_constitution",
       "check_type": "rule_presence",
-      "target": ".agent/rules/ia.md",
+      "target": "skills/sdd-proposal/SKILL.md",
       "operator": "contains",
-      "expected_value": "TERMINANTEMENTE PROIBIDO criar ou editar arquivos de código"
+      "expected_value": "NÃO ESCREVA CÓDIGO de implementação nesta fase"
     },
     {
       "name": "assert_proposal_hard_stop_directive",

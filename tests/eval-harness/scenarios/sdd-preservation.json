@@ -13,6 +13,8 @@
       },
       "expect": {
         "required_trace": ["(?i)(sdd-proposal|proposal)", "(?i)(rg|grep|read|view_file|Get-Content)"],
+        "forbidden_trace": ["(?i)invoke_subagent"],
+        "required_final": ["(?i)(plano|proposta)", "(?i)(aprova|/vibe-apply|/sdd-apply)"],
         "protected_paths": ["src/price.js"],
         "must_exist": ["specs/fixture-proposal/proposal.md", "specs/fixture-proposal/design.md", "specs/fixture-proposal/spec-plan.md"],
         "must_not_exist": ["src/new-price.js"],
@@ -20,6 +22,27 @@
         "index_unchanged": true,
         "head_unchanged": true,
         "allowed_changes": ["^specs/fixture-proposal/"]
+      }
+    },
+    {
+      "id": "proposal_requested_review",
+      "kind": "positive",
+      "phase": "proposal",
+      "prompt": "/sdd-proposal fixture-review: planeje alterar a regra de desconto. A decisao entre editar e criar e sensivel; peca explicitamente uma revisao somente de leitura ao sdd-reviewer, confira os achados no codigo e pare antes do apply.",
+      "seed_files": {
+        "src/discount.js": "export function discountTotal(amount, rate) { return amount * (1 - rate); }\n",
+        "src/checkout.js": "import { discountTotal } from './discount.js';\nexport function checkout(amount) { return discountTotal(amount, 0.1); }\n",
+        "specs/global/features.md": "# Features\nDesconto existente em src/discount.js:discountTotal.\n",
+        ".agent/memory/domain.md": "Descontos da finalizacao usam discountTotal.\n"
+      },
+      "expect": {
+        "required_trace": ["(?i)invoke_subagent", "(?i)(sdd-reviewer|discountTotal)", "(?i)(rg|grep|read|view_file|Get-Content)"],
+        "protected_paths": ["src/discount.js", "src/checkout.js"],
+        "must_exist": ["specs/fixture-review/proposal.md", "specs/fixture-review/design.md", "specs/fixture-review/spec-plan.md"],
+        "must_match": [{"path": "specs/fixture-review/proposal.md", "pattern": "discountTotal"}],
+        "index_unchanged": true,
+        "head_unchanged": true,
+        "allowed_changes": ["^specs/fixture-review/"]
       }
     },
     {

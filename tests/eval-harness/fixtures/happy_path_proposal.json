@@ -18,11 +18,11 @@
   },
   "assertions": [
     {
-      "name": "assert_single_agent_mode",
+      "name": "assert_main_agent_owns_spec",
       "check_type": "rule_presence",
       "target": "skills/sdd-proposal/SKILL.md",
       "operator": "contains",
-      "expected_value": "UM ÚNICO AGENTE"
+      "expected_value": "O agente principal redige a spec"
     },
     {
       "name": "assert_happy_path_requirement",

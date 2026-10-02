@@ -13,7 +13,8 @@ Diagnostica e corrige falhas em tempo de execução ou compilação através de 
 
 <guardrails>
 - <rule type="mandatory">Pesquisa real antes de tentar corrigir. Inspecione logs e banco de dados.</rule>
-- <rule type="limit">Máximo de 3 tentativas de repair. Na 4ª tentativa execute git reset --hard HEAD e escale ao usuário.</rule>
+- <rule type="limit">Máximo de 3 tentativas de correção. Se nenhuma passar, pare e apresente as evidências; nunca execute `git reset --hard` automaticamente.</rule>
+- <rule type="preservation">Antes de editar, registre HEAD, status, diff staged e unstaged e caminhos untracked. Preserve mudanças preexistentes. Reverta somente trechos comprovadamente produzidos por esta tentativa; se a autoria for ambígua, pare sem sobrescrever.</rule>
 - <rule type="memory">Ao solucionar um bug novo, registre a lição aprendida em .agent/memory/<modulo>.md.</rule>
 </guardrails>
 
@@ -81,11 +82,7 @@ Formule as 3 causas mais prováveis baseadas nas evidências colhidas:
 - **Tentativa 1:** Aplique a correção da Hipótese 1. Teste a compilação/teste. Se passou -> `[RESOLVED]`.
 - **Tentativa 2:** Se falhou, reverta a tentativa 1 e aplique a Hipótese 2. Se passou -> `[RESOLVED]`.
 - **Tentativa 3:** Abordagem alternativa documentada. Se passou -> `[RESOLVED]`.
-- **Tentativa 4 -> FALHA CRÍTICA:**
-  ```bash
-  git reset --hard HEAD
-  ```
-  Pare imediatamente, apresente o diagnóstico completo ao usuário e solicite orientação.
+- **Após a terceira falha:** Pare. Compare cada tentativa com o estado inicial, preserve backups e alterações anteriores, e explique ao usuário a causa provável, o que foi verificado e o que continua pendente. Não faça uma quarta tentativa nem descarte modificações automaticamente.
 </step>
 
 <step number="6" name="Auto-Annealing (Registro na Memória Obsidian)">

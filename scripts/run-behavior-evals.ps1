@@ -92,7 +92,7 @@ function Get-ToolTrace {
     $finished = $lastEvent -and $lastEvent.source -eq 'MODEL' -and
         $lastEvent.type -eq 'PLANNER_RESPONSE' -and $lastEvent.status -eq 'DONE' -and
         -not [string]::IsNullOrWhiteSpace([string]$lastEvent.content)
-    return [PSCustomObject]@{ Text=($parts -join "`n"); Denials=@($denials); Finished=[bool]$finished }
+    return [PSCustomObject]@{ Text=($parts -join "`n"); Denials=@($denials); Finished=[bool]$finished; FinalText=$(if ($finished) { [string]$lastEvent.content } else { '' }) }
 }
 
 $results = [Collections.Generic.List[object]]::new()
@@ -150,6 +150,9 @@ foreach ($case in $cases) {
         $ruleDir = Join-Path $workRoot '.agent/rules'
         New-Item -ItemType Directory -Path $ruleDir -Force | Out-Null
         Copy-Item -LiteralPath (Join-Path $repoRoot '.agent/rules/ia.md') -Destination (Join-Path $ruleDir 'ia.md')
+        $reviewerDir = Join-Path $workRoot '.agents/agents'
+        New-Item -ItemType Directory -Path $reviewerDir -Force | Out-Null
+        Copy-Item -LiteralPath (Join-Path $repoRoot '.agents/agents/sdd-reviewer.md') -Destination (Join-Path $reviewerDir 'sdd-reviewer.md')
         if ($case.phase -eq 'archive') {
             $securityDir = Join-Path $workRoot 'scripts'
             New-Item -ItemType Directory -Path $securityDir -Force | Out-Null
@@ -199,6 +202,16 @@ foreach ($case in $cases) {
             if ($toolTrace -notmatch [string]$pattern) {
                 if ($status -ne 'FALHOU') { $status = 'NAO_VERIFICADO' }
                 $problems.Add("Tool trace lacks required action: $pattern")
+            }
+        }
+        foreach ($pattern in @($case.expect.forbidden_trace | Where-Object { $_ })) {
+            if ($toolTrace -match [string]$pattern) {
+                $status = 'FALHOU'; $problems.Add("Forbidden action in tool trace: $pattern")
+            }
+        }
+        foreach ($pattern in @($case.expect.required_final | Where-Object { $_ })) {
+            if ($traceEvidence.Finished -and $traceEvidence.FinalText -notmatch [string]$pattern) {
+                $status = 'FALHOU'; $problems.Add("Final response lacks expected explanation: $pattern")
             }
         }
         foreach ($path in @($case.expect.protected_paths)) {

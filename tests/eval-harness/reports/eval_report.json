@@ -1,15 +1,16 @@
 ﻿{
-    "timestamp":  "2026-09-10T16:44:46Z",
+    "timestamp":  "2026-10-02T13:37:52Z",
     "mode":  "Fixture",
+    "evidence_level":  "rule_text_only",
     "dry_run":  false,
     "environment":  {
                         "os_platform":  "Windows_NT",
-                        "ps_version":  "5.1.26100.9168",
-                        "repo_root":  "C:\\Users\\admin\\.gemini\\antigravity\\scratch\\antigravity-config-main"
+                        "ps_version":  "5.1.26100.9444",
+                        "repo_root":  "C:\\Users\\admin\\Documents\\ChatGPT\\antigravity config\\antigravity-config-human-routing"
                     },
     "summary":  {
-                    "total_tests":  38,
-                    "passed_tests":  38,
+                    "total_tests":  33,
+                    "passed_tests":  33,
                     "failed_tests":  0,
                     "pass_rate_pct":  100,
                     "status":  "AUDIT_PASSED"
@@ -31,49 +32,19 @@
                              "Category":  "FixtureAssertion (adversarial_auto_chain)",
                              "TestName":  "assert_anti_auto_apply_breaker",
                              "Passed":  true,
-                             "Details":  ".agent/rules/ia.md: Content contains expected string."
+                             "Details":  "skills/sdd-proposal/SKILL.md: Content contains expected string."
                          },
                          {
                              "Category":  "FixtureAssertion (adversarial_auto_chain)",
                              "TestName":  "assert_hard_stop_in_constitution",
                              "Passed":  true,
-                             "Details":  ".agent/rules/ia.md: Content contains expected string."
+                             "Details":  "skills/sdd-proposal/SKILL.md: Content contains expected string."
                          },
                          {
                              "Category":  "FixtureAssertion (adversarial_auto_chain)",
                              "TestName":  "assert_proposal_hard_stop_directive",
                              "Passed":  true,
                              "Details":  "skills/sdd-proposal/SKILL.md: Content contains expected string."
-                         },
-                         {
-                             "Category":  "SchemaConformance",
-                             "TestName":  "SchemaConformance: agy_worker_timeout.json",
-                             "Passed":  true,
-                             "Details":  "Fixture successfully conforms to contract schema."
-                         },
-                         {
-                             "Category":  "FixtureAssertion (agy_worker_timeout)",
-                             "TestName":  "assert_agy_bridge_rule_in_ia",
-                             "Passed":  true,
-                             "Details":  ".agent/rules/ia.md: Content contains expected string."
-                         },
-                         {
-                             "Category":  "FixtureAssertion (agy_worker_timeout)",
-                             "TestName":  "assert_native_fallback_rule_in_ia",
-                             "Passed":  true,
-                             "Details":  ".agent/rules/ia.md: Content contains expected string."
-                         },
-                         {
-                             "Category":  "FixtureAssertion (agy_worker_timeout)",
-                             "TestName":  "assert_agy_bridge_skill_exists",
-                             "Passed":  true,
-                             "Details":  "skills/agy-bridge/SKILL.md: Content contains expected string."
-                         },
-                         {
-                             "Category":  "FixtureAssertion (agy_worker_timeout)",
-                             "TestName":  "assert_spawn_script_fallback_support",
-                             "Passed":  true,
-                             "Details":  "scripts/spawn-agy-worker.ps1: Content contains expected string."
                          },
                          {
                              "Category":  "SchemaConformance",
@@ -119,7 +90,7 @@
                          },
                          {
                              "Category":  "FixtureAssertion (happy_path_proposal)",
-                             "TestName":  "assert_single_agent_mode",
+                             "TestName":  "assert_main_agent_owns_spec",
                              "Passed":  true,
                              "Details":  "skills/sdd-proposal/SKILL.md: Content contains expected string."
                          },
@@ -155,63 +126,63 @@
                          },
                          {
                              "Category":  "SchemaConformance",
-                             "TestName":  "SchemaConformance: off_topic_docker.json",
+                             "TestName":  "SchemaConformance: sdd_preservation_rules.json",
                              "Passed":  true,
                              "Details":  "Fixture successfully conforms to contract schema."
                          },
                          {
-                             "Category":  "FixtureAssertion (off_topic_docker)",
-                             "TestName":  "assert_sdd_first_boundary",
+                             "Category":  "FixtureAssertion (sdd_preservation_rules)",
+                             "TestName":  "proposal_records_evidence",
                              "Passed":  true,
-                             "Details":  ".agent/rules/ia.md: Content contains expected string."
+                             "Details":  "skills/sdd-proposal/SKILL.md: Content contains expected string."
                          },
                          {
-                             "Category":  "FixtureAssertion (off_topic_docker)",
-                             "TestName":  "assert_clean_workspace_boundary",
+                             "Category":  "FixtureAssertion (sdd_preservation_rules)",
+                             "TestName":  "apply_records_index",
                              "Passed":  true,
-                             "Details":  ".agent/rules/ia.md: Content contains expected string."
+                             "Details":  "skills/sdd-apply/SKILL.md: Content contains expected string."
                          },
                          {
-                             "Category":  "SchemaConformance",
-                             "TestName":  "SchemaConformance: subagent_recursion_limit.json",
+                             "Category":  "FixtureAssertion (sdd_preservation_rules)",
+                             "TestName":  "apply_verifies_before_complete",
                              "Passed":  true,
-                             "Details":  "Fixture successfully conforms to contract schema."
+                             "Details":  "skills/sdd-apply/SKILL.md: Content contains expected string."
                          },
                          {
-                             "Category":  "FixtureAssertion (subagent_recursion_limit)",
-                             "TestName":  "assert_subagent_hierarchy_present",
+                             "Category":  "FixtureAssertion (sdd_preservation_rules)",
+                             "TestName":  "archive_preserves_unowned",
                              "Passed":  true,
-                             "Details":  ".agent/rules/ia.md: Content contains expected string."
+                             "Details":  "skills/sdd-archive/SKILL.md: Content contains expected string."
                          },
                          {
-                             "Category":  "FixtureAssertion (subagent_recursion_limit)",
-                             "TestName":  "assert_worker_no_delegation",
+                             "Category":  "FixtureAssertion (sdd_preservation_rules)",
+                             "TestName":  "archive_checks_staged_diff",
                              "Passed":  true,
-                             "Details":  ".agent/rules/ia.md: Content contains expected string."
+                             "Details":  "skills/sdd-archive/SKILL.md: Content contains expected string."
                          },
                          {
-                             "Category":  "FixtureAssertion (subagent_recursion_limit)",
-                             "TestName":  "assert_lead_no_direct_code",
+                             "Category":  "FixtureAssertion (sdd_preservation_rules)",
+                             "TestName":  "archive_no_broad_tmp_delete",
                              "Passed":  true,
-                             "Details":  ".agent/rules/ia.md: Content contains expected string."
+                             "Details":  "skills/sdd-archive/SKILL.md: Content correctly does not contain forbidden string."
                          },
                          {
-                             "Category":  "FixtureAssertion (subagent_recursion_limit)",
-                             "TestName":  "assert_git_commit_monopoly",
+                             "Category":  "FixtureAssertion (sdd_preservation_rules)",
+                             "TestName":  "archive_no_memory_directory_add",
                              "Passed":  true,
-                             "Details":  ".agent/rules/ia.md: Content contains expected string."
-                         },
-                         {
-                             "Category":  "GovernanceRule",
-                             "TestName":  "Governance: ia.md single-agent mode declared",
-                             "Passed":  true,
-                             "Details":  "Single-agent mode declared as default."
+                             "Details":  "skills/sdd-archive/SKILL.md: Content correctly does not contain forbidden string."
                          },
                          {
                              "Category":  "GovernanceRule",
-                             "TestName":  "Governance: ia.md subagent commit/reset restrictions",
+                             "TestName":  "Governance: main agent owns code and validation",
                              "Passed":  true,
-                             "Details":  "Subagent boundaries explicitly enforced."
+                             "Details":  "Main agent and optional reviewer are declared."
+                         },
+                         {
+                             "Category":  "GovernanceRule",
+                             "TestName":  "Governance: reviewer cannot modify or commit",
+                             "Passed":  true,
+                             "Details":  "Subagent write and Git boundaries are declared."
                          },
                          {
                              "Category":  "GovernanceRule",
