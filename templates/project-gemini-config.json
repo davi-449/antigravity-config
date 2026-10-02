@@ -1,0 +1,17 @@
+﻿{
+  "$schema": "https://raw.githubusercontent.com/google/antigravity/main/schemas/project-config.json",
+  "version": "2.0",
+  "planReviewPolicy": "whenJudgedWorthwhile",
+  "permissions": {
+    "protectedPaths": [
+      ".git/**",
+      ".env*",
+      ".vscode/**"
+    ],
+    "commandExecution": "prompt"
+  },
+  "rules": {
+    "inheritGlobal": true,
+    "projectRulePath": ".agent/rules/ia.md"
+  }
+}

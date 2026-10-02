@@ -86,6 +86,8 @@ Write-Host ""
 
 $sourceDesign = Join-Path $repoRoot "DESIGN.md"
 $sourceSkills = Join-Path $repoRoot "skills"
+$sourceAgents = Join-Path $repoRoot ".agents\agents"
+$sourceProjectConfig = Join-Path $repoRoot "templates\project-gemini-config.json"
 
 $successCount = 0
 $failCount = 0
@@ -109,9 +111,20 @@ foreach ($project in $projects) {
             Copy-IfSafe -Source (Join-Path $repoRoot '.agent/rules/ia.md') -Destination $localIa
         }
 
-        # 1. Ensure .agent memory structure without overwriting project memory.
+        # 1. Project configuration (.gemini/config.json) per Antigravity 2.0 standard
+        Copy-IfSafe -Source $sourceProjectConfig -Destination (Join-Path $projPath ".gemini\config.json")
+
+        # 2. Copy specialized subagents (.agents/agents)
+        if (Test-Path $sourceAgents) {
+            $targetAgents = Join-Path $projPath ".agents\agents"
+            foreach ($agentFile in (Get-ChildItem -LiteralPath $sourceAgents -File)) {
+                Copy-IfSafe -Source $agentFile.FullName -Destination (Join-Path $targetAgents $agentFile.Name)
+            }
+        }
+
+        # 3. Ensure .agent memory structure without overwriting project memory.
         $targetAgent = Join-Path $projPath ".agent"
-        # 2. Copy project defaults only when the target path is absent or identical.
+        # 4. Copy project defaults only when the target path is absent or identical.
         Copy-IfSafe -Source $sourceDesign -Destination (Join-Path $projPath "DESIGN.md")
 
         # 3. Copy skills file by file. Never mirror-delete or overwrite local variants.

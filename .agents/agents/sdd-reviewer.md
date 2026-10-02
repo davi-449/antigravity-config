@@ -8,6 +8,7 @@ mainAgent: false
 subagent: true
 model: inherit
 commandExecutionPolicy: off
+hooks: []
 ---
 
 # Revisor SDD

@@ -24,6 +24,7 @@ gen
 !package.json
 !schemas/**/*.json
 !schemas/*.json
+!templates/*.json
 !tests/**/*.json
 !tests/**/*.md
 

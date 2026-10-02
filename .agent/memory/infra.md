@@ -16,3 +16,10 @@
 **Regra aprendida:** Toda tarefa inicia com uma issue (`gh issue create`), trabalha em branch nomeada (`feat/id` ou `fix/id`) e finaliza com PR (`gh pr create`) sempre referenciando `Closes #ID`. O repositório deve fornecer `.github/PULL_REQUEST_TEMPLATE.md` e o CI workflow exemplo (`quality.yml.example`) com validação de lint, typecheck, tests e build.
 **Risco identificado:** Criar PRs sem vincular a issue deixa o backlog órfão e desorganizado no GitHub.
 **Não fazer:** Nunca realizar commit ou merge direto na branch principal sem passar pelo fluxo de issue + branch + PR verificado por CI.
+
+## [2026-10-02] — [Feature ID: spec-04-antigravity-v219-features]
+
+**Contexto:** Modernização com recursos nativos do Antigravity v2.17 – v2.19.1 e subagentes especialistas de pesquisa.
+**Regra aprendida:** O Antigravity 2.0 agora padroniza configurações de projeto em `<project>/.gemini/config.json` e isola 20.000 tokens dedicados para regras (`ia.md`), impedindo que a constituição concorra com ferramentas MCPs. Subagentes de pesquisa (`codebase-scout`, `web-researcher`) devem ter comandos desligados (`commandExecutionPolicy: off`) e isolamento de worktree para varrer dados sem poluir o contexto ou o repositório principal.
+**Risco identificado:** O `.gitignore` bloqueava `*.json` globalmente, o que impediria o versionamento de `templates/project-gemini-config.json` sem a regra explícita `!templates/*.json`.
+**Não fazer:** Nunca permitir que subagentes de busca executem comandos de mutação no terminal ou modifiquem código diretamente.

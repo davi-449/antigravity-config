@@ -1,12 +1,12 @@
 ﻿{
-    "timestamp":  "2026-10-02T13:37:52Z",
+    "timestamp":  "2026-10-02T14:12:47Z",
     "mode":  "Fixture",
     "evidence_level":  "rule_text_only",
     "dry_run":  false,
     "environment":  {
                         "os_platform":  "Windows_NT",
                         "ps_version":  "5.1.26100.9444",
-                        "repo_root":  "C:\\Users\\admin\\Documents\\ChatGPT\\antigravity config\\antigravity-config-human-routing"
+                        "repo_root":  "C:\\Users\\admin\\.gemini\\antigravity\\scratch\\antigravity-config-main"
                     },
     "summary":  {
                     "total_tests":  33,

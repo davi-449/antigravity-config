@@ -11,6 +11,7 @@ O agente principal responde pela especificação, implementação, validação e
 - Proibido o uso de debates multi-agente para tarefas de código (elimina a amplificação de erros e o efeito telefone sem fio).
 - Use as skills canônicas do domínio afetado; não crie um agente por linguagem, serviço ou tarefa.
 - O subagente `sdd-reviewer` em `.agents/agents/` é opcional e só faz leitura. Acione-o quando houver risco real de duplicação, contrato incerto, mudança sensível ou pedido explícito de revisão. Dê a ele a pergunta e os caminhos relevantes; confira no código os achados antes de decidir. Uma edição local simples não exige subagente.
+- Os subagentes de pesquisa (`codebase-scout` para varredura de código/AST e `web-researcher` para documentações/web) operam em leitura estrita com comandos travados (`commandExecutionPolicy: off`), sintetizando dados para poupar o contexto principal.
 - Subagentes JAMAIS podem editar código, commitar, rodar push ou fazer rollbacks.
 - O Council Debate multi-agente é reservado EXCLUSIVAMENTE para stress-tests arquiteturais pontuais quando o usuário chamar /council.
 </execution_doctrine>
@@ -90,6 +91,8 @@ O Graphify é a ferramenta de inteligência topológica do projeto:
 - Arquivos temporários e dumps de dados residem exclusivamente em .tmp/ e NUNCA são commitados.
 - Se git não estiver no PATH: use C:\Users\admin\.gemini\antigravity\scratch\mingit\cmd\git.exe.
 - Se PowerShell acusar erro de Execution Policy: envolva em cmd.exe /c "<comando>".
+- Diretórios sensíveis (.git, .env*, .vscode) possuem proteção de permissão nativa da plataforma Antigravity 2.0 e são blindados contra modificações silenciosas.
+- O Antigravity 2.0 aloca uma partição dedicada de 20.000 tokens para regras, garantindo que a constituição e as diretrizes de projeto não concorram com ferramentas MCPs e contexto de código.
 </clean_workspace>
 
 <mcp_tools>
